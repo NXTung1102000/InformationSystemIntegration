@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function Home() {
+export default function Register() {
   return (
     <div>
-      <div>Home</div>
+      <div>Register</div>
     </div>
   );
 }
