@@ -1,4 +1,4 @@
-import Home from "../features/Home/Home";
+import Home from "../features/Home_Search/Home";
 import Profile from "../features/Profile/Profile";
 
 export const Router_SearchOnline = "/search-online";
