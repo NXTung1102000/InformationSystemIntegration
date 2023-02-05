@@ -11,6 +11,6 @@ config_dict = {
 SQLALCHEMY_DATABASE_URI = 'mysql://{DATABASE_USER}:{DATABASE_PASSWORD}@{HOST}:{PORT}/{DATABASE_NAME}'.format(**config_dict)
 
 ## App
-APP_PORT = 5001
+APP_PORT = 5000
 
 SECRET_KEY = 'xyz'
