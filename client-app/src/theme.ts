@@ -56,22 +56,22 @@ export const theme = createTheme({
   },
   typography: {
     fontFamily: ["Fauna One", "sans-serif"].join(","),
-    fontSize: 11,
+    fontSize: 14,
     h1: {
       fontFamily: ["Cinzel", "sans-serif"].join(","),
       fontSize: 48,
     },
     h2: {
       fontFamily: ["Cinzel", "sans-serif"].join(","),
-      fontSize: 36,
+      fontSize: 40,
     },
     h3: {
       fontFamily: ["Cinzel", "sans-serif"].join(","),
-      fontSize: 20,
+      fontSize: 32,
     },
     h4: {
       fontFamily: ["Cinzel", "sans-serif"].join(","),
-      fontSize: 14,
+      fontSize: 24,
     },
   },
 });
