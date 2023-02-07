@@ -16,13 +16,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { HeaderApp, Search, SearchIconWrapper, StyledInputBase } from "../component/Header_Category/HeaderApp";
 import { MenuCategory, ResponsiveMenuCategory } from "../component/Header_Category/MenuCategory";
-import { listCategories } from "../constant/category";
+import { listCategories } from "../constant/category/category";
 import { Badge, Menu, MenuItem } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useNavigate } from "react-router-dom";
+import { UserRoute } from "../constant/route/name";
 
 interface Props {
   children?: JSX.Element;
@@ -30,20 +32,33 @@ interface Props {
 
 export default function Layout(props: Props) {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const signOut = () => {
+    handleMenuClose();
+    console.log("sign out");
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const returnHome = () => {
+    handleMenuClose();
+    navigate(UserRoute.HOME);
+  };
+
+  const openCart = () => {
+    handleMenuClose();
+    navigate(UserRoute.USER_CART);
+  };
+
+  const openProfile = () => {
+    handleMenuClose();
+    navigate(UserRoute.USER_PROFILE);
   };
 
   const renderListCategories = (
     <MenuCategory variant="permanent" open={open}>
       <ResponsiveMenuCategory>
-        <IconButton onClick={handleDrawerClose}>
+        <IconButton onClick={() => setOpen(false)}>
           {theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
       </ResponsiveMenuCategory>
@@ -104,8 +119,8 @@ export default function Layout(props: Props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
+      <MenuItem onClick={openProfile}>Profile</MenuItem>
+      <MenuItem onClick={signOut}>Log out</MenuItem>
     </Menu>
   );
 
@@ -126,7 +141,7 @@ export default function Layout(props: Props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={openCart}>
         <IconButton size="large" aria-label="shopping cart" color="inherit">
           <Badge badgeContent={99} color="error">
             <ShoppingCartIcon />
@@ -134,7 +149,7 @@ export default function Layout(props: Props) {
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={openProfile}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -146,7 +161,7 @@ export default function Layout(props: Props) {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={signOut}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -172,13 +187,13 @@ export default function Layout(props: Props) {
                 size="large"
                 color="inherit"
                 aria-label="open drawer"
-                onClick={handleDrawerOpen}
+                onClick={() => setOpen(true)}
                 edge="start"
                 sx={{ marginRight: 5, ...(open && { display: "none" }) }}
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" noWrap component="div">
+              <Typography variant="h6" noWrap component="div" onClick={returnHome} sx={{ cursor: "pointer" }}>
                 E - Commerce
               </Typography>
             </Box>
@@ -189,7 +204,7 @@ export default function Layout(props: Props) {
               <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
             </Search>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center" }}>
-              <IconButton size="large" aria-label="shopping cart" color="inherit">
+              <IconButton size="large" aria-label="shopping cart" color="inherit" onClick={openCart}>
                 <Badge badgeContent={99} color="error">
                   <ShoppingCartIcon />
                 </Badge>

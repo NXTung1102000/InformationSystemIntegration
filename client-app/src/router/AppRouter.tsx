@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Counter } from "../pages/counter/Counter";
-import { PrivateRouter, PublicRouter } from "../constant/router";
+import { PrivateRouter, PublicRouter } from "../constant/route/route";
 import Layout from "../pages/Layout";
 
 const AppRouter = () => {
