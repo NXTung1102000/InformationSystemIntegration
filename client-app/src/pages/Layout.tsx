@@ -14,9 +14,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { HeaderApp, Search, SearchIconWrapper, StyledInputBase } from "../../component/Header_Category/HeaderApp";
-import { MenuCategory, ResponsiveMenuCategory } from "../../component/Header_Category/MenuCategory";
-import { listCategories } from "../../constant/category";
+import { HeaderApp, Search, SearchIconWrapper, StyledInputBase } from "../component/Header_Category/HeaderApp";
+import { MenuCategory, ResponsiveMenuCategory } from "../component/Header_Category/MenuCategory";
+import { listCategories } from "../constant/category";
 import { Badge, Menu, MenuItem } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -24,7 +24,11 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-export default function MiniDrawer() {
+interface Props {
+  children?: JSX.Element;
+}
+
+export default function Layout(props: Props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -175,7 +179,7 @@ export default function MiniDrawer() {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap component="div">
-                E-Commerce
+                E - Commerce
               </Typography>
             </Box>
             <Search sx={{ flexGrow: 3 }}>
@@ -224,6 +228,7 @@ export default function MiniDrawer() {
         <ResponsiveMenuCategory />
 
         {/* code data search in here */}
+        {props.children}
       </Box>
     </Box>
   );

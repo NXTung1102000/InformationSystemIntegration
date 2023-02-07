@@ -1,5 +1,5 @@
-import Home from "../features/Home_Search/Home";
-import Profile from "../features/Profile/Profile";
+import Home from "../pages/Home_Search/Home";
+import Profile from "../pages/Profile/Profile";
 
 export const Router_SearchOnline = "/search-online";
 export const Router_Profile = "/profile";
