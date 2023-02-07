@@ -4,6 +4,7 @@ import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import MouseIcon from "@mui/icons-material/Mouse";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
+import { NameCategory } from "./name";
 
 interface category {
   name: string;
@@ -11,10 +12,10 @@ interface category {
 }
 
 export const listCategories: category[] = [
-  { name: "all", icon: <DoneAllIcon /> },
-  { name: "Laptop", icon: <LaptopIcon /> },
-  { name: "Mobile", icon: <SmartphoneIcon /> },
-  { name: "Mouse", icon: <MouseIcon /> },
-  { name: "Keyboard", icon: <KeyboardIcon /> },
-  { name: "HeadPhone", icon: <HeadphonesIcon /> },
+  { name: NameCategory.ALL, icon: <DoneAllIcon /> },
+  { name: NameCategory.LAPTOP, icon: <LaptopIcon /> },
+  { name: NameCategory.MOBILE, icon: <SmartphoneIcon /> },
+  { name: NameCategory.MOUSE, icon: <MouseIcon /> },
+  { name: NameCategory.KEYBOARD, icon: <KeyboardIcon /> },
+  { name: NameCategory.HEADPHONE, icon: <HeadphonesIcon /> },
 ];
