@@ -25,6 +25,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
 import { UserRoute } from "../constant/route/name";
+import LogIn from "./user/LogIn_Register/Login";
 
 interface Props {
   children?: JSX.Element;
@@ -34,6 +35,7 @@ export default function Layout(props: Props) {
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
+  const [openLogin, setOpenLogin] = React.useState(false);
 
   const signOut = () => {
     handleMenuClose();
@@ -121,6 +123,7 @@ export default function Layout(props: Props) {
     >
       <MenuItem onClick={openProfile}>Profile</MenuItem>
       <MenuItem onClick={signOut}>Log out</MenuItem>
+      <MenuItem onClick={() => setOpenLogin(true)}>Log in</MenuItem>
     </Menu>
   );
 
@@ -173,78 +176,82 @@ export default function Layout(props: Props) {
         </IconButton>
         <p>Log out</p>
       </MenuItem>
+      <MenuItem onClick={() => setOpenLogin(true)}>Log in</MenuItem>
     </Menu>
   );
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <HeaderApp position="fixed" open={open}>
-        <Toolbar>
-          <Box sx={{ width: "100%", display: "flex" }}>
-            <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <IconButton
-                size="large"
-                color="inherit"
-                aria-label="open drawer"
-                onClick={() => setOpen(true)}
-                edge="start"
-                sx={{ marginRight: 5, ...(open && { display: "none" }) }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap component="div" onClick={returnHome} sx={{ cursor: "pointer" }}>
-                E - Commerce
-              </Typography>
+    <>
+      <LogIn openLogin={openLogin} setOpenLogin={setOpenLogin} />
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <HeaderApp position="fixed" open={open}>
+          <Toolbar>
+            <Box sx={{ width: "100%", display: "flex" }}>
+              <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={() => setOpen(true)}
+                  edge="start"
+                  sx={{ marginRight: 5, ...(open && { display: "none" }) }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" noWrap component="div" onClick={returnHome} sx={{ cursor: "pointer" }}>
+                  E - Commerce
+                </Typography>
+              </Box>
+              <Search sx={{ flexGrow: 3 }}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+              </Search>
+              <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center" }}>
+                <IconButton size="large" aria-label="shopping cart" color="inherit" onClick={openCart}>
+                  <Badge badgeContent={99} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Box>
+              <Box sx={{ display: { xs: "flex", md: "none" } }}>
+                <IconButton
+                  size="large"
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </Box>
             </Box>
-            <Search sx={{ flexGrow: 3 }}>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
-            </Search>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center" }}>
-              <IconButton size="large" aria-label="shopping cart" color="inherit" onClick={openCart}>
-                <Badge badgeContent={99} color="error">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </Box>
-            <Box sx={{ display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </Box>
-          </Box>
-        </Toolbar>
-      </HeaderApp>
-      {renderMobileMenu}
-      {renderMenu}
-      {renderListCategories}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <ResponsiveMenuCategory />
+          </Toolbar>
+        </HeaderApp>
+        {renderMobileMenu}
+        {renderMenu}
+        {renderListCategories}
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <ResponsiveMenuCategory />
 
-        {/* code data search in here */}
-        {props.children}
+          {/* code data search in here */}
+          {props.children}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
