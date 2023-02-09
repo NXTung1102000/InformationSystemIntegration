@@ -41,7 +41,7 @@ def delete(id):
         return False
 
     
-def search(**kwargs):
-    if kwargs.get('sort'):
-        pass
-    return
+def search_product(kwargs):
+    list_product = search(kwargs)
+    list_product = list(map(lambda x: x.to_full_json(), list_product))
+    return list_product if list_product else []

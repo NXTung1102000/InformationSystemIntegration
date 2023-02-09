@@ -32,7 +32,6 @@ def update_by_id(id, data):
         return False
     
 
-
 def delete_by_id(id):
     try:
         product = find_by_id(id)
@@ -47,12 +46,23 @@ def sort_by_name():
     return
 
 
-def sort_by_price(list, order='desc'):
-    if order == 'desc':
-        list.order_by(Product.price.desc())
-    elif order == 'asc':
-        list.order_by(Product.price.desc())
-    else:
-        return []
+def search(kwargs):
+    base = Product.query
+    if kwargs.get('category'):
+        base = base.filter(Product.category == kwargs['category'])
+    # if kwargs.get('from_date'):
+    #     base = base.filter(Product.date == kwargs['category'])
+    if kwargs.get('star'):
+        base = base.filter(Product.star >= float(kwargs['star']))
+    if kwargs.get('price_min'):
+        base = base.filter(Product.price >= float(kwargs['price']))
+    if kwargs.get('price_max'):
+        base = base.filter(Product.price <= float(kwargs['price']))
+    if kwargs.get('sort_by_price'):
+        if kwargs.get('sort_by_price') == 'desc':
+            base = base.order_by(Product.price.desc())
+        elif kwargs.get('sort_by_price') == 'asc':
+            base = base.order_by(Product.price.asc())
 
-    return list
+    return base.all()
+

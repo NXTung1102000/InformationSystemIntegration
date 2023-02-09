@@ -6,7 +6,7 @@ class Product(db.Model):
     __tablename__ = 'product'
 
     id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column('name', db.VARCHAR(255), nullable=False)
+    name = db.Column('name', db.VARCHAR(255), unique=True, nullable=False)
     description = db.Column('description', db.VARCHAR(255))
     specification = db.Column('specification', db.Text, nullable=False)
     brand = db.Column('brand', db.VARCHAR(255), nullable=False)
