@@ -6,3 +6,12 @@ export enum NameCategory {
   KEYBOARD = "Keyboard",
   HEADPHONE = "HeadPhone",
 }
+
+export enum ParamCategory {
+  ALL = "",
+  LAPTOP = "laptop",
+  MOBILE = "mobile",
+  MOUSE = "mouse",
+  KEYBOARD = "keyboard",
+  HEADPHONE = "headPhone",
+}

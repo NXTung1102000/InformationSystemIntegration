@@ -3,7 +3,6 @@ import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -23,7 +22,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { UserRoute } from "../constant/route/name";
 import LogIn from "./user/LogIn_Register/Login";
 
@@ -36,6 +35,17 @@ export default function Layout(props: Props) {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [openLogin, setOpenLogin] = React.useState(false);
+  const [inputSearch, setInputSearch] = React.useState("");
+
+  const handleInputSearch = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputSearch(event.target.value);
+  };
+
+  const clickEnterToSearch = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      console.log(inputSearch);
+    }
+  };
 
   const signOut = () => {
     handleMenuClose();
@@ -57,6 +67,17 @@ export default function Layout(props: Props) {
     navigate(UserRoute.USER_PROFILE);
   };
 
+  const queryCategory = (params: any) => {
+    if (params.category) {
+      navigate({
+        pathname: UserRoute.HOME,
+        search: `?${createSearchParams(params)}`,
+      });
+    } else {
+      navigate(UserRoute.HOME);
+    }
+  };
+
   const renderListCategories = (
     <MenuCategory variant="permanent" open={open}>
       <ResponsiveMenuCategory>
@@ -67,7 +88,12 @@ export default function Layout(props: Props) {
       <Divider />
       <List>
         {listCategories.map((category) => (
-          <ListItem key={category.name} disablePadding sx={{ display: "block" }}>
+          <ListItem
+            key={category.name}
+            disablePadding
+            sx={{ display: "block" }}
+            onClick={() => queryCategory({ category: category.param })}
+          >
             <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5 }}>
               <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : "auto", justifyContent: "center" }}>
                 {category.icon}
@@ -184,7 +210,6 @@ export default function Layout(props: Props) {
     <>
       <LogIn openLogin={openLogin} setOpenLogin={setOpenLogin} />
       <Box sx={{ display: "flex" }}>
-        <CssBaseline />
         <HeaderApp position="fixed" open={open}>
           <Toolbar>
             <Box sx={{ width: "100%", display: "flex" }}>
@@ -207,7 +232,13 @@ export default function Layout(props: Props) {
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
-                <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                  value={inputSearch}
+                  onChange={handleInputSearch}
+                  onKeyUp={clickEnterToSearch}
+                />
               </Search>
               <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center" }}>
                 <IconButton size="large" aria-label="shopping cart" color="inherit" onClick={openCart}>
