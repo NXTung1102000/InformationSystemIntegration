@@ -16,6 +16,8 @@ import { UserRoute } from "../constant/route/name";
 import LogIn from "./LogIn_Register/Login";
 import LeftBavCategory from "../component/Header_Category/LeftBavCategory";
 import { MenuUser, MenuUserMobile } from "../component/Header_Category/MenuUser";
+import { useAppSelector } from "../app/hooks";
+import { selectCart } from "./user/cart/CartSlice";
 
 interface Props {
   children?: JSX.Element;
@@ -23,6 +25,8 @@ interface Props {
 
 export default function Layout(props: Props) {
   const navigate = useNavigate();
+  const cart = useAppSelector(selectCart);
+  const numProduct: number = cart.itemsList.length;
   const [open, setOpen] = React.useState(false);
   const [openLogin, setOpenLogin] = React.useState(false);
   const [inputSearch, setInputSearch] = React.useState("");
@@ -30,8 +34,6 @@ export default function Layout(props: Props) {
   const handleInputSearch = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInputSearch(event.target.value);
   };
-
-  const numProduct = 10;
 
   const clickEnterToSearch = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
