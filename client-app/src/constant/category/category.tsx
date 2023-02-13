@@ -4,18 +4,19 @@ import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import MouseIcon from "@mui/icons-material/Mouse";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
-import { NameCategory } from "./name";
+import { NameCategory, ParamCategory } from "./name";
 
 interface category {
   name: string;
   icon: JSX.Element;
+  param?: string;
 }
 
 export const listCategories: category[] = [
   { name: NameCategory.ALL, icon: <DoneAllIcon /> },
-  { name: NameCategory.LAPTOP, icon: <LaptopIcon /> },
-  { name: NameCategory.MOBILE, icon: <SmartphoneIcon /> },
-  { name: NameCategory.MOUSE, icon: <MouseIcon /> },
-  { name: NameCategory.KEYBOARD, icon: <KeyboardIcon /> },
-  { name: NameCategory.HEADPHONE, icon: <HeadphonesIcon /> },
+  { name: NameCategory.LAPTOP, icon: <LaptopIcon />, param: ParamCategory.LAPTOP },
+  { name: NameCategory.MOBILE, icon: <SmartphoneIcon />, param: ParamCategory.MOBILE },
+  { name: NameCategory.MOUSE, icon: <MouseIcon />, param: ParamCategory.MOUSE },
+  { name: NameCategory.KEYBOARD, icon: <KeyboardIcon />, param: ParamCategory.KEYBOARD },
+  { name: NameCategory.HEADPHONE, icon: <HeadphonesIcon />, param: ParamCategory.HEADPHONE },
 ];
