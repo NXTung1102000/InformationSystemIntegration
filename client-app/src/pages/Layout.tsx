@@ -26,6 +26,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
 import { UserRoute } from "../constant/route/name";
 import LogIn from "./user/LogIn_Register/Login";
+import Footer from '../component/Footer_category/Footer';
+
 
 interface Props {
   children?: JSX.Element;
@@ -251,6 +253,7 @@ export default function Layout(props: Props) {
           {/* code data search in here */}
           {props.children}
         </Box>
+        <Footer />
       </Box>
     </>
   );
