@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Counter } from "../pages/counter/Counter";
+import { Product } from "../pages/product/Product";
 import { PrivateRouter, PublicRouter } from "../constant/route/route";
 import Layout from "../pages/Layout";
 
@@ -22,6 +23,7 @@ const AppRouter = () => {
           ))
         }
         <Route path="/counter" element={<Counter />} />
+        <Route path="/product" element={<Product />} />
       </Routes>
     </BrowserRouter>
   );
