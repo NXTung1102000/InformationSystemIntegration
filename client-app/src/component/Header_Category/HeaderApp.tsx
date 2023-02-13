@@ -56,6 +56,7 @@ export const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 export const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
+  width: "90%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -63,7 +64,7 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "20ch",
+      width: "100%",
     },
   },
 }));
