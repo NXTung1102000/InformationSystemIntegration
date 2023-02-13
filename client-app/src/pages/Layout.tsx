@@ -180,8 +180,8 @@ export default function Layout(props: Props) {
 
           {/* code data search in here */}
           {props.children}
+          <Footer />
         </Box>
-        <Footer />
       </Box>
     </>
   );

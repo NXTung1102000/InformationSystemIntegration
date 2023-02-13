@@ -11,6 +11,7 @@ import {
 const Footer = () => {
   return (
     <Box>
+      <hr />
       <Container>
         <Row>
           <Column>
