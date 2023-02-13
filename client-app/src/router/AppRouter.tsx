@@ -23,7 +23,10 @@ const AppRouter = () => {
           ))
         }
         <Route path="/counter" element={<Counter />} />
-        <Route path="/product" element={<Product />} />
+        <Route path="/product" element={
+            <Layout><Product /></Layout>
+          } />
+
       </Routes>
     </BrowserRouter>
   );
