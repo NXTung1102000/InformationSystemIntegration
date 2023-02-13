@@ -16,6 +16,8 @@ import { UserRoute } from "../constant/route/name";
 import LogIn from "./LogIn_Register/Login";
 import LeftBavCategory from "../component/Header_Category/LeftBavCategory";
 import { MenuUser, MenuUserMobile } from "../component/Header_Category/MenuUser";
+import Footer from '../component/Footer_category/Footer';
+
 
 interface Props {
   children?: JSX.Element;
@@ -178,6 +180,7 @@ export default function Layout(props: Props) {
           {/* code data search in here */}
           {props.children}
         </Box>
+        <Footer />
       </Box>
     </>
   );
