@@ -1,18 +1,27 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Button, CardActions, Grid, Typography } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { clearCart, selectCart } from "./CartSlice";
+import { ICartItem } from "../../../constant/cart/cart";
+import { calculateShipping, calculateVoucher } from "../../../constant/policy/policy";
 
-interface IProps {
-  subtotal: number;
-  shipping: number;
-  voucher: number;
-  total: number;
-  numItem: number;
-}
+const distance = 1;
 
-export default function OrderSummary(props: IProps) {
+export default function OrderSummary() {
+  const dispatch = useAppDispatch();
+  const nowCart = useAppSelector(selectCart);
+  const subTotal = nowCart.itemsList.reduce((total: number, item: ICartItem) => {
+    return total + item.price * item.quantity;
+  }, 0);
+  const numTotal = nowCart.itemsList.reduce((total: number, item: ICartItem) => {
+    return total + item.quantity;
+  }, 0);
+  const shippingFee = calculateShipping(distance);
+  const voucher = calculateVoucher(subTotal);
+  const total = subTotal + shippingFee - voucher;
   return (
-    <Card sx={{ position: "sticky", top: "1rem", minWidth: "275px" }} elevation={15}>
+    <Card sx={{ position: "sticky", top: "1rem" }} elevation={5}>
       <CardContent>
         <Typography>Shopping Cart</Typography>
         <Typography variant="h3" sx={{ fontWeight: "bold" }}>
@@ -26,19 +35,19 @@ export default function OrderSummary(props: IProps) {
             <Typography>SubTotal</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Typography>{props.subtotal} vnd</Typography>
+            <Typography>{subTotal} vnd</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
             <Typography>Shipping</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Typography> + {props.shipping} vnd</Typography>
+            <Typography> + {shippingFee} vnd</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
             <Typography>Voucher</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Typography> - {props.voucher} vnd</Typography>
+            <Typography> - {voucher} vnd</Typography>
           </Grid>
         </Grid>
         <Typography variant="subtitle2">
@@ -51,14 +60,14 @@ export default function OrderSummary(props: IProps) {
             </Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Typography sx={{ fontWeight: "bold" }}>{props.total} vnd</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{total} vnd</Typography>
           </Grid>
         </Grid>
       </CardContent>
 
       <CardActions>
-        <Button size="large" color="secondary">
-          BUY NOW ({props.numItem})
+        <Button size="large" color="secondary" onClick={() => dispatch(clearCart())}>
+          BUY NOW ({numTotal})
         </Button>
       </CardActions>
     </Card>

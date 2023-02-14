@@ -2,33 +2,36 @@ import { Container, Grid } from "@mui/material";
 import CartItem from "../../../component/card/CartItem";
 import OrderSummary from "./OrderSummary";
 import { selectCart } from "./CartSlice";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { ICartItem } from "../../../constant/cart/cart";
+import { useAppSelector } from "../../../app/hooks";
 
 export default function Cart() {
-  const cart = useAppSelector(selectCart);
-  const dispatch = useAppDispatch();
-
-  const subTotal = cart.itemsList.reduce((total: number, item: ICartItem) => {
-    return total + item.price * item.quantity;
-  }, 0);
+  const nowCart = useAppSelector(selectCart);
 
   return (
     <>
-      <Container fixed>
+      <Container>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={7} lg={7}>
             <Grid container>
               <Grid item xs>
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
+                {nowCart.itemsList?.map((card) => (
+                  <CartItem
+                    key={card.id}
+                    id={card.id}
+                    category={card.category}
+                    description={card.description}
+                    img={card.img}
+                    name={card.name}
+                    price={card.price}
+                    quantity={card.quantity}
+                    star={card.star}
+                  />
+                ))}
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={6} md={5} lg={5}>
-            <OrderSummary subtotal={2000000} shipping={50000} voucher={200000} total={1850000} numItem={5} />
+            <OrderSummary />
           </Grid>
         </Grid>
       </Container>
