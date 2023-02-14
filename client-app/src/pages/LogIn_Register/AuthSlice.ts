@@ -5,7 +5,7 @@ import { IAuthState, IInputUser } from "../../constant/user/interface";
 import { ROLE } from "../../constant/user/role";
 
 const initialState: IAuthState = {
-  accessToken: "",
+  token: null,
   authority: ROLE.ROLE_UNKNOWN,
   user: {
     id: 0,
@@ -30,39 +30,15 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    LogOut: (state) => (state = initialState),
-  },
-  extraReducers: (builder) => {
-    builder
-      // login
-      .addCase(LogInAsync.pending, (state) => {
-        // console.log(state)
-      })
-      .addCase(LogInAsync.fulfilled, (state, action) => {
-        state.accessToken = action.payload.accessToken;
-        state.authority = action.payload.authority;
-        state.user = action.payload.user;
-        // console.log(state, action);
-      })
-      .addCase(LogInAsync.rejected, (state) => {
-        // console.log(state);
-      });
-
-    // register
-    builder
-      .addCase(RegisterAsync.pending, (state) => {
-        // console.log(state);
-      })
-      .addCase(RegisterAsync.fulfilled, (state, action) => {
-        state.accessToken = action.payload.accessToken;
-        // console.log(state, action);
-      })
-      .addCase(RegisterAsync.rejected, (state) => {
-        // console.log(state);
-      });
+    LogInUser: (state, action) => {
+      state.token = action.payload.token;
+    },
+    LogOutUser: () => {
+      return initialState;
+    },
   },
 });
 
-export const { LogOut } = authSlice.actions;
+export const { LogOutUser, LogInUser } = authSlice.actions;
 export const selectAuth = (state: RootState) => state.auth;
 export default authSlice.reducer;

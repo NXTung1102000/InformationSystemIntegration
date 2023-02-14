@@ -5,7 +5,6 @@ import { dataCategory } from "./dummyDataProduct";
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const data = dataCategory;
-  // console.log(searchParams.get("category"));
   return (
     <div>
       {data?.map((category) => (

@@ -16,17 +16,24 @@ import { UserRoute } from "../constant/route/name";
 import LogIn from "./LogIn_Register/Login";
 import LeftBavCategory from "../component/Header_Category/LeftBavCategory";
 import { MenuUser, MenuUserMobile } from "../component/Header_Category/MenuUser";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectCart } from "./user/cart/CartSlice";
 import Footer from "../component/Footer_category/Footer";
+import { LogOutUser } from "./LogIn_Register/AuthSlice";
+import { getAllCategory } from "../api/category";
+import Loading from "../component/LoadingAndNotice/Loading";
+import { selectLoading } from "../component/LoadingAndNotice/loadingSlice";
+import Notice from "../component/LoadingAndNotice/Notice";
 
 interface Props {
   children?: JSX.Element;
 }
 
 export default function Layout(props: Props) {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cart = useAppSelector(selectCart);
+  const loading = useAppSelector(selectLoading);
   const numProduct: number = cart.itemsList.length;
   const [open, setOpen] = React.useState(false);
   const [openLogin, setOpenLogin] = React.useState(false);
@@ -39,12 +46,13 @@ export default function Layout(props: Props) {
   const clickEnterToSearch = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       console.log(inputSearch);
+      getAllCategory();
     }
   };
 
   const signOut = () => {
+    dispatch(LogOutUser());
     handleMenuClose();
-    console.log("sign out");
   };
 
   const returnHome = () => {
@@ -95,6 +103,8 @@ export default function Layout(props: Props) {
 
   return (
     <>
+      <Notice />
+      <Loading open={loading.isLoading} />
       <LogIn openLogin={openLogin} setOpenLogin={setOpenLogin} />
       <Box sx={{ display: "flex" }}>
         <HeaderApp position="fixed" open={open}>
