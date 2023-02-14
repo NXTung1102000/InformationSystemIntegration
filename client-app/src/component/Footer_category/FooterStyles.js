@@ -3,10 +3,10 @@ import styled from 'styled-components';
 export const Box = styled.div`
   padding: 80px 60px;
   background: white;
-  position: absolute;
+  // position: absolute;
   bottom: 0;
   width: 100%; 
-  height: 20%; 
+  // height: 20%; 
   
    
   @media (max-width: 1000px) {

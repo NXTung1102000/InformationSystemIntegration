@@ -3,22 +3,20 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions, Rating } from "@mui/material";
+import { useAppDispatch } from "../../app/hooks";
+import { addToCart } from "../../pages/user/cart/CartSlice";
+import { ICartItem } from "../../constant/cart/cart";
 
-export interface ICard {
-  id: number;
-  name: string;
-  price: number;
-  star: number;
-  img: string;
-  description: string;
-}
+export default function ProductCard(props: ICartItem) {
+  const dispatch = useAppDispatch();
 
-export default function ProductCard(props: ICard) {
   const goToDetailProduct = async () => {
     console.log(props);
   };
 
-  const addToCart = (item: ICard) => {
+  const addToYourCart = (item: ICartItem) => {
+    const card = { ...item, quantity: 1 };
+    dispatch(addToCart(card));
     console.log(`add item ${item.name} to your cart`);
   };
   return (
@@ -39,7 +37,7 @@ export default function ProductCard(props: ICard) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary" onClick={() => addToCart(props)}>
+        <Button size="small" color="primary" onClick={() => addToYourCart(props)}>
           Add to Cart
         </Button>
       </CardActions>
