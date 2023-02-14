@@ -17,7 +17,6 @@ export default function ProductCard(props: ICartItem) {
   const addToYourCart = (item: ICartItem) => {
     const card = { ...item, quantity: 1 };
     dispatch(addToCart(card));
-    console.log(`add item ${item.name} to your cart`);
   };
   return (
     <Card sx={{ margin: "0 1rem 1rem 0" }}>

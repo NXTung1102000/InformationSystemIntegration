@@ -16,15 +16,18 @@ import { UserRoute } from "../constant/route/name";
 import LogIn from "./LogIn_Register/Login";
 import LeftBavCategory from "../component/Header_Category/LeftBavCategory";
 import { MenuUser, MenuUserMobile } from "../component/Header_Category/MenuUser";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectCart } from "./user/cart/CartSlice";
 import Footer from "../component/Footer_category/Footer";
+import { LogOutUser } from "./LogIn_Register/AuthSlice";
+import { getAllCategory } from "../api/category";
 
 interface Props {
   children?: JSX.Element;
 }
 
 export default function Layout(props: Props) {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cart = useAppSelector(selectCart);
   const numProduct: number = cart.itemsList.length;
@@ -39,12 +42,13 @@ export default function Layout(props: Props) {
   const clickEnterToSearch = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       console.log(inputSearch);
+      getAllCategory();
     }
   };
 
   const signOut = () => {
+    dispatch(LogOutUser());
     handleMenuClose();
-    console.log("sign out");
   };
 
   const returnHome = () => {

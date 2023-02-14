@@ -13,22 +13,26 @@ import Avatar from "@mui/material/Avatar";
 import Register from "./Register";
 import ForgetPW from "./ForgetPW";
 import { FormControlLabel } from "@mui/material";
+import { loginAPI } from "../../api/auth";
+import { useAppDispatch } from "../../app/hooks";
+import { LogInUser } from "./AuthSlice";
 interface openLogIn {
   openLogin: boolean;
   setOpenLogin: (open: boolean) => void;
 }
 
 export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
-  const [email, setEmail] = React.useState("");
+  const dispatch = useAppDispatch();
+  const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [remember, setRemember] = React.useState(false);
 
   const [openRegister, setOpenRegister] = React.useState(false);
   const [openForgetPW, setOpenForgetPW] = React.useState(false);
 
-  const validateEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate email
-    setEmail(event.target.value);
+  const validateUsername = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    // validate username
+    setUsername(event.target.value);
   };
 
   const validatePassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -42,7 +46,21 @@ export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
   };
 
   const handleSubmit = async () => {
-    console.log(email, password, remember);
+    const credentials = { username, password };
+    loginAPI(credentials)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          const user = { token: response.data.token };
+          dispatch(LogInUser(user));
+          setOpenLogin(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -70,13 +88,13 @@ export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
                 autoFocus
-                value={email}
-                onChange={(event) => validateEmail(event)}
+                value={username}
+                onChange={(event) => validateUsername(event)}
               />
               <TextField
                 margin="normal"

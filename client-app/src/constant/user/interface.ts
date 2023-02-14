@@ -13,7 +13,7 @@ export interface IUser {
 }
 
 export interface IAuthState {
-  accessToken: string;
+  token: string | null;
   authority: ROLE;
   user: IUser;
 }

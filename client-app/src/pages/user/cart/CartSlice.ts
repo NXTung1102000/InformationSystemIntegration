@@ -18,7 +18,6 @@ export const cartSlice = createSlice({
     },
 
     addToCart: (state, action) => {
-      console.log(action.payload);
       if (state.itemsList.find((card) => card.id === action.payload.id)) {
         state.itemsList = state.itemsList.map((item) => {
           if (item.id === action.payload.id) {
