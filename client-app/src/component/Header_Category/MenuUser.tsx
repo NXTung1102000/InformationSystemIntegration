@@ -16,10 +16,6 @@ interface IProps {
 
 export function MenuUser(props: IProps) {
   const auth = useAppSelector(selectAuth);
-  const isLogIn = () => {
-    if (auth.token) return true;
-    return false;
-  };
   return (
     <Menu
       anchorEl={props.anchorEl}
@@ -35,9 +31,9 @@ export function MenuUser(props: IProps) {
       open={Boolean(props.anchorEl)}
       onClose={props.handleMenuClose}
     >
-      {isLogIn() && <MenuItem onClick={props.openProfile}>Profile</MenuItem>}
-      {isLogIn() && <MenuItem onClick={props.signOut}>Log out</MenuItem>}
-      {!isLogIn() && (
+      {auth.token && <MenuItem onClick={props.openProfile}>Profile</MenuItem>}
+      {auth.token && <MenuItem onClick={props.signOut}>Log out</MenuItem>}
+      {!auth.token && (
         <MenuItem
           onClick={() => {
             props.setOpenLogin(true);
@@ -63,10 +59,6 @@ interface IPropsMobile {
 
 export function MenuUserMobile(props: IPropsMobile) {
   const auth = useAppSelector(selectAuth);
-  const isLogIn = () => {
-    if (auth.token) return true;
-    return false;
-  };
   return (
     <Menu
       anchorEl={props.mobileMoreAnchorEl}
@@ -90,7 +82,7 @@ export function MenuUserMobile(props: IPropsMobile) {
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      {isLogIn() && (
+      {auth.token && (
         <MenuItem onClick={props.openProfile}>
           <IconButton size="large" color="inherit">
             <AccountCircle />
@@ -98,7 +90,7 @@ export function MenuUserMobile(props: IPropsMobile) {
           <p>Profile</p>
         </MenuItem>
       )}
-      {isLogIn() && (
+      {auth.token && (
         <MenuItem onClick={props.signOut}>
           <IconButton size="large" color="inherit">
             <LogoutIcon />
@@ -106,7 +98,7 @@ export function MenuUserMobile(props: IPropsMobile) {
           <p>Log out</p>
         </MenuItem>
       )}
-      {!isLogIn() && (
+      {!auth.token && (
         <MenuItem
           onClick={() => {
             props.setOpenLogin(true);

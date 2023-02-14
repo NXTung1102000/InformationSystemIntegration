@@ -15,7 +15,7 @@ axiosAPI.interceptors.request.use(
   (config) => {
     const accessToken = getAccessToken();
     console.log(accessToken);
-    if (accessToken !== "null") {
+    if (accessToken && accessToken !== "null") {
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${accessToken}`,
