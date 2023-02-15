@@ -5,11 +5,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAppSelector } from "../../app/hooks";
 import { selectAuth } from "../../pages/LogIn_Register/AuthSlice";
 import LoginIcon from "@mui/icons-material/Login";
+import HistoryIcon from "@mui/icons-material/History";
 
 interface IProps {
   anchorEl: null | HTMLElement;
   handleMenuClose: () => void;
   openProfile: () => void;
+  openHistory: () => void;
   signOut: () => void;
   setOpenLogin: (open: boolean) => void;
 }
@@ -32,6 +34,7 @@ export function MenuUser(props: IProps) {
       onClose={props.handleMenuClose}
     >
       {auth.token && <MenuItem onClick={props.openProfile}>Profile</MenuItem>}
+      {auth.token && <MenuItem onClick={props.openHistory}>History</MenuItem>}
       {auth.token && <MenuItem onClick={props.signOut}>Log out</MenuItem>}
       {!auth.token && (
         <MenuItem
@@ -52,6 +55,7 @@ interface IPropsMobile {
   mobileMoreAnchorEl: null | HTMLElement;
   openProfile: () => void;
   signOut: () => void;
+  openHistory: () => void;
   setOpenLogin: (open: boolean) => void;
   handleMobileMenuClose: () => void;
   openCart: () => void;
@@ -88,6 +92,14 @@ export function MenuUserMobile(props: IPropsMobile) {
             <AccountCircle />
           </IconButton>
           <p>Profile</p>
+        </MenuItem>
+      )}
+      {auth.token && (
+        <MenuItem onClick={props.openHistory}>
+          <IconButton size="large" color="inherit">
+            <HistoryIcon />
+          </IconButton>
+          <p>History</p>
         </MenuItem>
       )}
       {auth.token && (

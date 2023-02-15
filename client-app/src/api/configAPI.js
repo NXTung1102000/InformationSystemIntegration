@@ -14,14 +14,12 @@ const axiosAPI = axios.create({
 axiosAPI.interceptors.request.use(
   (config) => {
     const accessToken = getAccessToken();
-    console.log(accessToken);
     if (accessToken && accessToken !== "null") {
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${accessToken}`,
       };
     }
-    console.log(config);
     return config;
   },
   function (error) {

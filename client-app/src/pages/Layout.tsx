@@ -17,7 +17,7 @@ import LogIn from "./LogIn_Register/Login";
 import LeftBavCategory from "../component/Header_Category/LeftBavCategory";
 import { MenuUser, MenuUserMobile } from "../component/Header_Category/MenuUser";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectCart } from "./user/cart/CartSlice";
+import { clearCart, selectCart } from "./user/cart/CartSlice";
 import Footer from "../component/Footer_category/Footer";
 import { LogOutUser } from "./LogIn_Register/AuthSlice";
 import { getAllCategory } from "../api/category";
@@ -51,7 +51,9 @@ export default function Layout(props: Props) {
   };
 
   const signOut = () => {
+    navigate(UserRoute.HOME);
     dispatch(LogOutUser());
+    dispatch(clearCart());
     handleMenuClose();
   };
 
@@ -68,6 +70,11 @@ export default function Layout(props: Props) {
   const openProfile = () => {
     handleMenuClose();
     navigate(UserRoute.USER_PROFILE);
+  };
+
+  const openHistory = () => {
+    handleMenuClose();
+    navigate(UserRoute.USER_HISTORY);
   };
 
   const queryCategory = (params: any) => {
@@ -172,6 +179,7 @@ export default function Layout(props: Props) {
           anchorEl={anchorEl}
           signOut={signOut}
           openProfile={openProfile}
+          openHistory={openHistory}
           setOpenLogin={setOpenLogin}
           handleMenuClose={handleMenuClose}
         />
@@ -180,6 +188,7 @@ export default function Layout(props: Props) {
           mobileMoreAnchorEl={mobileMoreAnchorEl}
           signOut={signOut}
           openProfile={openProfile}
+          openHistory={openHistory}
           setOpenLogin={setOpenLogin}
           handleMobileMenuClose={handleMobileMenuClose}
           openCart={openCart}
