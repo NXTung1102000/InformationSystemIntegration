@@ -43,6 +43,12 @@ def product_handle():
 
 @mod.route('/search', methods=['GET'])
 def search():
-    param = request.form
+    param = request.args
     result = product_controller.search_product(param)
     return {'data': result}, 200
+
+
+@mod.route('/count-by-category', methods=['GET'])
+def count_by_category():
+    result = product_controller.static_category()
+    return {'data': dict(result)}, 200

@@ -40,3 +40,8 @@ def search_product(kwargs):
     list_product = search(kwargs)
     list_product = list(map(lambda x: x.to_full_json(), list_product))
     return list_product if list_product else []
+
+
+def static_category():
+    list_count = count_product_by_category()
+    return list_count
