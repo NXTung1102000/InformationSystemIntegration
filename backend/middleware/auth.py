@@ -8,7 +8,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if 'Authorization' not in request.headers:
             abort(401)
-        token = request.headers['Authorization']
+        token = request.headers['Authorization'].split(' ')[-1]
 
         user = find_by_token(token=token)
         if not user:

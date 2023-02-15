@@ -1,4 +1,5 @@
 from models.product import Product, db
+from sqlalchemy import func
 
 
 def find_all():
@@ -44,6 +45,14 @@ def delete_by_id(id):
 
 def sort_by_name():
     return
+
+
+def find_all_category():
+    return Product.query.with_entities(Product.category).distinct().all
+
+
+def count_product_by_category():
+    return db.session.query(Product.category, func.count(Product.category)).group_by(Product.category).all()
 
 
 def search(kwargs):
