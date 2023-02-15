@@ -7,7 +7,7 @@ export interface ICartItem {
   price: number;
   quantity: number;
   star: number;
-  img: string;
+  image: string;
   description: string;
 }
 export interface ICartState {

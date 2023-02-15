@@ -1,6 +1,6 @@
 export enum USER {
   DELIVERING = "delivering",
-  SUCCESS = "success",
+  DELIVERED = "delivered",
   REJECTED = "rejected",
   RETURNED = "returned",
 }

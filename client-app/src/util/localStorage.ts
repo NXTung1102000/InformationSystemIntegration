@@ -9,7 +9,7 @@ const getAccessToken = () => {
 const getRefreshToken = () => {
   const auth = JSON.parse(localStorage.getItem("persist:auth") || "{}");
   if (auth.token && auth.token !== "null") {
-    return auth.token;
+    return auth.token.replace(`"`, "");
   }
   return null;
 };

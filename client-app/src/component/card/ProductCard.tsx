@@ -21,7 +21,7 @@ export default function ProductCard(props: ICartItem) {
   return (
     <Card sx={{ margin: "0 1rem 1rem 0" }}>
       <CardActionArea onClick={goToDetailProduct}>
-        <CardMedia sx={{ maxWidth: "100%" }} component="img" image={props.img} alt={props.name} />
+        <CardMedia sx={{ maxWidth: "100%", height: 250 }} component="img" image={props.image} alt={props.name} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props.name}
@@ -30,7 +30,15 @@ export default function ProductCard(props: ICartItem) {
           <Typography variant="body1" sx={{ color: "#ee4d2d", margin: "0.5rem 0" }}>
             {props.price} vnd
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              height: "3rem",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
             {props.description}
           </Typography>
         </CardContent>

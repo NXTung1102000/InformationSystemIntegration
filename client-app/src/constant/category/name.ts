@@ -1,7 +1,7 @@
 export enum NameCategory {
   ALL = "All",
   LAPTOP = "Laptop",
-  MOBILE = "Mobile",
+  SMARTPHONE = "Smartphone",
   MOUSE = "Mouse",
   KEYBOARD = "Keyboard",
   HEADPHONE = "HeadPhone",
@@ -10,7 +10,7 @@ export enum NameCategory {
 export enum ParamCategory {
   ALL = "",
   LAPTOP = "laptop",
-  MOBILE = "mobile",
+  SMARTPHONE = "smartphone",
   MOUSE = "mouse",
   KEYBOARD = "keyboard",
   HEADPHONE = "headPhone",

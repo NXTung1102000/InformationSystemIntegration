@@ -23,7 +23,7 @@ export default function Category(props: ICategory) {
               price={card.price}
               description={card.description}
               star={card.star}
-              img={card.img}
+              image={card.image}
               category={props.name}
               quantity={card.quantity}
             />

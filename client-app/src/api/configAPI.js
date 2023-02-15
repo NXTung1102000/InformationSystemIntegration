@@ -17,7 +17,7 @@ axiosAPI.interceptors.request.use(
     if (accessToken && accessToken !== "null") {
       config.headers = {
         ...config.headers,
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken.replace(`"`, '').replace(`"`, '')}`,
       };
     }
     return config;

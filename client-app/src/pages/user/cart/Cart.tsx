@@ -20,7 +20,7 @@ export default function Cart() {
                     id={card.id}
                     category={card.category}
                     description={card.description}
-                    img={card.img}
+                    image={card.image}
                     name={card.name}
                     price={card.price}
                     quantity={card.quantity}
