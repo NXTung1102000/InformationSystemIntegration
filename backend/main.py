@@ -1,12 +1,12 @@
 from flask import request, jsonify
 from config import *
 from init_app import app
-from middleware.auth import login_required
-from blueprints import product, system
+from blueprints import product, system, order
 
 
 app.register_blueprint(product.mod)
 app.register_blueprint(system.mod)
+app.register_blueprint(order.mod)
 
 
 if __name__ == '__main__':

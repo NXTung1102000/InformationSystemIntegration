@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import SQLALCHEMY_DATABASE_URI, SECRET_KEY
@@ -12,6 +13,8 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'pool_size': 100
 }
 app.secret_key = SECRET_KEY
+
+# CORS(app, resources={r"/*": {"origins": "*", "send_wildcard": "False"}})
 
 db = SQLAlchemy(app=app, session_options={'autocommit': False, 'autoflush': False})
 
