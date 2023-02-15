@@ -12,6 +12,8 @@ def register_user(user_data):
         return {'status': 1, 'error': 'exist username'}, 400
     password = encode(password)
     user_data['password'] = password
+    if user_data.get('role') is None:
+        user_data['role'] = 2
     insert(user_data)
     
     return {'status': 0}
