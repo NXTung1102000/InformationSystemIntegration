@@ -12,11 +12,6 @@ def get(id=None):
         return list_product
 
 
-# def add(data):
-#     user_id = g.user.id
-#     return
-
-
 def add(data):
     try:
         insert(data)
