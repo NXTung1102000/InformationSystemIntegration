@@ -14,6 +14,6 @@ export interface IUser {
 
 export interface IAuthState {
   token: string | null;
-  authority: ROLE;
+  role: ROLE;
   user: IUser;
 }

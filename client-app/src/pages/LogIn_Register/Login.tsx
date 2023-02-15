@@ -55,7 +55,7 @@ export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
       })
       .then((response) => {
         if (response.status === 0) {
-          const user = { token: response.data.token };
+          const user = response.data;
           dispatch(LogInUser(user));
           setOpenLogin(false);
         }

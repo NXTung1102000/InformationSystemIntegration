@@ -14,7 +14,7 @@ export default function CartItem(props: ICartItem) {
   const dispatch = useAppDispatch();
   return (
     <Card sx={{ display: "flex", margin: "1rem 0 0 0" }}>
-      <CardMedia sx={{ flexGrow: 1, maxWidth: "40%", height: "auto" }} component="img" image={props.img} />
+      <CardMedia sx={{ flexGrow: 1, maxWidth: "40%", height: "200px" }} component="img" image={props.image} />
       <CardContent sx={{ flexGrow: 1 }}>
         <Grid container>
           <Grid item xs={6} sm={6} md={6} lg={6}>

@@ -4,6 +4,7 @@ export enum UserRoute {
   USER_CART = "/cart",
   USER_ORDER = "/order/:id",
   USER_PRODUCT = "/product/:id",
+  USER_HISTORY = "/history",
 }
 
 export enum SellerRoute {

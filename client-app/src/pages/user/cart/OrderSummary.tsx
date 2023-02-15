@@ -7,7 +7,7 @@ import { ICartItem } from "../../../constant/cart/cart";
 import { calculateShipping, calculateVoucher } from "../../../constant/policy/policy";
 import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
 import { selectAuth } from "../../LogIn_Register/AuthSlice";
-
+import { submitOrder, IInputCart } from "../../../api/order";
 const distance = 1;
 
 export default function OrderSummary() {
@@ -25,7 +25,7 @@ export default function OrderSummary() {
   const voucher = calculateVoucher(subTotal);
   const total = subTotal + shippingFee - voucher;
 
-  const submitOrder = () => {
+  const submit = () => {
     if (!auth.token) {
       dispatch(
         changeNotice({
@@ -36,15 +36,50 @@ export default function OrderSummary() {
       );
     } else {
       //call API
-
-      dispatch(
-        changeNotice({
-          message: "successfully, your order ...",
-          open: true,
-          type: "success",
+      const inputCart: IInputCart = {
+        data: [],
+      };
+      nowCart.itemsList.forEach((item) => {
+        const product = {
+          product_id: item.id,
+          quantity: item.quantity,
+        };
+        inputCart.data.push(product);
+      });
+      submitOrder(inputCart)
+        .then((response) => {
+          return response.data;
         })
-      );
-      dispatch(clearCart());
+        .then((response) => {
+          if (response.status === 0) {
+            dispatch(
+              changeNotice({
+                message: "successfully, your order ...",
+                open: true,
+                type: "success",
+              })
+            );
+            dispatch(clearCart());
+          } else {
+            dispatch(
+              changeNotice({
+                message: response.message,
+                open: true,
+                type: "error",
+              })
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          dispatch(
+            changeNotice({
+              message: "error server ... ",
+              open: true,
+              type: "error",
+            })
+          );
+        });
     }
   };
 
@@ -94,7 +129,7 @@ export default function OrderSummary() {
       </CardContent>
 
       <CardActions>
-        <Button size="large" color="secondary" onClick={submitOrder}>
+        <Button size="large" color="secondary" onClick={submit}>
           BUY NOW ({numTotal})
         </Button>
       </CardActions>

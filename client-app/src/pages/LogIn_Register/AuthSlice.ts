@@ -6,7 +6,7 @@ import { ROLE } from "../../constant/user/role";
 
 const initialState: IAuthState = {
   token: null,
-  authority: ROLE.ROLE_UNKNOWN,
+  role: ROLE.ROLE_UNKNOWN,
   user: {
     id: 0,
     username: "",
@@ -31,7 +31,10 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     LogInUser: (state, action) => {
+      state.role = action.payload.role;
       state.token = action.payload.token;
+      state.user.address = action.payload.address;
+      state.user.email = action.payload.email;
     },
     LogOutUser: () => {
       return initialState;
