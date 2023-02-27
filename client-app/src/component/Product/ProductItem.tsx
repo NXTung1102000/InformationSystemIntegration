@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css'
+// import './App.css'
 
 import ProductName from './product_item/ProductName';
 import ProductRating from './product_item/ProductRating';
