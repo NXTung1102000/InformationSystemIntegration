@@ -1,8 +1,12 @@
+import Category from "../../pages/seller/Category";
+import DashBoard from "../../pages/seller/dashBoard";
+import Order from "../../pages/seller/Order/Order";
+import Product from "../../pages/seller/Product";
 import Cart from "../../pages/user/cart/Cart";
 import HistoryOrder from "../../pages/user/HistoryOrder/HistoryOrder";
 import Home from "../../pages/user/Home_Search/Home";
 import Profile from "../../pages/user/Profile/Profile";
-import { UserRoute } from "./name";
+import { UserRoute, SellerRoute } from "./name";
 
 export interface Router_Component {
   router: string;
@@ -18,5 +22,8 @@ export const PublicRouter: Router_Component[] = [
 ];
 
 export const PrivateRouter: Router_Component[] = [
-  //define router
+  { router: SellerRoute.SELLER_DASHBOARD, component: <DashBoard /> },
+  { router: SellerRoute.SELLER_ORDER, component: <Order /> },
+  { router: SellerRoute.SELLER_CATEGORY, component: <Category /> },
+  { router: SellerRoute.SELLER_PRODUCT, component: <Product /> },
 ];

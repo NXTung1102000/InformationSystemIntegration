@@ -1,4 +1,4 @@
-import { NameCategory } from "../category/name";
+import { NameCategory } from "../tabRedirect/name";
 
 export interface ICartItem {
   id: string | number;

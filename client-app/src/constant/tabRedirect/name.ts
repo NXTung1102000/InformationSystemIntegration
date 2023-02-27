@@ -15,3 +15,10 @@ export enum ParamCategory {
   KEYBOARD = "keyboard",
   HEADPHONE = "headPhone",
 }
+
+export enum TabSeller {
+  DASHBOARD = "DashBoard",
+  ORDER = "Order",
+  CATEGORY = "Category",
+  PRODUCT = "Product",
+}

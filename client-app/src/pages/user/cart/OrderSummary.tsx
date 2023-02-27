@@ -43,7 +43,7 @@ export default function OrderSummary() {
       nowCart.itemsList.forEach((item) => {
         const product = {
           product_id: item.id,
-          quantityInCart: item.quantityInCart,
+          quantity: item.quantityInCart,
         };
         inputCart.data.push(product);
       });

@@ -4,7 +4,7 @@ import { searchProduct } from "../../../api/product";
 import { useAppDispatch } from "../../../app/hooks";
 import Category from "../../../component/category/Category";
 import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
-import { NameCategory } from "../../../constant/category/name";
+import { NameCategory } from "../../../constant/tabRedirect/name";
 
 const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
   list.reduce((previous, currentItem) => {

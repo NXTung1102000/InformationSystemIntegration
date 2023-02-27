@@ -2,7 +2,7 @@ import { axiosAPI as api } from "./configAPI";
 
 export interface IInputProduct {
   product_id: number | string;
-  quantityInCart: number;
+  quantity: number;
 }
 export interface IInputCart {
   data: IInputProduct[];
