@@ -17,10 +17,10 @@ export default function OrderSummary() {
   const auth = useAppSelector(selectAuth);
 
   const subTotal = nowCart.itemsList.reduce((total: number, item: ICartItem) => {
-    return total + item.price * item.quantity;
+    return total + item.price * item.quantityInCart;
   }, 0);
   const numTotal = nowCart.itemsList.reduce((total: number, item: ICartItem) => {
-    return total + item.quantity;
+    return total + item.quantityInCart;
   }, 0);
   const shippingFee = calculateShipping(distance);
   const voucher = calculateVoucher(subTotal);
@@ -43,7 +43,7 @@ export default function OrderSummary() {
       nowCart.itemsList.forEach((item) => {
         const product = {
           product_id: item.id,
-          quantity: item.quantity,
+          quantityInCart: item.quantityInCart,
         };
         inputCart.data.push(product);
       });

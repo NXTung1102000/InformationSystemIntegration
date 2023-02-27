@@ -33,14 +33,14 @@ export default function CartItem(props: ICartItem) {
 
         <Grid container>
           <Grid item xs={6} sm={6} md={6} lg={6}>
-            <Typography>Quantity</Typography>
+            <Typography>Quantity In Cart</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Box display="flex" alignItems="center">
               <IconButton onClick={() => dispatch(decreaseCount(props.id))}>
                 <RemoveIcon />
               </IconButton>
-              <Typography>{props.quantity}</Typography>
+              <Typography>{props.quantityInCart}</Typography>
               <IconButton onClick={() => dispatch(increaseCount(props.id))}>
                 <AddIcon />
               </IconButton>

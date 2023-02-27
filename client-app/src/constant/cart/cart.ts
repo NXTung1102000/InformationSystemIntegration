@@ -6,6 +6,7 @@ export interface ICartItem {
   category: NameCategory;
   price: number;
   quantity: number;
+  quantityInCart: number;
   star: number;
   image: string;
   description: string;

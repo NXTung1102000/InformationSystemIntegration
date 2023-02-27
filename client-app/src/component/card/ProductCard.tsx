@@ -15,7 +15,7 @@ export default function ProductCard(props: ICartItem) {
   };
 
   const addToYourCart = (item: ICartItem) => {
-    const card = { ...item, quantity: 1 };
+    const card = { ...item, quantityInCart: 1 };
     dispatch(addToCart(card));
   };
   return (
@@ -26,7 +26,10 @@ export default function ProductCard(props: ICartItem) {
           <Typography gutterBottom variant="h5" component="div">
             {props.name}
           </Typography>
-          <Rating value={props.star} readOnly size="small" precision={0.5} />
+          <Typography sx={{ display: "flex", alignItems: "center" }} component="div">
+            <Rating value={props.star} readOnly size="small" precision={0.5} />
+            {`   Quantity:   ${props.quantity}`}
+          </Typography>
           <Typography variant="body1" sx={{ color: "#ee4d2d", margin: "0.5rem 0" }}>
             {props.price} vnd
           </Typography>

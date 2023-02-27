@@ -26,6 +26,7 @@ export default function Category(props: ICategory) {
               image={card.image}
               category={props.name}
               quantity={card.quantity}
+              quantityInCart={card.quantityInCart}
             />
           </Grid>
         ))}
