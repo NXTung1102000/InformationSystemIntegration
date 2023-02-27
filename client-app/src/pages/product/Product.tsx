@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import Item from '../../component/Product/Item'
-import {HeaderApp} from '../../component/Header_Category/HeaderApp'
+import ProductItem from '../../component/Product/ProductItem';
+import ProductDetails from '../../component/Product/ProductDetails';
 
 export function Product() {
     return (
         <div>
-            <HeaderApp/>
             <h1>This is Product page</h1>
-            <Item/>
+            <ProductItem/>
+            <ProductDetails/>
         </div>
     )
 }
