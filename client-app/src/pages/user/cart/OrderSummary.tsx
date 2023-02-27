@@ -8,6 +8,7 @@ import { calculateShipping, calculateVoucher } from "../../../constant/policy/po
 import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
 import { selectAuth } from "../../LogIn_Register/AuthSlice";
 import { submitOrder, IInputCart } from "../../../api/order";
+import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
 const distance = 1;
 
 export default function OrderSummary() {
@@ -35,7 +36,7 @@ export default function OrderSummary() {
         })
       );
     } else {
-      //call API
+      dispatch(changeLoading(true));
       const inputCart: IInputCart = {
         data: [],
       };
@@ -59,8 +60,10 @@ export default function OrderSummary() {
                 type: "success",
               })
             );
+            dispatch(changeLoading(false));
             dispatch(clearCart());
           } else {
+            dispatch(changeLoading(false));
             dispatch(
               changeNotice({
                 message: response.message,
@@ -72,6 +75,7 @@ export default function OrderSummary() {
         })
         .catch((error) => {
           console.log(error);
+          dispatch(changeLoading(false));
           dispatch(
             changeNotice({
               message: "error server ... ",

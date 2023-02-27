@@ -1,7 +1,7 @@
 const getAccessToken = () => {
   const auth = JSON.parse(localStorage.getItem("persist:auth") || "{}");
   if (auth.token && auth.token !== "null") {
-    return auth.token;
+    return JSON.parse(auth.token);
   }
   return null;
 };
