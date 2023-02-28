@@ -1,12 +1,12 @@
-export default interface ProductModel {
-  image: string;
-  name: string;
+export type ProductModel = {
+  image: string,
+  name: string,
   rating: number;
   description: string;
   detail: string;
-  specification: string;
+  specification: object;
 
   price: number;
 
-  count: number
+  quantity: number
 }

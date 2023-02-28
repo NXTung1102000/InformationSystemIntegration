@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ProductModel from "../../../model/ProductModel";
+import {ProductModel} from "../../model/ProductModel";
 import { resolveSrv } from "dns";
 
 export function ProductImage({productImage}: {productImage: string}) {

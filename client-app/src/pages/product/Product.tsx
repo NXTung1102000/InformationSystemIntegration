@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import '../../App.css'
 
-import ProductModel from '../../model/ProductModel'
+import {ProductModel} from '../../model/ProductModel'
 import ProductInfos from '../../component/Product/ProductInfos';
-import ProductDetailsAndReviews from '../../component/Product/ProductDetailsAndReviews';
-import { ProductImage } from "../../component/Product/product_item/ProductImage";
-import ProductBuying from "../../component/Product/product_item/ProductBuying";
+import ProductSpecsAndReviews from '../../component/Product/ProductSpecsAndReviews';
+import { ProductImage } from "../../component/Product/ProductImage";
+import ProductBuying from "../../component/Product/product_infos/ProductBuying";
 
 
 export function Product() {
@@ -25,9 +25,16 @@ export function Product() {
     detail: `
       MacBook AirPower. It's in the Air.Our thinnest, lightest notebook, completely transformed by the Apple M1 chip. CPU speeds up to 3.5x faster. GPU speeds up to 5x faster. Our most advanced Neural Engine for up to 9x faster machine learning. The longest battery life ever in a MacBook Air. And a silent, fanless design ...
     `,
-    specification: "Product specification",
+    specification: {
+      "Display size": "13'3 inches",
+      "Processor": " 3.2 GHz others",
+      "RAM": "16 GB",
+      "Hard Drive": "512 GB SSD",
+      "Graphics Coprocessor": "M1",
+      "Graphics Card Ram": "6 GB",
+    },
     price: 1399,
-    count: 10
+    quantity: 10
   }
 
   return (
@@ -37,7 +44,7 @@ export function Product() {
         <ProductInfos product={product}/>
       </div>
       <ProductBuying product={product}/>
-      <ProductDetailsAndReviews/>
+      <ProductSpecsAndReviews product={product}/>
     </div>
   )
 }

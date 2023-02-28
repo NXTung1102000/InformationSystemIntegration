@@ -4,6 +4,9 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
+import { ProductModel } from "../../model/ProductModel";
+import ProductSpecs from "./product_specs/ProductSpecs";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -39,7 +42,7 @@ function a11yProps(index: number) {
 }
 
 
-export default function ProductDetailsAndReviews() {
+export default function ProductSpecsAndReviews({product}:{product: ProductModel}) {
 
   const [value, setValue] = React.useState(0);
 
@@ -56,7 +59,7 @@ export default function ProductDetailsAndReviews() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Product details
+        <ProductSpecs productSpecs={product.specification}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Product reviews

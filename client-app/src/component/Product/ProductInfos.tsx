@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 // import './App.css'
-import ProductModel from '../../model/ProductModel'
+import {ProductModel} from '../../model/ProductModel'
 
-import ProductName from './product_item/ProductName';
-import ProductRating from './product_item/ProductRating';
-import ProductDescription from './product_item/ProductDescription';
+import ProductName from './product_infos/ProductName';
+import ProductRating from './product_infos/ProductRating';
+import ProductDescription from './product_infos/ProductDescription';
 
 export default function ProductInfos({product}: {product: ProductModel}) {
     return (
