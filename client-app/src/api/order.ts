@@ -11,7 +11,7 @@ export interface IInputCart {
 const getOrderOfCurrentUser = async () => {
   const result = await api({
     method: "GET",
-    url: "/order",
+    url: "/order/",
   });
   return result;
 };
@@ -19,7 +19,7 @@ const getOrderOfCurrentUser = async () => {
 const submitOrder = async (inputCart: IInputCart) => {
   const result = await api({
     method: "POST",
-    url: "/order",
+    url: "/order/",
     data: inputCart,
   });
   return result;

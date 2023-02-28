@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { searchProduct } from "../../../api/product";
+import { useAppDispatch } from "../../../app/hooks";
 import Category from "../../../component/category/Category";
-import { NameCategory } from "../../../constant/category/name";
+import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
+import { NameCategory } from "../../../constant/tabRedirect/name";
 
 const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
   list.reduce((previous, currentItem) => {
@@ -18,12 +20,12 @@ const listKeys = (row: object) => {
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
-  // const data = dataCategory;
+  const dispatch = useAppDispatch();
   const [data, setData] = useState({});
-  // console.log("params", searchParams.get("category"));
   useEffect(() => {
     const category = searchParams.get("category");
     const keyword = searchParams.get("keyword");
+    dispatch(changeLoading(true));
     searchProduct({ category, keyword })
       .then((response) => {
         return response.data;
@@ -32,11 +34,13 @@ export default function Home() {
         const tmp = groupBy(data.data, (product: any) => product.category);
         window.scrollTo(0, 0);
         setData(tmp);
+        dispatch(changeLoading(false));
       })
       .catch((error) => {
         console.log(error);
+        dispatch(changeLoading(false));
       });
-  }, [searchParams]);
+  }, [searchParams, dispatch]);
   return (
     <div>
       {listKeys(data)?.map((category) => (

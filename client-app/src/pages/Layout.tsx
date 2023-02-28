@@ -88,6 +88,10 @@ export default function Layout(props: Props) {
     }
   };
 
+  const navigateSeller = (route?: string) => {
+    if (route) navigate(route);
+  };
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -193,7 +197,7 @@ export default function Layout(props: Props) {
           handleMobileMenuClose={handleMobileMenuClose}
           openCart={openCart}
         />
-        <LeftBavCategory open={open} setOpen={setOpen} queryCategory={queryCategory} />
+        <LeftBavCategory open={open} setOpen={setOpen} queryCategory={queryCategory} navigateSeller={navigateSeller} />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <ResponsiveMenuCategory />
 

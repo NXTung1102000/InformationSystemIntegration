@@ -16,7 +16,6 @@ import { FormControlLabel } from "@mui/material";
 import { loginAPI } from "../../api/auth";
 import { useAppDispatch } from "../../app/hooks";
 import { LogInUser } from "./AuthSlice";
-import { changeLoading } from "../../component/LoadingAndNotice/loadingSlice";
 interface openLogIn {
   openLogin: boolean;
   setOpenLogin: (open: boolean) => void;
@@ -47,7 +46,6 @@ export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
   };
 
   const handleSubmit = async () => {
-    // dispatch(changeLoading(true));
     const credentials = { username, password };
     loginAPI(credentials)
       .then((req) => {
@@ -63,7 +61,6 @@ export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
       .catch((err) => {
         console.log(err);
       });
-    // dispatch(changeLoading(true));
   };
 
   return (

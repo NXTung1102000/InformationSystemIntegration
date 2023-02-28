@@ -47,7 +47,7 @@ def add(data):
 
         cart_id = cart_repo.insert(detail)
         current_dateTime = datetime.now()
-        status = 'derivering'
+        status = 'delivering'
         order_data = {'user_id': user_id, 'cart_id': cart_id, 'status': status}
         order = order_repo.insert(order_data)
 

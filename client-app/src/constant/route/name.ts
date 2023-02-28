@@ -9,8 +9,8 @@ export enum UserRoute {
 
 export enum SellerRoute {
   SELLER_DASHBOARD = "/dashboard",
-  SELLER_PRODUCT = "seller/product",
-  SELLER_CATEGORY = "seller/category",
+  SELLER_PRODUCT = "/seller/product",
+  SELLER_CATEGORY = "/seller/category",
   SELLER_ORDER = "/seller/order",
 }
 

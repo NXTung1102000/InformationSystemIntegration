@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import { ICartItem } from "../../constant/cart/cart";
-import { NameCategory } from "../../constant/category/name";
+import { NameCategory } from "../../constant/tabRedirect/name";
 import ProductCard from "../card/ProductCard";
 
 export interface ICategory {
@@ -26,6 +26,7 @@ export default function Category(props: ICategory) {
               image={card.image}
               category={props.name}
               quantity={card.quantity}
+              quantityInCart={card.quantityInCart}
             />
           </Grid>
         ))}

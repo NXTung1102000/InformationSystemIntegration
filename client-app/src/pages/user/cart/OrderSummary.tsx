@@ -8,6 +8,7 @@ import { calculateShipping, calculateVoucher } from "../../../constant/policy/po
 import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
 import { selectAuth } from "../../LogIn_Register/AuthSlice";
 import { submitOrder, IInputCart } from "../../../api/order";
+import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
 const distance = 1;
 
 export default function OrderSummary() {
@@ -16,10 +17,10 @@ export default function OrderSummary() {
   const auth = useAppSelector(selectAuth);
 
   const subTotal = nowCart.itemsList.reduce((total: number, item: ICartItem) => {
-    return total + item.price * item.quantity;
+    return total + item.price * item.quantityInCart;
   }, 0);
   const numTotal = nowCart.itemsList.reduce((total: number, item: ICartItem) => {
-    return total + item.quantity;
+    return total + item.quantityInCart;
   }, 0);
   const shippingFee = calculateShipping(distance);
   const voucher = calculateVoucher(subTotal);
@@ -35,14 +36,14 @@ export default function OrderSummary() {
         })
       );
     } else {
-      //call API
+      dispatch(changeLoading(true));
       const inputCart: IInputCart = {
         data: [],
       };
       nowCart.itemsList.forEach((item) => {
         const product = {
           product_id: item.id,
-          quantity: item.quantity,
+          quantity: item.quantityInCart,
         };
         inputCart.data.push(product);
       });
@@ -59,8 +60,10 @@ export default function OrderSummary() {
                 type: "success",
               })
             );
+            dispatch(changeLoading(false));
             dispatch(clearCart());
           } else {
+            dispatch(changeLoading(false));
             dispatch(
               changeNotice({
                 message: response.message,
@@ -72,6 +75,7 @@ export default function OrderSummary() {
         })
         .catch((error) => {
           console.log(error);
+          dispatch(changeLoading(false));
           dispatch(
             changeNotice({
               message: "error server ... ",

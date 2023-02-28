@@ -24,6 +24,7 @@ export default function Cart() {
                     name={card.name}
                     price={card.price}
                     quantity={card.quantity}
+                    quantityInCart={card.quantityInCart}
                     star={card.star}
                   />
                 ))}

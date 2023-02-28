@@ -32,7 +32,8 @@ export default function TableComponent(props: IPropsTable) {
   };
 
   const listProperties = (row: object) => {
-    return Object.keys(row);
+    if (row) return Object.keys(row);
+    else return [];
   };
 
   return (
