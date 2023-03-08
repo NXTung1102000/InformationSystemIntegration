@@ -5,7 +5,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import { ProductModel } from "../../model/ProductModel";
-import ProductSpecs from "./product_specs/ProductSpecs";
+import Specs from "./product_specs_and_reviews/Specs";
+import { Review } from "./product_specs_and_reviews/Review";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,7 +43,7 @@ function a11yProps(index: number) {
 }
 
 
-export default function ProductSpecsAndReviews({product}:{product: ProductModel}) {
+export default function ProductSpecsAndReviews({product, productReviews}:{product: ProductModel, productReviews: Array<object>}) {
 
   const [value, setValue] = React.useState(0);
 
@@ -59,10 +60,12 @@ export default function ProductSpecsAndReviews({product}:{product: ProductModel}
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <ProductSpecs productSpecs={product.specification}/>
+        <Specs productSpecs={product.specification}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Product reviews
+        {productReviews.map((review) => (
+          <Review productReview={review}/>
+        ))}
       </TabPanel>
     </Box>
   );

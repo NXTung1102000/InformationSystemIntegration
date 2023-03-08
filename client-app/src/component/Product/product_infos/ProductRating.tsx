@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
 
 let productName: string = 'Macbook Air M1'
 

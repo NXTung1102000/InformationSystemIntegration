@@ -12,7 +12,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function ProductSpecs({productSpecs}: {productSpecs: object}) {
+export default function Specs({productSpecs}: {productSpecs: object}) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>

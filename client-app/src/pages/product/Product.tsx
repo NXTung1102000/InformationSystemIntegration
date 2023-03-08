@@ -37,6 +37,17 @@ export function Product() {
     quantity: 10
   }
 
+  let productReview: object = {
+    'username': 'Nguyen Van A',
+    'star': 4,
+    'content': "This product is mid",
+    'date': "01/01/2023"
+  }
+
+  // l = [a for l in range(0, 10)]
+  let productReviews = Array.from([1, 2, 3, 4], _ => productReview)
+
+
   return (
     <div className="product">
       <div className='product-image-and-infos'>
@@ -44,7 +55,7 @@ export function Product() {
         <ProductInfos product={product}/>
       </div>
       <ProductBuying product={product}/>
-      <ProductSpecsAndReviews product={product}/>
+      <ProductSpecsAndReviews product={product} productReviews={productReviews}/>
     </div>
   )
 }

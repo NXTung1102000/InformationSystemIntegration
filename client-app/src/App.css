@@ -38,3 +38,10 @@
 .button-add-to-cart > Button {
     margin: auto;
 }
+
+/*review*/
+.product-single-review {
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+}
