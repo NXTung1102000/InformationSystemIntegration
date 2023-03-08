@@ -16,14 +16,9 @@ export default function ProductSpecs({productSpecs}: {productSpecs: object}) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {/*{Array.from(Array(6)).map((_, index) => (*/}
-        {/*  <Grid item xs={2} sm={4} md={4} key={index}>*/}
-        {/*    <Item>xs=4</Item>*/}
-        {/*  </Grid>*/}
-        {/*))}*/}
-        {Array.from(Array(6)).map((_, index) => (
-          <Grid item xs={2} sm={4} md={4} key={index}>
-            <Item>xs=4</Item>
+        {Object.keys(productSpecs).map((key, _) => (
+          <Grid item xs={2} sm={4} md={4} key={_}>
+            <Item>{key}: {productSpecs[key as keyof typeof productSpecs]}</Item>
           </Grid>
         ))}
       </Grid>

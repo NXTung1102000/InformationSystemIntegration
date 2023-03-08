@@ -26,7 +26,7 @@ export function Product() {
       MacBook AirPower. It's in the Air.Our thinnest, lightest notebook, completely transformed by the Apple M1 chip. CPU speeds up to 3.5x faster. GPU speeds up to 5x faster. Our most advanced Neural Engine for up to 9x faster machine learning. The longest battery life ever in a MacBook Air. And a silent, fanless design ...
     `,
     specification: {
-      "Display size": "13'3 inches",
+      "Display Size": "13'3 inches",
       "Processor": " 3.2 GHz others",
       "RAM": "16 GB",
       "Hard Drive": "512 GB SSD",
