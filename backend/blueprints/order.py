@@ -16,9 +16,8 @@ def order_handle():
         else:
             list_order = get_by_user(g.user.id)
 
-        return {'data': list_order}
+        return {'data': list_order}, 200
         
-
     elif request.method == 'POST':
         data = request.json
         result = add(data)

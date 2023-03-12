@@ -10,6 +10,7 @@ class Order(db.Model):
     cart_id = db.Column('cart_id', db.Integer, nullable=False)
     created_at = db.Column('created_at', db.DateTime, default=datetime.now())
     status = db.Column('status', db.VARCHAR(20), nullable=False)
+    note = db.Column('note', db.Text)
 
 
     def __init__(self, **kwargs):
@@ -23,6 +24,7 @@ class Order(db.Model):
             'cart_id': self.cart_id,
             'created_at': self.created_at,
             'status': self.status,
+            'note': self.note,
         }
         return json_token
 
@@ -33,6 +35,7 @@ class Order(db.Model):
         cart_id = json_post.get('cart_id')
         created_at = json_post.get('created_at')
         status = json_post.get('status')
+        note = json_post.get('note')
 
 
         order = Order(
@@ -40,5 +43,6 @@ class Order(db.Model):
             cart_id = cart_id,
             # created_at = created_at,
             status = status,
+            note = note,
         )
         return order
