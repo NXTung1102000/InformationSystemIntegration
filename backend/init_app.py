@@ -16,7 +16,8 @@ app.secret_key = SECRET_KEY
 
 CORS(app, resources={r"/*": {"origins": "*", "send_wildcard": "False"}})
 
-db = SQLAlchemy(app=app, session_options={'autocommit': False, 'autoflush': False})
+db = SQLAlchemy(app=app, session_options={
+                'autocommit': False, 'autoflush': False})
 
 migrate = Migrate(app, db)
 with app.app_context():
