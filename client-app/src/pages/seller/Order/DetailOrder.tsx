@@ -4,6 +4,9 @@ import { dateToString } from "../../../util/convertDateTime";
 import { IResponseHistory } from "../../user/HistoryOrder/responseData";
 import React from "react";
 import { USER } from "../../../constant/order/status";
+import { updateOrder } from "../../../api/order";
+import { useAppDispatch } from "../../../app/hooks";
+import { changeNotice, INotice } from "../../../component/LoadingAndNotice/noticeSlice";
 
 const exampleData: IResponseHistory[] = [
   {
@@ -95,28 +98,36 @@ const exampleData: IResponseHistory[] = [
     user_id: 1,
   },
 ];
-
-const handleChangeStatus = (status: USER) => {
-  switch (status) {
-    case USER.DELIVERED:
-      break;
-    case USER.DELIVERING:
-      break;
-    case USER.REJECTED:
-      break;
-    case USER.RETURNED:
-      break;
-    default:
-      break;
-  }
+const handleChangeStatus = (order_id: number, status: USER, dispatchStatus: (payload: INotice) => void) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  console.log(order_id, status);
+  updateOrder(order_id, status as string)
+    .then((req) => {
+      return req.data;
+    })
+    .then((response) => {
+      if (response.status === 0) {
+        dispatchStatus({ message: "update successfully", open: true, type: "success" });
+      } else {
+        dispatchStatus({ message: response.message, open: true, type: "error" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatchStatus({ message: "error server", open: true, type: "error" });
+    });
 };
 
-const renderButton = (pre_status: string) => {
+const renderButton = (order_id: number, pre_status: string, dispatchStatus: (payload: INotice) => void) => {
   switch (pre_status) {
     case USER.DELIVERED:
       return (
         <>
-          <Button variant="contained" color={"warning"} onClick={() => handleChangeStatus(USER.RETURNED)}>
+          <Button
+            variant="contained"
+            color={"warning"}
+            onClick={() => handleChangeStatus(order_id, USER.RETURNED, dispatchStatus)}
+          >
             {USER.RETURNED}
           </Button>
         </>
@@ -124,10 +135,18 @@ const renderButton = (pre_status: string) => {
     case USER.DELIVERING:
       return (
         <>
-          <Button variant="contained" color={"success"} onClick={() => handleChangeStatus(USER.DELIVERED)}>
+          <Button
+            variant="contained"
+            color={"success"}
+            onClick={() => handleChangeStatus(order_id, USER.DELIVERED, dispatchStatus)}
+          >
             {USER.DELIVERED}
           </Button>
-          <Button variant="contained" color={"error"} onClick={() => handleChangeStatus(USER.REJECTED)}>
+          <Button
+            variant="contained"
+            color={"error"}
+            onClick={() => handleChangeStatus(order_id, USER.REJECTED, dispatchStatus)}
+          >
             {USER.REJECTED}
           </Button>
         </>
@@ -141,7 +160,7 @@ const renderButton = (pre_status: string) => {
   }
 };
 
-const renderOrder = (data: IResponseHistory[]) => {
+const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice) => void) => {
   return data?.map((item) => {
     return (
       <Card key={item.cart_id} sx={{ margin: "0 0 1rem 0" }}>
@@ -178,14 +197,20 @@ const renderOrder = (data: IResponseHistory[]) => {
             </Box>
           </Box>
         </CardContent>
-        <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>{renderButton(item.status)}</CardActions>
+        <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+          {renderButton(item.cart_id, item.status, dispatchStatus)}
+        </CardActions>
       </Card>
     );
   });
 };
 
 export default function DetailOrder() {
+  const dispatch = useAppDispatch();
   const [data, setData] = React.useState<IResponseHistory[]>(exampleData);
+  const dispatchStatus = (payload: INotice) => {
+    dispatch(changeNotice(payload));
+  };
 
-  return <List>{renderOrder(data)}</List>;
+  return <List>{renderOrder(data, dispatchStatus)}</List>;
 }
