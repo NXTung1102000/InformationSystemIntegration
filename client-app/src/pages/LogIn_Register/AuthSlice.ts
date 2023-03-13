@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { loginAPI, registerAPI } from "../../api/auth";
-import { IAuthState, IInputUser } from "../../constant/user/interface";
+import { IAuthState, ICreateUser, IInputUser } from "../../constant/user/interface";
 import { ROLE } from "../../constant/user/role";
 
 const initialState: IAuthState = {
@@ -21,7 +21,7 @@ export const LogInAsync = createAsyncThunk("auth/login", async (user: IInputUser
   return response.data.data;
 });
 
-export const RegisterAsync = createAsyncThunk("auth/register", async (user: IInputUser) => {
+export const RegisterAsync = createAsyncThunk("auth/register", async (user: ICreateUser) => {
   const response = await registerAPI(user);
   return response.data.data;
 });

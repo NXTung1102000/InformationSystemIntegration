@@ -53,36 +53,18 @@ export default function OrderSummary() {
         })
         .then((response) => {
           if (response.status === 0) {
-            dispatch(
-              changeNotice({
-                message: "successfully, your order ...",
-                open: true,
-                type: "success",
-              })
-            );
+            dispatch(changeNotice({ message: "successfully", open: true, type: "success" }));
             dispatch(changeLoading(false));
             dispatch(clearCart());
           } else {
             dispatch(changeLoading(false));
-            dispatch(
-              changeNotice({
-                message: response.message,
-                open: true,
-                type: "error",
-              })
-            );
+            dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
           }
         })
         .catch((error) => {
           console.log(error);
           dispatch(changeLoading(false));
-          dispatch(
-            changeNotice({
-              message: "error server ... ",
-              open: true,
-              type: "error",
-            })
-          );
+          dispatch(changeNotice({ message: "error server ... ", open: true, type: "error" }));
         });
     }
   };

@@ -6,6 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { registerAPI } from "../../api/auth";
+import { useAppDispatch } from "../../app/hooks";
+import { changeNotice } from "../../component/LoadingAndNotice/noticeSlice";
 
 interface openRegister {
   openRegister: boolean;
@@ -13,6 +16,8 @@ interface openRegister {
 }
 
 export default function Register({ openRegister, setOpenRegister }: openRegister) {
+  const dispatch = useAppDispatch();
+
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
@@ -20,7 +25,7 @@ export default function Register({ openRegister, setOpenRegister }: openRegister
   const [email, setEmail] = React.useState("");
   const [username, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
+  // const [confirmPassword, setConfirmPassword] = React.useState("");
 
   const validateFirstName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     // validate first name
@@ -57,13 +62,37 @@ export default function Register({ openRegister, setOpenRegister }: openRegister
     setPassword(event.target.value);
   };
 
-  const validateConfirmPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate Confirm Password
-    setConfirmPassword(event.target.value);
-  };
+  // const validateConfirmPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  //   // validate Confirm Password
+  //   setConfirmPassword(event.target.value);
+  // };
 
   const handleSubmit = async () => {
-    console.log(email, password);
+    const credentials = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      phone_number: phoneNumber,
+      username,
+      password,
+      address,
+    };
+    registerAPI(credentials)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          setOpenRegister(false);
+          dispatch(changeNotice({ message: "sign up successfully", open: true, type: "success" }));
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+      });
   };
 
   return (
@@ -166,7 +195,7 @@ export default function Register({ openRegister, setOpenRegister }: openRegister
                     onChange={(event) => validatePassword(event)}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
@@ -177,7 +206,7 @@ export default function Register({ openRegister, setOpenRegister }: openRegister
                     value={confirmPassword}
                     onChange={(event) => validateConfirmPassword(event)}
                   />
-                </Grid>
+                </Grid> */}
               </Grid>
               <Button type="submit" fullWidth variant="contained" onClick={handleSubmit} sx={{ mt: 5, mb: 5 }}>
                 Sign Up

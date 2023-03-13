@@ -16,6 +16,7 @@ import { FormControlLabel } from "@mui/material";
 import { loginAPI } from "../../api/auth";
 import { useAppDispatch } from "../../app/hooks";
 import { LogInUser } from "./AuthSlice";
+import { changeNotice } from "../../component/LoadingAndNotice/noticeSlice";
 interface openLogIn {
   openLogin: boolean;
   setOpenLogin: (open: boolean) => void;
@@ -56,10 +57,13 @@ export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
           const user = response.data;
           dispatch(LogInUser(user));
           setOpenLogin(false);
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
         }
       })
       .catch((err) => {
         console.log(err);
+        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
       });
   };
 

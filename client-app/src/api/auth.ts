@@ -1,7 +1,7 @@
-import { IInputUser } from "../constant/user/interface";
+import { ICreateUser, IInputUser } from "../constant/user/interface";
 import { axiosAPI as api } from "./configAPI";
 
-const registerAPI = async (registerInfo: IInputUser) => {
+const registerAPI = async (registerInfo: ICreateUser) => {
   const registerResult = await api({
     method: "POST",
     url: "/register",
@@ -19,4 +19,13 @@ const loginAPI = async (credentials: IInputUser) => {
   return loginResult;
 };
 
-export { registerAPI, loginAPI };
+const forgetPasswordAPI = async (username: string, email: string) => {
+  const forgetPasswordResult = await api({
+    method: "POST",
+    url: "/forget-pw",
+    data: { username, email },
+  });
+  return forgetPasswordResult;
+};
+
+export { registerAPI, loginAPI, forgetPasswordAPI };
