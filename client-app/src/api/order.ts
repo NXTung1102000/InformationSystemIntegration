@@ -25,4 +25,13 @@ const submitOrder = async (inputCart: IInputCart) => {
   return result;
 };
 
-export { getOrderOfCurrentUser, submitOrder };
+const updateOrder = async (order_id: number, status: string) => {
+  const result = await api({
+    method: "PUT",
+    url: "/order/update-status",
+    data: { order_id, status },
+  });
+  return result;
+};
+
+export { getOrderOfCurrentUser, submitOrder, updateOrder };
