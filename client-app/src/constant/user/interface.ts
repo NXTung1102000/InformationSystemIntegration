@@ -4,6 +4,16 @@ export interface IInputUser {
   password: string;
 }
 
+export interface ICreateUser {
+  first_name: string;
+  last_name: string;
+  username: string;
+  password: string;
+  phone_number: string;
+  email: string;
+  address: string;
+}
+
 export interface IUser {
   id: number;
   username: string;

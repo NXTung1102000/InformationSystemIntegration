@@ -6,6 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { forgetPasswordAPI } from "../../api/auth";
+import { useAppDispatch } from "../../app/hooks";
+import { changeNotice } from "../../component/LoadingAndNotice/noticeSlice";
 
 interface openForgetPW {
   openForgetPW: boolean;
@@ -13,6 +16,8 @@ interface openForgetPW {
 }
 
 export default function ForgetPW({ openForgetPW, setOpenForgetPW }: openForgetPW) {
+  const dispatch = useAppDispatch();
+
   const [email, setEmail] = React.useState("");
   const [username, setUserName] = React.useState("");
 
@@ -27,7 +32,22 @@ export default function ForgetPW({ openForgetPW, setOpenForgetPW }: openForgetPW
   };
 
   const handleSubmit = async () => {
-    console.log(email);
+    forgetPasswordAPI(username, email)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          setOpenForgetPW(false);
+          dispatch(changeNotice({ message: "New password was sent into your mail", open: true, type: "success" }));
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeNotice({ message: "Error server", open: true, type: "error" }));
+      });
   };
 
   return (

@@ -10,6 +10,8 @@ import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import { listCategories, listTabSeller } from "../../constant/tabRedirect/tabRedirect";
+import { useAppSelector } from "../../app/hooks";
+import { selectAuth } from "../../pages/LogIn_Register/AuthSlice";
 
 interface IProps {
   open: boolean;
@@ -19,6 +21,7 @@ interface IProps {
 }
 
 export default function LeftBavCategory(props: IProps) {
+  const auth = useAppSelector(selectAuth);
   const theme = useTheme();
   return (
     <MenuCategory variant="permanent" open={props.open}>
@@ -46,24 +49,28 @@ export default function LeftBavCategory(props: IProps) {
         ))}
       </List>
       <Divider />
-      <List>
-        {listTabSeller.map((tab) => (
-          <ListItem
-            key={tab.name}
-            disablePadding
-            sx={{ display: "block" }}
-            onClick={() => props.navigateSeller(tab.route)}
-          >
-            <ListItemButton sx={{ minHeight: 48, justifyContent: props.open ? "initial" : "center", px: 2.5 }}>
-              <ListItemIcon sx={{ minWidth: 0, mr: props.open ? 3 : "auto", justifyContent: "center" }}>
-                {tab.icon}
-              </ListItemIcon>
-              <ListItemText primary={tab.name} sx={{ opacity: props.open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
+      {(auth.role === 1 || auth.role === 0) && (
+        <>
+          <List>
+            {listTabSeller.map((tab) => (
+              <ListItem
+                key={tab.name}
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={() => props.navigateSeller(tab.route)}
+              >
+                <ListItemButton sx={{ minHeight: 48, justifyContent: props.open ? "initial" : "center", px: 2.5 }}>
+                  <ListItemIcon sx={{ minWidth: 0, mr: props.open ? 3 : "auto", justifyContent: "center" }}>
+                    {tab.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={tab.name} sx={{ opacity: props.open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+        </>
+      )}
     </MenuCategory>
   );
 }
