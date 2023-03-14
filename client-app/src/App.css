@@ -12,12 +12,11 @@
 }
 
 .product-image {
-    width: 50%;
+    max-width: 40%;
 }
 
 .product-infos {
-    /*width: 60%;*/
-    margin: 10px
+    width: 60%;
 }
 
 /*buying*/

@@ -4,21 +4,20 @@ import Rating from '@mui/material/Rating';
 
 import {ProductModel} from '../../../model/ProductModel'
 
-export function Review({productReview}: {productReview: object}) {
+export function Review({productReviews}: {productReviews: object}) {
   return (
     <div className="product-single-review">
-      <div class>
-        <p>{productReview['username' as keyof typeof productReview]}</p>
-        <p>{productReview['date' as keyof typeof productReview]}</p>
+      <div className="review-username">
+        <p>{productReviews['username' as keyof typeof productReviews]}</p>
+        <p>{productReviews['date' as keyof typeof productReviews]}</p>
         <Rating
           name="product-rating"
-          value={productReview['star' as keyof typeof productReview]}
+          value={productReviews['star' as keyof typeof productReviews]}
         />
       </div>
-      <div>
-        <p>{productReview['content' as keyof typeof productReview]}</p>
+      <div className="review-content">
+        <p>{productReviews['content' as keyof typeof productReviews]}</p>
       </div>
     </div>
   )
-
 }

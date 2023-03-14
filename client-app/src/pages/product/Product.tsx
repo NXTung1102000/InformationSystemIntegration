@@ -43,10 +43,7 @@ export function Product() {
     'content': "This product is mid",
     'date': "01/01/2023"
   }
-
-  // l = [a for l in range(0, 10)]
   let productReviews = Array.from([1, 2, 3, 4], _ => productReview)
-
 
   return (
     <div className="product">

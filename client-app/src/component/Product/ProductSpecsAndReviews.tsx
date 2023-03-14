@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import { ProductModel } from "../../model/ProductModel";
 import Specs from "./product_specs_and_reviews/Specs";
 import { Review } from "./product_specs_and_reviews/Review";
+import { ReviewInput } from "./product_specs_and_reviews/ReviewInput";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,6 +47,7 @@ function a11yProps(index: number) {
 export default function ProductSpecsAndReviews({product, productReviews}:{product: ProductModel, productReviews: Array<object>}) {
 
   const [value, setValue] = React.useState(0);
+  let reviewerName: string = 'Tran Thi B'
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -63,8 +65,9 @@ export default function ProductSpecsAndReviews({product, productReviews}:{produc
         <Specs productSpecs={product.specification}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <ReviewInput reviewerName={reviewerName}/>
         {productReviews.map((review) => (
-          <Review productReview={review}/>
+          <Review productReviews={review}/>
         ))}
       </TabPanel>
     </Box>
