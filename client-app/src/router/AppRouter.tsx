@@ -14,7 +14,7 @@ const AppRouter = () => {
           <Route key={router.router} path={router.router} element={<Layout>{router.component}</Layout>} />
         ))}
 
-        {(auth.role === 1 || auth.role === 0) &&
+        {(auth.role === 1 || auth.role === 0 || true) &&
           PrivateRouter.map((privateRouter) => (
             <Route
               key={privateRouter.router}

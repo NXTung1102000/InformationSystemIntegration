@@ -1,3 +1,4 @@
+import { ICreateProduct, IUpdateProduct } from "../constant/product/interface";
 import { axiosAPI as api } from "./configAPI";
 
 interface IParams {
@@ -21,4 +22,31 @@ const searchProduct = async (params: IParams) => {
   return result;
 };
 
-export { searchProduct };
+const createProductAPI = async (product: ICreateProduct) => {
+  const result = await api({
+    method: "POST",
+    url: "/product",
+    data: product,
+  });
+  return result;
+};
+
+const updateProductAPI = async (product: IUpdateProduct) => {
+  const result = await api({
+    method: "PUT",
+    url: "/product",
+    data: product,
+  });
+  return result;
+};
+
+const deleteProductAPI = async (id: number) => {
+  const result = await api({
+    method: "PUT",
+    url: "/product",
+    data: id,
+  });
+  return result;
+};
+
+export { searchProduct, createProductAPI, updateProductAPI, deleteProductAPI };
