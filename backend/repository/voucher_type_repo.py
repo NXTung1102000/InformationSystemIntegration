@@ -1,4 +1,4 @@
-from models.voucherType import VoucherType, db
+from models.voucher_type import VoucherType, db
 
 # Get all VoucherTypes
 def find_all():

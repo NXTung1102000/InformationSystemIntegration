@@ -6,17 +6,17 @@ class Account(db.Model):
     __tablename__ = 'account'
 
     id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column('username', db.VARCHAR(255),
-                         unique=True, nullable=False)
+    username = db.Column('username', db.VARCHAR(255), unique=True, nullable=False)
     password = db.Column('password', db.Text, nullable=False)
-    accounttype_id = db.Column(
-        'accounttype_id', db.Enum(1, 2, 3), nullable=False)
+    token = db.Column('token', db.VARCHAR(255))
+    role = db.Column('role', db.Integer, nullable=False)
     name = db.Column('name', db.VARCHAR(255))
+    first_name = db.Column('first_name', db.VARCHAR(255))
+    last_name = db.Column('last_name', db.VARCHAR(255))
     email = db.Column('email', db.VARCHAR(255))
     address = db.Column('address', db.VARCHAR(400))
     phone = db.Column('phone', db.VARCHAR(255))
-    created_date = db.Column('created_date', db.DateTime,
-                             default=datetime.now(), nullable=False)
+    created_date = db.Column('created_date', db.DateTime, default=datetime.now(), nullable=False)
     updated_by = db.Column('updated_by', db.VARCHAR(20), nullable=True)
     created_by = db.Column('created_by', db.Integer, nullable=False)
     updated_date = db.Column('updated_date', db.DateTime, nullable=True)
@@ -31,7 +31,7 @@ class Account(db.Model):
             'id': self.id,
             'username': self.username,
             'password': self.password,
-            'accounttype_id': self.accounttype_id,
+            'role': self.role,
             'name': self.name,
             'address': self.address,
             'phone': self.phone,
@@ -47,10 +47,9 @@ class Account(db.Model):
 
     @staticmethod
     def from_json(json_post):
-        # print(json_post)
         username = json_post.get('username')
         password = json_post.get('password')
-        accounttype_id = json_post.get('accounttype_id')
+        role = json_post.get('role')
         name = json_post.get('name')
         address = json_post.get('address')
         phone = json_post.get('phone')
@@ -65,7 +64,7 @@ class Account(db.Model):
         account_return = Account(
             username=username,
             password=password,
-            accounttype_id=accounttype_id,
+            role=role,
             name=name,
             address=address,
             phone=phone,

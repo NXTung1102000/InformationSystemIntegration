@@ -10,8 +10,8 @@ mod = Blueprint('user', __name__, url_prefix='/user')
 def user_handle():
     if request.method == 'GET':
         id = request.args.get('id')
-        list_product = user_controller.get(id)
-        return {'data': list_product}
+        list_user = user_controller.get(id)
+        return {'data': list_user}
 
     elif request.method == 'POST':
         data = request.json

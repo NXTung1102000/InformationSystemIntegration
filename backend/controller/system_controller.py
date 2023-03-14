@@ -13,7 +13,7 @@ def register_user(user_data):
     password = encode(password)
     user_data['password'] = password
     if user_data.get('role') is None:
-        user_data['role'] = 2
+        user_data['role'] = 3
     insert(user_data)
     
     return {'status': 0}

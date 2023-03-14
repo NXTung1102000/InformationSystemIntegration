@@ -8,21 +8,21 @@ class Voucher(db.Model):
     id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
     name = db.Column('name', db.VARCHAR(255), unique=True, nullable=False)
     detail = db.Column('detail', db.VARCHAR(255))
-    voucher_type_id = db.Column(
-        'voucher_type_id', db.Enum(1, 2), nullable=False)
+    voucher_type_id = db.Column('voucher_type_id', db.Integer, nullable=False)
     code = db.Column('code', db.VARCHAR(20), unique=True, nullable=False)
     image = db.Column('image', db.VARCHAR(255))
     value = db.Column('value', db.Float, nullable=False)
     threshold = db.Column('threshold', db.Float, nullable=False)
     created_by = db.Column('created_by', db.Integer, nullable=False)
-    created_date = db.Column('created_date', db.DateTime,
-                             default=datetime.now(), nullable=False)
-    updated_by = db.Column('updated_by', db.VARCHAR(20), nullable=True)
-    updated_date = db.Column('updated_date', db.DateTime, nullable=True)
-    is_activated = db.column('is_activated', db.Enum(0, 1), nullable=False)
+    created_date = db.Column('created_date', db.DateTime, default=datetime.now(), nullable=False)
+    updated_by = db.Column('updated_by', db.Integer)
+    updated_date = db.Column('updated_date', db.DateTime)
+    is_activated = db.Column('is_activated', db.Integer, nullable=False)
+
 
     def __init__(self, **kwargs):
         super(Voucher, self).__init__(**kwargs)
+
 
     def to_full_json(self):
         json_token = {
@@ -41,6 +41,7 @@ class Voucher(db.Model):
             'is_activated': self.is_activated,
         }
         return json_token
+
 
     @staticmethod
     def from_json(json_post):

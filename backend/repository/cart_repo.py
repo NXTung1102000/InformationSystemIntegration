@@ -50,7 +50,7 @@ def delete_by_id(id):
         return False
     
 
-def delete_by_id(cart_id):
+def delete_by_cart_id(cart_id):
     try:
         cart = find_by_cart_id(cart_id)
         db.session.delete(cart)

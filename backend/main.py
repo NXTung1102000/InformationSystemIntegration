@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from config import *
 from init_app import app
-from blueprints import product, system, order, user
+from blueprints import product, system, order, user, voucher
 
 
 app.register_blueprint(product.mod)

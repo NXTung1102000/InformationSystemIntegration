@@ -72,4 +72,10 @@ def delete(id):
     except:
         return False
 
+
+def sort_by(data):
+    if data.get('state'):
+        list_order = order_repo.get_order_by_order_state_id(data['state'])
+        print(list_order)
+        return list_order
     

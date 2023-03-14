@@ -1,4 +1,4 @@
-from models.productReview import ProductReview, db
+from models.product_review import ProductReview, db
 from sqlalchemy import func
 
 # Get all accounts
@@ -8,9 +8,9 @@ def find_all():
 # By id
 def find_by_id(id):
     return ProductReview.query.filter_by(id=id).first()
-# By account_id
-def find_by_account_id(account_id):
-    return ProductReview.query.filter_by(account_id=account_id).all()
+# By user_id
+def find_by_user_id(user_id):
+    return ProductReview.query.filter_by(user_id=user_id).all()
 # By product_id
 def find_by_product_id(product_id):
     return ProductReview.query.filter_by(product_id=product_id).all()
