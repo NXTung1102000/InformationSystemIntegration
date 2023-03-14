@@ -14,11 +14,12 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 }
 app.secret_key = SECRET_KEY
 
-# CORS(app, resources={r"/*": {"origins": "*", "send_wildcard": "False"}})
+CORS(app, resources={r"/*": {"origins": "*", "send_wildcard": "False"}})
 
 db = SQLAlchemy(app=app, session_options={
                 'autocommit': False, 'autoflush': False})
 
 migrate = Migrate(app, db)
-db.init_app(app)
-migrate.init_app(app, db)
+with app.app_context():
+    db.init_app(app)
+    migrate.init_app(app, db)

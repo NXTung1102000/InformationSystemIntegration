@@ -13,6 +13,10 @@ def find_by_token(token):
     return User.query.filter_by(token=token).first()
 
 
+def find_by_role(role):
+    return User.query.filter_by(role=role).all()
+
+
 def find_by_username(username):
     return User.query.filter_by(username=username).first()
 
@@ -48,3 +52,30 @@ def delete_by_id(id):
         return True
     except:
         return False
+
+
+# By email
+def find_by_email(email):
+    return User.query.filter_by(email=email).first()
+
+# By phone
+def find_by_phone(phone):
+    return User.query.filter_by(phone=phone).first()
+
+# By score
+def find_by_score(score):
+    return User.query.filter_by(score=score).first()
+
+# Get Users in order
+# By name (1: ascending, 2:descending)
+def get_order_by_name(type=1):
+    if type == 1:
+        return User.query.order_by(User.name.asc())
+    else:   
+        return User.query.order_by(User.name.desc())
+# By score (1: ascending, 2:descending)
+def get_order_by_score(type=1):
+    if type == 1:
+        return User.query.order_by(User.score.asc())
+    else:   
+        return User.query.order_by(User.score.desc())

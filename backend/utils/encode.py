@@ -1,9 +1,10 @@
 import random
 import string
+import base64
 
 
 def encode(string):
-    return string.encode("ascii")
+    return base64.b64encode(string.encode("utf-8"))
 
 
 def get_random_string(length=12):

@@ -8,36 +8,36 @@ def find_all():
 # By id
 def find_by_id(id):
     return Voucher.query.filter_by(id=id).first()
+
 # By voucher_type_id
-def find_by_voucher_type_id(type):
-    type = type.lower()
-    if (type == "giảm số tiền"):
-        voucher_type_id = 1
-    else:
-        voucher_type_id = 2
-    return Voucher.query.filter_by(voucher_type_id=voucher_type_id).all()
+def find_by_voucher_type_id(type=1):
+    return Voucher.query.filter_by(voucher_type_id=type).all()
+
 # By name
 def find_by_name(name):
     return Voucher.query.filter_by(name=name).first()
+
 # By code
 def find_by_code(code):
     return Voucher.query.filter_by(code=code).first()
 
 # Get vouchers in order
 # By name (1: ascending, 2:descending)
-def get_order_by_name(type):
+def get_order_by_name(type=1):
     if type == 1:
         return Voucher.query.order_by(Voucher.name.asc())
     else:   
         return Voucher.query.order_by(Voucher.name.desc())
+    
 # By voucher_type (1: ascending, 2:descending)
-def get_order_by_voucher_type_id(type):
+def get_order_by_voucher_type_id(type=1):
     if type == 1:
         return Voucher.query.order_by(Voucher.voucher_type_id.asc())
     else:   
         return Voucher.query.order_by(Voucher.voucher_type_id.desc())
+    
 # By value (1: ascending, 2:descending)
-def get_order_by_value(type):
+def get_order_by_value(type=1):
     if type == 1:
         return Voucher.query.order_by(Voucher.value.asc())
     else:   
@@ -48,6 +48,7 @@ def get_order_by_value_and_voucher_type(type, voucher_type_id):
         return Voucher.query.filter(voucher_type_id=voucher_type_id).order_by(Voucher.value.asc())
     else:   
         return Voucher.query.filter(voucher_type_id=voucher_type_id).order_by(Voucher.value.desc())
+    
 # By voucher_type and threshold (1: ascending, 2:descending)
 def get_order_by_threshold_and_voucher_type(type, voucher_type_id):
     if type == 1:

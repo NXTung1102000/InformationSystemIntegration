@@ -8,6 +8,7 @@ class Cart(db.Model):
     cart_id = db.Column('cart_id', db.Integer, nullable=False)
     product_id = db.Column('product_id', db.Integer, nullable=False)
     quantity = db.Column('quantity', db.Integer, nullable=False)
+    price = db.Column('price', db.Float, nullable=False)
 
 
     def __init__(self, **kwargs):
@@ -20,6 +21,7 @@ class Cart(db.Model):
             'cart_id': self.cart_id,
             'product_id': self.product_id,
             'quantity': self.quantity,
+            'price': self.price,
         }
         return json_token
 
@@ -29,10 +31,12 @@ class Cart(db.Model):
         cart_id = json_post.get('cart_id')
         product_id = json_post.get('product_id')
         quantity = json_post.get('quantity')
+        price = json_post.get('price')
 
         cart = Cart(
             cart_id = cart_id,
             product_id = product_id,
             quantity = quantity,
+            price = price,
         )
         return cart

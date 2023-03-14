@@ -1,4 +1,4 @@
-from models.orderState import OrderState, db
+from models.order_state import OrderState, db
 
 # Get all OrderStates
 def find_all():
