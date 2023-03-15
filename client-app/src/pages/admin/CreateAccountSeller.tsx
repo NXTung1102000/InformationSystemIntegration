@@ -26,7 +26,7 @@ interface IOpenDialog {
   setOpen: (open: boolean) => void;
 }
 
-export default function Register({ open, setOpen }: IOpenDialog) {
+export default function CreateAccountSeller({ open, setOpen }: IOpenDialog) {
   const dispatch = useAppDispatch();
 
   const [firstName, setFirstName] = React.useState<IState>({
@@ -87,10 +87,10 @@ export default function Register({ open, setOpen }: IOpenDialog) {
     const errConfirmPW = validateState(confirmPassword, setConfirmPassword, regexForPW);
     if (errFirstName || errLastName || errEmail || errPhone || errAddress || errUsername || errPW || errConfirmPW)
       return;
-    register();
+    createAccount();
   };
 
-  const register = () => {
+  const createAccount = () => {
     const credentials = {
       first_name: firstName.value,
       last_name: lastName.value,
@@ -100,22 +100,22 @@ export default function Register({ open, setOpen }: IOpenDialog) {
       password: password.value,
       address: address.value,
     };
-    registerAPI(credentials)
-      .then((req) => {
-        return req.data;
-      })
-      .then((response) => {
-        if (response.status === 0) {
-          setOpen(false);
-          dispatch(changeNotice({ message: "sign up successfully", open: true, type: "success" }));
-        } else {
-          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
-      });
+    // callAPI(credentials)
+    //   .then((req) => {
+    //     return req.data;
+    //   })
+    //   .then((response) => {
+    //     if (response.status === 0) {
+    //       setOpen(false);
+    //       dispatch(changeNotice({ message: "create successfully", open: true, type: "success" }));
+    //     } else {
+    //       dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+    //   });
   };
 
   return (
@@ -137,7 +137,7 @@ export default function Register({ open, setOpen }: IOpenDialog) {
             }}
           >
             <Typography component="h1" variant="h5">
-              Welcome to E - Commerce
+              Create account for seller
             </Typography>
             <Box sx={{ mt: 4 }}>
               <Grid container spacing={1}>
@@ -246,7 +246,7 @@ export default function Register({ open, setOpen }: IOpenDialog) {
                 </Grid>
               </Grid>
               <Button type="submit" fullWidth variant="contained" onClick={handleSubmit} sx={{ mt: 5, mb: 5 }}>
-                Sign Up
+                Create
               </Button>
             </Box>
           </Box>

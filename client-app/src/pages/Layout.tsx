@@ -11,7 +11,7 @@ import { AccountCircle } from "@mui/icons-material";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import { UserRoute } from "../constant/route/name";
 import LogIn from "./LogIn_Register/Login";
 import LeftBavCategory from "../component/Header_Category/LeftBavCategory";
@@ -20,7 +20,6 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { clearCart, selectCart } from "./user/cart/CartSlice";
 import Footer from "../component/Footer_category/Footer";
 import { LogOutUser } from "./LogIn_Register/AuthSlice";
-import { getAllCategory } from "../api/category";
 import Loading from "../component/LoadingAndNotice/Loading";
 import { selectLoading } from "../component/LoadingAndNotice/loadingSlice";
 import Notice from "../component/LoadingAndNotice/Notice";
@@ -38,6 +37,7 @@ export default function Layout(props: Props) {
   const [open, setOpen] = React.useState(false);
   const [openLogin, setOpenLogin] = React.useState(false);
   const [inputSearch, setInputSearch] = React.useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleInputSearch = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInputSearch(event.target.value);
@@ -46,7 +46,18 @@ export default function Layout(props: Props) {
   const clickEnterToSearch = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       console.log(inputSearch);
-      getAllCategory();
+      const category = searchParams.get("category");
+      if (category) {
+        navigate({
+          pathname: UserRoute.HOME,
+          search: `${createSearchParams({ category: category, keyword: inputSearch })}`,
+        });
+      } else {
+        navigate({
+          pathname: UserRoute.HOME,
+          search: `${createSearchParams({ keyword: inputSearch })}`,
+        });
+      }
     }
   };
 
@@ -81,7 +92,7 @@ export default function Layout(props: Props) {
     if (params.category) {
       navigate({
         pathname: UserRoute.HOME,
-        search: `?${createSearchParams(params)}`,
+        search: `${createSearchParams(params)}`,
       });
     } else {
       navigate(UserRoute.HOME);
@@ -116,7 +127,7 @@ export default function Layout(props: Props) {
     <>
       <Notice />
       <Loading open={loading.isLoading} />
-      <LogIn openLogin={openLogin} setOpenLogin={setOpenLogin} />
+      <LogIn open={openLogin} setOpen={setOpenLogin} />
       <Box sx={{ display: "flex" }}>
         <HeaderApp position="fixed" open={open}>
           <Toolbar>
@@ -197,7 +208,13 @@ export default function Layout(props: Props) {
           handleMobileMenuClose={handleMobileMenuClose}
           openCart={openCart}
         />
-        <LeftBavCategory open={open} setOpen={setOpen} queryCategory={queryCategory} navigateSeller={navigateSeller} />
+        <LeftBavCategory
+          open={open}
+          setOpen={setOpen}
+          queryCategory={queryCategory}
+          navigateSeller={navigateSeller}
+          setInputSearch={setInputSearch}
+        />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <ResponsiveMenuCategory />
 

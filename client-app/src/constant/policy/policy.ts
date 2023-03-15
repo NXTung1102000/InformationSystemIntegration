@@ -1,3 +1,8 @@
+export enum TYPE_POLICY {
+  FIXED = "Fixed",
+  PERCENT = "Percent",
+}
+
 enum VOUCHER {
   LEVEL_1 = 100000,
   LEVEL_2 = 400000,

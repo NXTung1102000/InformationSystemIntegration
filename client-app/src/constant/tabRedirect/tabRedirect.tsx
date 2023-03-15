@@ -11,7 +11,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import InventoryIcon from "@mui/icons-material/Inventory";
 
-interface TabRedirect {
+export interface TabRedirect {
   name: string;
   icon: JSX.Element;
   param?: string;

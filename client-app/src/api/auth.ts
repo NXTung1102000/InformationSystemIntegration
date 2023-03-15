@@ -28,4 +28,13 @@ const forgetPasswordAPI = async (username: string, email: string) => {
   return forgetPasswordResult;
 };
 
-export { registerAPI, loginAPI, forgetPasswordAPI };
+const changePasswordAPI = async (oldPW: string, newPW: string) => {
+  const result = await api({
+    method: "POST",
+    url: "/forget-pw",
+    data: { oldPW, newPW },
+  });
+  return result;
+};
+
+export { registerAPI, loginAPI, forgetPasswordAPI, changePasswordAPI };

@@ -1,0 +1,140 @@
+import React from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import { useAppDispatch } from "../../../app/hooks";
+import { changePasswordAPI } from "../../../api/auth";
+import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
+import {
+  handleChangeState,
+  IState,
+  messageOfConfirmPassword,
+  messageOfPassword,
+  validateState,
+} from "../../../constant/validate/message";
+import { regexForPW } from "../../../constant/validate/regex";
+
+interface openForgetPW {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+export default function ChangePassword({ open, setOpen }: openForgetPW) {
+  const dispatch = useAppDispatch();
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
+
+  const [oldPW, setOldPW] = React.useState<IState>({ value: "", isError: false, message: messageOfPassword });
+  const [newPW, setNewPW] = React.useState<IState>({ value: "", isError: false, message: messageOfPassword });
+  const [confirmNewPW, setConfirmNewPW] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfConfirmPassword,
+  });
+
+  const resetState = () => {
+    setIsSubmitted(false);
+    setOldPW({ ...oldPW, value: "", isError: false });
+    setNewPW({ ...newPW, value: "", isError: false });
+    setConfirmNewPW({ ...confirmNewPW, value: "", isError: false });
+  };
+
+  const handleSubmit = async () => {
+    if (!isSubmitted) setIsSubmitted(true);
+    const errOldPassword = validateState(oldPW, setOldPW, regexForPW);
+    const errNewPassword = validateState(newPW, setNewPW, regexForPW);
+    const errConfirmNewPassword = validateState(confirmNewPW, setConfirmNewPW, regexForPW);
+    if (errOldPassword || errNewPassword || errConfirmNewPassword) return;
+    changePasswordAPI(oldPW.value, newPW.value)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          setOpen(false);
+          dispatch(changeNotice({ message: "New password was sent into your mail", open: true, type: "success" }));
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeNotice({ message: "Error server", open: true, type: "error" }));
+      });
+  };
+
+  return (
+    <>
+      <Dialog
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          resetState();
+        }}
+      >
+        <DialogContent>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mt: 2,
+            }}
+          >
+            <Typography component="h1" variant="h5">
+              Change Password
+            </Typography>
+            <Box sx={{ mt: 4 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    type="password"
+                    error={oldPW.isError}
+                    helperText={oldPW.isError ? oldPW.message : ""}
+                    required
+                    fullWidth
+                    label="Old password"
+                    value={oldPW.value}
+                    onChange={(event) => handleChangeState(oldPW, setOldPW, event.target.value, regexForPW)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    type="password"
+                    error={newPW.isError}
+                    helperText={newPW.isError ? newPW.message : ""}
+                    required
+                    fullWidth
+                    label="New password"
+                    value={newPW.value}
+                    onChange={(event) => handleChangeState(newPW, setNewPW, event.target.value, regexForPW)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    type="password"
+                    error={confirmNewPW.isError || confirmNewPW.value !== newPW.value}
+                    helperText={confirmNewPW.isError || confirmNewPW.value !== newPW.value ? confirmNewPW.message : ""}
+                    required
+                    fullWidth
+                    label="Confirm New password"
+                    value={confirmNewPW.value}
+                    onChange={(event) =>
+                      handleChangeState(confirmNewPW, setConfirmNewPW, event.target.value, regexForPW)
+                    }
+                  />
+                </Grid>
+              </Grid>
+              <Button type="submit" fullWidth variant="contained" onClick={handleSubmit} sx={{ mt: 5, mb: 5 }}>
+                Change
+              </Button>
+            </Box>
+          </Box>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
