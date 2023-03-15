@@ -9,6 +9,17 @@ import Grid from "@mui/material/Grid";
 import { registerAPI } from "../../api/auth";
 import { useAppDispatch } from "../../app/hooks";
 import { changeNotice } from "../../component/LoadingAndNotice/noticeSlice";
+import { regexForNotEmpty, regexForEmail, regexForPW, regexForPhone } from "../../constant/validate/regex";
+import {
+  messageOfFieldIsNotEmpty,
+  messageOfEmail,
+  messageOfPassword,
+  messageOfPhoneNumber,
+  messageOfConfirmPassword,
+  IState,
+  validateState,
+  handleChangeState,
+} from "../../constant/validate/message";
 
 interface IOpenDialog {
   open: boolean;
@@ -18,66 +29,78 @@ interface IOpenDialog {
 export default function CreateAccountSeller({ open, setOpen }: IOpenDialog) {
   const dispatch = useAppDispatch();
 
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [username, setUserName] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  // const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [firstName, setFirstName] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("First name"),
+  });
+  const [lastName, setLastName] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("Last name"),
+  });
+  const [phoneNumber, setPhoneNumber] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfPhoneNumber,
+  });
+  const [address, setAddress] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("Address"),
+  });
+  const [email, setEmail] = React.useState<IState>({ value: "", isError: false, message: messageOfEmail });
+  const [username, setUserName] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("Username"),
+  });
+  const [password, setPassword] = React.useState<IState>({ value: "", isError: false, message: messageOfPassword });
+  const [confirmPassword, setConfirmPassword] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfConfirmPassword,
+  });
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
 
-  const validateFirstName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate first name
-    setFirstName(event.target.value);
+  const resetState = () => {
+    setFirstName({ ...firstName, value: "", isError: false });
+    setLastName({ ...lastName, value: "", isError: false });
+    setPhoneNumber({ ...phoneNumber, value: "", isError: false });
+    setAddress({ ...address, value: "", isError: false });
+    setEmail({ ...email, value: "", isError: false });
+    setUserName({ ...username, value: "", isError: false });
+    setPassword({ ...password, value: "", isError: false });
+    setConfirmPassword({ ...confirmPassword, value: "", isError: false });
+    setIsSubmitted(false);
   };
 
-  const validateLastName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate Last name
-    setLastName(event.target.value);
+  const handleSubmit = () => {
+    if (!isSubmitted) setIsSubmitted(true);
+    const errFirstName = validateState(firstName, setFirstName, regexForNotEmpty);
+    const errLastName = validateState(lastName, setLastName, regexForNotEmpty);
+    const errEmail = validateState(email, setEmail, regexForEmail);
+    const errPhone = validateState(phoneNumber, setPhoneNumber, regexForPhone);
+    const errAddress = validateState(address, setAddress, regexForNotEmpty);
+    const errUsername = validateState(username, setUserName, regexForNotEmpty);
+    const errPW = validateState(password, setPassword, regexForPW);
+    const errConfirmPW = validateState(confirmPassword, setConfirmPassword, regexForPW);
+    if (errFirstName || errLastName || errEmail || errPhone || errAddress || errUsername || errPW || errConfirmPW)
+      return;
+    createAccount();
   };
 
-  const validateEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate email
-    setEmail(event.target.value);
-  };
-
-  const validatePhoneNumber = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate PhoneNumber
-    setPhoneNumber(event.target.value);
-  };
-
-  const validateAddress = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate PhoneNumber
-    setAddress(event.target.value);
-  };
-
-  const validateUserName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate UserName
-    setUserName(event.target.value);
-  };
-
-  const validatePassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate password
-    setPassword(event.target.value);
-  };
-
-  // const validateConfirmPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   // validate Confirm Password
-  //   setConfirmPassword(event.target.value);
-  // };
-
-  const handleSubmit = async () => {
+  const createAccount = () => {
     const credentials = {
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      phone_number: phoneNumber,
-      username,
-      password,
-      address,
+      first_name: firstName.value,
+      last_name: lastName.value,
+      email: email.value,
+      phone_number: phoneNumber.value,
+      username: username.value,
+      password: password.value,
+      address: address.value,
     };
-    // registerAPI(credentials)
+    // callAPI(credentials)
     //   .then((req) => {
     //     return req.data;
     //   })
@@ -97,7 +120,13 @@ export default function CreateAccountSeller({ open, setOpen }: IOpenDialog) {
 
   return (
     <div>
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          resetState();
+        }}
+      >
         <DialogContent>
           <Box
             sx={{
@@ -111,102 +140,110 @@ export default function CreateAccountSeller({ open, setOpen }: IOpenDialog) {
               Create account for seller
             </Typography>
             <Box sx={{ mt: 4 }}>
-              <Grid container spacing={2}>
+              <Grid container spacing={1}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    autoComplete="firstName"
+                    error={firstName.isError}
+                    helperText={firstName.isError ? firstName.message : ""}
                     required
                     fullWidth
-                    id="firstName"
                     label="First Name"
-                    value={firstName}
-                    onChange={(event) => validateFirstName(event)}
+                    value={firstName.value}
+                    onChange={(event) =>
+                      handleChangeState(firstName, setFirstName, event.target.value, regexForNotEmpty)
+                    }
                     autoFocus
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    autoComplete="lastName"
+                    error={lastName.isError}
+                    helperText={lastName.isError ? lastName.message : ""}
                     required
                     fullWidth
-                    id="lastName"
                     label="Last Name"
-                    value={lastName}
-                    onChange={(event) => validateLastName(event)}
+                    value={lastName.value}
+                    onChange={(event) => handleChangeState(lastName, setLastName, event.target.value, regexForNotEmpty)}
                     autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={email.isError}
+                    helperText={email.isError ? email.message : ""}
                     required
                     fullWidth
-                    id="email"
-                    label="Email Address"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(event) => validateEmail(event)}
+                    label="Email"
+                    value={email.value}
+                    onChange={(event) => handleChangeState(email, setEmail, event.target.value, regexForEmail)}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    autoComplete="phoneNumber"
+                    error={phoneNumber.isError}
+                    helperText={phoneNumber.isError ? phoneNumber.message : ""}
                     required
                     fullWidth
-                    id="phoneNumber"
                     label="Phone Number"
-                    value={phoneNumber}
-                    onChange={(event) => validatePhoneNumber(event)}
+                    value={phoneNumber.value}
+                    onChange={(event) =>
+                      handleChangeState(phoneNumber, setPhoneNumber, event.target.value, regexForPhone)
+                    }
                     autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    autoComplete="address"
+                    error={address.isError}
+                    helperText={address.isError ? address.message : ""}
                     required
                     fullWidth
-                    id="address"
                     label="Address"
-                    value={address}
-                    onChange={(event) => validateAddress(event)}
+                    value={address.value}
+                    onChange={(event) => handleChangeState(address, setAddress, event.target.value, regexForNotEmpty)}
                     autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    autoComplete="username"
+                    error={username.isError}
+                    helperText={username.isError ? username.message : ""}
                     required
                     fullWidth
-                    id="username"
                     label="User Name"
-                    value={username}
-                    onChange={(event) => validateUserName(event)}
+                    value={username.value}
+                    onChange={(event) => handleChangeState(username, setUserName, event.target.value, regexForNotEmpty)}
                     autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={password.isError}
+                    helperText={password.isError ? password.message : ""}
                     required
                     fullWidth
                     label="Password"
                     type="password"
-                    id="password"
-                    autoComplete="new-password"
-                    value={password}
-                    onChange={(event) => validatePassword(event)}
+                    value={password.value}
+                    onChange={(event) => handleChangeState(password, setPassword, event.target.value, regexForPW)}
                   />
                 </Grid>
-                {/* <Grid item xs={12}>
+                <Grid item xs={12}>
                   <TextField
+                    error={confirmPassword.isError || confirmPassword.value !== password.value}
+                    helperText={
+                      confirmPassword.isError || confirmPassword.value !== password.value ? confirmPassword.message : ""
+                    }
                     required
                     fullWidth
                     label="Confirm Password"
                     type="password"
-                    id="password"
-                    autoComplete="new-password"
-                    value={confirmPassword}
-                    onChange={(event) => validateConfirmPassword(event)}
+                    value={confirmPassword.value}
+                    onChange={(event) =>
+                      handleChangeState(confirmPassword, setConfirmPassword, event.target.value, regexForPW)
+                    }
                   />
-                </Grid> */}
+                </Grid>
               </Grid>
               <Button type="submit" fullWidth variant="contained" onClick={handleSubmit} sx={{ mt: 5, mb: 5 }}>
                 Create

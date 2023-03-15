@@ -1,42 +1,78 @@
 import React from "react";
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, TextField, Grid } from "@mui/material";
 import ChangePassword from "./ChangePW";
+import {
+  handleChangeState,
+  IState,
+  messageOfEmail,
+  messageOfFieldIsNotEmpty,
+  messageOfPhoneNumber,
+  validateState,
+} from "../../../constant/validate/message";
+import { regexForEmail, regexForNotEmpty, regexForPhone } from "../../../constant/validate/regex";
 
 export default function Profile() {
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [email, setEmail] = React.useState("");
+  const [firstName, setFirstName] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("First name"),
+  });
+  const [lastName, setLastName] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("Last name"),
+  });
+  const [phoneNumber, setPhoneNumber] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfPhoneNumber,
+  });
+  const [address, setAddress] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("Address"),
+  });
+  const [email, setEmail] = React.useState<IState>({ value: "", isError: false, message: messageOfEmail });
 
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [openChangePW, setOpenChangePW] = React.useState(false);
 
-  const validateFirstName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate first name
-    setFirstName(event.target.value);
+  const handleSubmit = () => {
+    if (!isSubmitted) setIsSubmitted(true);
+    const errFirstName = validateState(firstName, setFirstName, regexForNotEmpty);
+    const errLastName = validateState(lastName, setLastName, regexForNotEmpty);
+    const errEmail = validateState(email, setEmail, regexForEmail);
+    const errPhone = validateState(phoneNumber, setPhoneNumber, regexForPhone);
+    const errAddress = validateState(address, setAddress, regexForNotEmpty);
+    if (errFirstName || errLastName || errEmail || errPhone || errAddress) return;
+    updateInformation();
   };
 
-  const validateLastName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate Last name
-    setLastName(event.target.value);
+  const updateInformation = () => {
+    const credentials = {
+      first_name: firstName.value,
+      last_name: lastName.value,
+      email: email.value,
+      phone_number: phoneNumber.value,
+      address: address.value,
+    };
+    // callAPI(credentials)
+    //   .then((req) => {
+    //     return req.data;
+    //   })
+    //   .then((response) => {
+    //     if (response.status === 0) {
+    //       setOpen(false);
+    //       dispatch(changeNotice({ message: "sign up successfully", open: true, type: "success" }));
+    //     } else {
+    //       dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+    //   });
   };
-
-  const validateEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate email
-    setEmail(event.target.value);
-  };
-
-  const validatePhoneNumber = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate PhoneNumber
-    setPhoneNumber(event.target.value);
-  };
-
-  const validateAddress = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate PhoneNumber
-    setAddress(event.target.value);
-  };
-
-  const handleSubmit = () => {};
 
   return (
     <>
@@ -48,52 +84,63 @@ export default function Profile() {
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <TextField
+                  error={firstName.isError}
+                  helperText={firstName.isError ? firstName.message : ""}
                   fullWidth
                   label="First name"
                   name="firstName"
-                  onChange={validateFirstName}
+                  onChange={(event) => handleChangeState(firstName, setFirstName, event.target.value, regexForNotEmpty)}
                   required
-                  value={firstName}
+                  value={firstName.value}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
+                  error={lastName.isError}
+                  helperText={lastName.isError ? lastName.message : ""}
                   fullWidth
                   label="Last name"
                   name="lastName"
-                  onChange={validateLastName}
+                  onChange={(event) => handleChangeState(lastName, setLastName, event.target.value, regexForNotEmpty)}
                   required
-                  value={lastName}
+                  value={lastName.value}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={email.isError}
+                  helperText={email.isError ? email.message : ""}
                   fullWidth
                   label="Email Address"
                   name="email"
-                  onChange={validateEmail}
+                  onChange={(event) => handleChangeState(email, setEmail, event.target.value, regexForEmail)}
                   required
-                  value={email}
+                  value={email.value}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={phoneNumber.isError}
+                  helperText={phoneNumber.isError ? phoneNumber.message : ""}
                   fullWidth
                   label="Phone Number"
                   name="phone"
-                  onChange={validatePhoneNumber}
-                  type="number"
-                  value={phoneNumber}
+                  onChange={(event) =>
+                    handleChangeState(phoneNumber, setPhoneNumber, event.target.value, regexForPhone)
+                  }
+                  value={phoneNumber.value}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={address.isError}
+                  helperText={address.isError ? address.message : ""}
                   fullWidth
                   label="Address"
                   name="address"
-                  onChange={validateAddress}
+                  onChange={(event) => handleChangeState(address, setAddress, event.target.value, regexForNotEmpty)}
                   required
-                  value={address}
+                  value={address.value}
                 />
               </Grid>
             </Grid>

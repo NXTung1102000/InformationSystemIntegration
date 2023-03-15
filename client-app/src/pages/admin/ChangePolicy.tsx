@@ -8,7 +8,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -27,15 +26,21 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
   const dispatch = useAppDispatch();
 
   const [type, setType] = React.useState(TYPE_POLICY.FIXED);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
-  const handleChangeType = (event: SelectChangeEvent) => {
-    setType(event.target.value as TYPE_POLICY);
+  const handleChangeValue = (value: number) => {
+    if (value < 1) setValue(1);
+    else if (type === TYPE_POLICY.PERCENT && value > 100) {
+      setValue(100);
+    } else setValue(value);
   };
 
-  const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setValue(event.target.value as unknown as number);
-  };
+  React.useEffect(() => {
+    if (value < 1) setValue(1);
+    else if (type === TYPE_POLICY.PERCENT && value > 100) {
+      setValue(100);
+    }
+  }, [type, value]);
 
   const handleSubmit = async () => {
     const policy = { type, value };
@@ -59,7 +64,13 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setValue(0);
+        setOpen(false);
+      }}
+    >
       <DialogContent>
         <Box
           sx={{
@@ -77,7 +88,7 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel>Policy</InputLabel>
-                  <Select value={type} label="Policy" onChange={handleChangeType}>
+                  <Select value={type} label="Policy" onChange={(event) => setType(event.target.value as TYPE_POLICY)}>
                     <MenuItem value={TYPE_POLICY.FIXED}>{TYPE_POLICY.FIXED}</MenuItem>
                     <MenuItem value={TYPE_POLICY.PERCENT}>{TYPE_POLICY.PERCENT}</MenuItem>
                   </Select>
@@ -90,7 +101,7 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
                   fullWidth
                   label="Value"
                   value={value}
-                  onChange={(event) => handleChangeValue(event)}
+                  onChange={(event) => handleChangeValue(event.target.value as unknown as number)}
                   autoFocus
                 />
               </Grid>

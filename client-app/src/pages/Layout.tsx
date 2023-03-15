@@ -127,7 +127,7 @@ export default function Layout(props: Props) {
     <>
       <Notice />
       <Loading open={loading.isLoading} />
-      <LogIn openLogin={openLogin} setOpenLogin={setOpenLogin} />
+      <LogIn open={openLogin} setOpen={setOpenLogin} />
       <Box sx={{ display: "flex" }}>
         <HeaderApp position="fixed" open={open}>
           <Toolbar>

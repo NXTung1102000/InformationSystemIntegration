@@ -21,8 +21,8 @@ const createProduct: ICreateProduct = {
   description: "",
   name: "",
   update_at: "",
-  price: 0,
-  quantity: 0,
+  price: 1,
+  quantity: 1,
 };
 
 const initData: IUpdateProduct[] = [
@@ -67,7 +67,7 @@ export default function Product() {
 
   const [openDialogProduct, setOpenDialogProduct] = React.useState(false);
   const [typeDialogProduct, setTypeDialogProduct] = React.useState("create");
-  const [checkedProduct, setCheckedProduct] = React.useState<IUpdateProduct | ICreateProduct>(createProduct);
+  const [checkedProduct, setCheckedProduct] = React.useState<IUpdateProduct | ICreateProduct>({ ...createProduct });
 
   const handleEditProduct = (item: IUpdateProduct | ICreateProduct, type: "create" | "update") => {
     setTypeDialogProduct(type);
@@ -150,7 +150,7 @@ export default function Product() {
           variant="contained"
           size="large"
           sx={{ margin: "0 0 1rem 0" }}
-          onClick={() => handleEditProduct(createProduct, "create")}
+          onClick={() => handleEditProduct({ ...createProduct }, "create")}
         >
           Create product
         </Button>
