@@ -70,7 +70,7 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
           }}
         >
           <Typography component="h1" variant="h5">
-            Forget Password
+            Change Policy
           </Typography>
           <Box sx={{ mt: 4 }}>
             <Grid container spacing={2}>

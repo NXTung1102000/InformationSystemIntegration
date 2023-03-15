@@ -9,7 +9,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
-import { listCategories, listTabSeller } from "../../constant/tabRedirect/tabRedirect";
+import { listCategories, listTabSeller, TabRedirect } from "../../constant/tabRedirect/tabRedirect";
 import { useAppSelector } from "../../app/hooks";
 import { selectAuth } from "../../pages/LogIn_Register/AuthSlice";
 import ChangePolicy from "../../pages/admin/ChangePolicy";
@@ -22,6 +22,7 @@ interface IProps {
   setOpen: (open: boolean) => void;
   queryCategory: (params: any) => void;
   navigateSeller: (route?: string) => void;
+  setInputSearch: (input: string) => void;
 }
 
 export default function LeftBavCategory(props: IProps) {
@@ -29,6 +30,12 @@ export default function LeftBavCategory(props: IProps) {
   const [openCreate, setOpenCreate] = React.useState(false);
   const auth = useAppSelector(selectAuth);
   const theme = useTheme();
+
+  const handleQuery = (category: TabRedirect) => {
+    props.queryCategory({ category: category.param });
+    props.setInputSearch("");
+  };
+
   return (
     <>
       <ChangePolicy open={openPolicy} setOpen={setOpenPolicy} />
@@ -46,7 +53,7 @@ export default function LeftBavCategory(props: IProps) {
               key={category.name}
               disablePadding
               sx={{ display: "block" }}
-              onClick={() => props.queryCategory({ category: category.param })}
+              onClick={() => handleQuery(category)}
             >
               <ListItemButton sx={{ minHeight: 48, justifyContent: props.open ? "initial" : "center", px: 2.5 }}>
                 <ListItemIcon sx={{ minWidth: 0, mr: props.open ? 3 : "auto", justifyContent: "center" }}>

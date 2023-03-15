@@ -7,6 +7,7 @@ interface IParams {
 }
 
 const searchProduct = async (params: IParams) => {
+  console.log(params);
   let url = `/product/search?`;
   const keys = Object.keys(params);
   keys.forEach((key) => {

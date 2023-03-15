@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React from "react";
-import { deleteProductAPI, searchProduct } from "../../../api/product";
+import { deleteProductAPI } from "../../../api/product";
 import { useAppDispatch } from "../../../app/hooks";
 import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
 import TableComponent from "../../../component/table/TableComponent";
