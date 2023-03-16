@@ -13,16 +13,8 @@ def user_handle():
         list_user = user_controller.get(id)
         return {'data': list_user}
 
-    elif request.method == 'POST':
-        data = request.json
-        result = user_controller.add(data)
-        if result:
-            return {'status': 0}, 200
-        else:
-            return {'status': 1, 'error': 'can not add'}, 400
-
     elif request.method == 'PUT':
-        data = request.form
+        data = request.json
         id = int(data.get('id'))
         result = user_controller.update(id, data)
         if result:
@@ -31,7 +23,7 @@ def user_handle():
             return {'status': 1, 'error': 'can not update'}, 400
 
     elif request.method == 'DELETE':
-        id = request.args.get('id')
+        id = request.json.get('id')
         result = user_controller.delete(id)
         if result:
             return {'status': 0}, 200

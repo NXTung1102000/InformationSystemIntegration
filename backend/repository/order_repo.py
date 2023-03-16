@@ -1,13 +1,17 @@
 from models.order import Order, db
 
+
 def find_all():
     return Order.query.all()
 
 def find_by_id(id):
     return Order.query.filter_by(id=id).first()
 
+def find_by_id_and_user_id(id, user_id):
+    return Order.query.filter_by(id=id, user_id=user_id).first()
+
 def find_by_user_id(user_id):
-    return Order.query.filter_by(user_id=user_id).all()
+    return Order.query.filter_by(user_id=user_id).order_by(Order.created_date.desc()).all()
 
 # By phone
 def find_by_phone(phone):
@@ -21,14 +25,9 @@ def find_by_email(email):
 def find_by_order_state_id(order_state_id):
     return Order.query.filter_by(order_state_id=order_state_id).all()
 
-# Get accounts in order
-# By name (1: ascending, 2:descending)
-def get_order_by_name(type=1):
-    if type == 1:
-        return Order.query.order_by(Order.name.asc())
-    else:   
-        return Order.query.order_by(Order.name.desc())
-    
+def find_by_order_state_id_and_user_id(order_state_id, user_id):
+    return Order.query.filter_by(order_state_id=order_state_id, user_id=user_id).all()
+
 # By user_id (1: ascending, 2:descending)
 def get_order_by_user_id(type=1):
     if type == 1:
@@ -49,7 +48,7 @@ def insert(json_data):
         order = Order.from_json(json_data)
         db.session.add(order)
         db.session.commit()
-        return order
+        return order.id
     except:
         return False
 
