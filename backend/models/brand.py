@@ -7,7 +7,7 @@ class Brand(db.Model):
     id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
     name = db.Column('name', db.VARCHAR(50))
     detail = db.Column('detail', db.Text)
-    image = db.Column('image', db.VARCHAR(255))
+    image = db.Column('image', db.Text)
     is_activated = db.Column('is_activated', db.Integer, nullable=False)
 
 

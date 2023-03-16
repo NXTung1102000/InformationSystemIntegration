@@ -1,13 +1,15 @@
 from flask import request, jsonify
 from config import *
 from init_app import app
-from blueprints import product, system, order, user, voucher
+from blueprints import product, system, order, user, voucher, comment, category
 
 
 app.register_blueprint(product.mod)
 app.register_blueprint(system.mod)
 app.register_blueprint(order.mod)
 app.register_blueprint(user.mod)
+app.register_blueprint(voucher.mod)
+app.register_blueprint(comment.mod)
 
 
 if __name__ == '__main__':

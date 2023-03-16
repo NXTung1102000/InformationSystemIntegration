@@ -1,6 +1,7 @@
 from flask import Blueprint, request, g
 from controller import product_controller
 from middleware.auth import login_required
+import json
 
 
 mod = Blueprint('product', __name__, url_prefix='/product')
@@ -11,7 +12,7 @@ def product_handle():
     if request.method == 'GET':
         id = request.args.get('id')
         list_product = product_controller.get(id)
-        return {'data': list_product}
+        return {'data': list_product}, 200
 
     elif request.method == 'POST':
         data = request.json

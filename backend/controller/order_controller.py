@@ -49,9 +49,17 @@ def get_order_by_state(order_state_id):
     return list_order
 
 
+def get_all_order():
+    return 
+
+
 def add(data):
     try:
         user_id = g.user.id
+        data['name'] = g.user.name
+        data['phone'] = g.user.phone
+        data['address'] = g.user.address
+        data['email'] = g.user.email
         data['user_id'] = user_id
         data['order_state_id'] = 1
         order_id = order_repo.insert(data)
