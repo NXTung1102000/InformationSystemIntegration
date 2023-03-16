@@ -8,6 +8,7 @@ from config import SQLALCHEMY_DATABASE_URI, SECRET_KEY
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['UPLOAD_FOLDER'] = 'F:\HUST\do_an_thiet_ke_HTTT\InformationSystemIntegration\data\Dataset1'
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'max_overflow': 30,
     'pool_size': 100
@@ -16,8 +17,7 @@ app.secret_key = SECRET_KEY
 
 CORS(app, resources={r"/*": {"origins": "*", "send_wildcard": "False"}})
 
-db = SQLAlchemy(app=app, session_options={
-                'autocommit': False, 'autoflush': False})
+db = SQLAlchemy(app=app, session_options={'autocommit': False, 'autoflush': False})
 
 migrate = Migrate(app, db)
 with app.app_context():
