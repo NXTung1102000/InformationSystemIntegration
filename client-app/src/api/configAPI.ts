@@ -1,8 +1,9 @@
+import { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
 import { getAccessToken } from "../util/localStorage";
 
-const axiosAPI = axios.create({
+const axiosAPI: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   responseType: "json",
   headers: {
@@ -12,9 +13,9 @@ const axiosAPI = axios.create({
 });
 
 axiosAPI.interceptors.request.use(
-  (config) => {
+  (config: AxiosRequestConfig) => {
     const accessToken = getAccessToken();
-    if (accessToken) {
+    if (accessToken && accessToken !== "null") {
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${accessToken}`,
@@ -22,17 +23,17 @@ axiosAPI.interceptors.request.use(
     }
     return config;
   },
-  function (error) {
+  function (error: AxiosError) {
     console.log(error);
     return Promise.reject(error);
   }
 );
 
 axiosAPI.interceptors.response.use(
-  (response) => {
+  (response: AxiosResponse) => {
     return response;
   },
-  async (error) => {
+  async (error: AxiosError) => {
     if (error.response) {
       if (error.response.status === 400) {
         // store.dispatch(setError(error.response.data));

@@ -2,16 +2,22 @@ import { AccountCircle } from "@mui/icons-material";
 import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useAppSelector } from "../../app/hooks";
+import { selectAuth } from "../../pages/LogIn_Register/AuthSlice";
+import LoginIcon from "@mui/icons-material/Login";
+import HistoryIcon from "@mui/icons-material/History";
 
 interface IProps {
   anchorEl: null | HTMLElement;
   handleMenuClose: () => void;
   openProfile: () => void;
+  openHistory: () => void;
   signOut: () => void;
   setOpenLogin: (open: boolean) => void;
 }
 
 export function MenuUser(props: IProps) {
+  const auth = useAppSelector(selectAuth);
   return (
     <Menu
       anchorEl={props.anchorEl}
@@ -27,9 +33,19 @@ export function MenuUser(props: IProps) {
       open={Boolean(props.anchorEl)}
       onClose={props.handleMenuClose}
     >
-      <MenuItem onClick={props.openProfile}>Profile</MenuItem>
-      <MenuItem onClick={props.signOut}>Log out</MenuItem>
-      <MenuItem onClick={() => props.setOpenLogin(true)}>Log in</MenuItem>
+      {auth.token && <MenuItem onClick={props.openProfile}>Profile</MenuItem>}
+      {auth.token && <MenuItem onClick={props.openHistory}>History</MenuItem>}
+      {auth.token && <MenuItem onClick={props.signOut}>Log out</MenuItem>}
+      {!auth.token && (
+        <MenuItem
+          onClick={() => {
+            props.setOpenLogin(true);
+            props.handleMenuClose();
+          }}
+        >
+          Log in
+        </MenuItem>
+      )}
     </Menu>
   );
 }
@@ -39,12 +55,14 @@ interface IPropsMobile {
   mobileMoreAnchorEl: null | HTMLElement;
   openProfile: () => void;
   signOut: () => void;
+  openHistory: () => void;
   setOpenLogin: (open: boolean) => void;
   handleMobileMenuClose: () => void;
   openCart: () => void;
 }
 
 export function MenuUserMobile(props: IPropsMobile) {
+  const auth = useAppSelector(selectAuth);
   return (
     <Menu
       anchorEl={props.mobileMoreAnchorEl}
@@ -68,31 +86,43 @@ export function MenuUserMobile(props: IPropsMobile) {
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      <MenuItem onClick={props.openProfile}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
+      {auth.token && (
+        <MenuItem onClick={props.openProfile}>
+          <IconButton size="large" color="inherit">
+            <AccountCircle />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      )}
+      {auth.token && (
+        <MenuItem onClick={props.openHistory}>
+          <IconButton size="large" color="inherit">
+            <HistoryIcon />
+          </IconButton>
+          <p>History</p>
+        </MenuItem>
+      )}
+      {auth.token && (
+        <MenuItem onClick={props.signOut}>
+          <IconButton size="large" color="inherit">
+            <LogoutIcon />
+          </IconButton>
+          <p>Log out</p>
+        </MenuItem>
+      )}
+      {!auth.token && (
+        <MenuItem
+          onClick={() => {
+            props.setOpenLogin(true);
+            props.handleMobileMenuClose();
+          }}
         >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-      <MenuItem onClick={props.signOut}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <LogoutIcon />
-        </IconButton>
-        <p>Log out</p>
-      </MenuItem>
-      <MenuItem onClick={() => props.setOpenLogin(true)}>Log in</MenuItem>
+          <IconButton size="large" color="inherit">
+            <LoginIcon />
+          </IconButton>
+          <p>Log in</p>
+        </MenuItem>
+      )}
     </Menu>
   );
 }

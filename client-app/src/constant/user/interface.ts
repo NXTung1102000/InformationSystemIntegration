@@ -4,6 +4,16 @@ export interface IInputUser {
   password: string;
 }
 
+export interface ICreateUser {
+  first_name: string;
+  last_name: string;
+  username: string;
+  password: string;
+  phone_number: string;
+  email: string;
+  address: string;
+}
+
 export interface IUser {
   id: number;
   username: string;
@@ -13,7 +23,7 @@ export interface IUser {
 }
 
 export interface IAuthState {
-  accessToken: string;
-  authority: ROLE;
+  token: string | null;
+  role: ROLE;
   user: IUser;
 }

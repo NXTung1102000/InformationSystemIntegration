@@ -1,6 +1,7 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Button, CardActions, Grid, Typography } from "@mui/material";
+<<<<<<< HEAD
 
 interface IProps {
   subtotal: number;
@@ -13,6 +14,78 @@ interface IProps {
 export default function OrderSummary(props: IProps) {
   return (
     <Card sx={{ position: "sticky", top: "1rem", minWidth: "275px" }} elevation={15}>
+=======
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { clearCart, selectCart } from "./CartSlice";
+import { ICartItem } from "../../../constant/cart/cart";
+import { calculateShipping, calculateVoucher } from "../../../constant/policy/policy";
+import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
+import { selectAuth } from "../../LogIn_Register/AuthSlice";
+import { submitOrder, IInputCart } from "../../../api/order";
+import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
+const distance = 1;
+
+export default function OrderSummary() {
+  const dispatch = useAppDispatch();
+  const nowCart = useAppSelector(selectCart);
+  const auth = useAppSelector(selectAuth);
+
+  const subTotal = nowCart.itemsList.reduce((total: number, item: ICartItem) => {
+    return total + item.price * item.quantityInCart;
+  }, 0);
+  const numTotal = nowCart.itemsList.reduce((total: number, item: ICartItem) => {
+    return total + item.quantityInCart;
+  }, 0);
+  const shippingFee = calculateShipping(distance);
+  const voucher = calculateVoucher(subTotal);
+  const total = subTotal + shippingFee - voucher;
+
+  const submit = () => {
+    if (!auth.token) {
+      dispatch(
+        changeNotice({
+          message: "sorry, You need to be logged in to continue ",
+          open: true,
+          type: "error",
+        })
+      );
+    } else {
+      dispatch(changeLoading(true));
+      const inputCart: IInputCart = {
+        data: [],
+      };
+      nowCart.itemsList.forEach((item) => {
+        const product = {
+          product_id: item.id,
+          quantity: item.quantityInCart,
+        };
+        inputCart.data.push(product);
+      });
+      submitOrder(inputCart)
+        .then((response) => {
+          return response.data;
+        })
+        .then((response) => {
+          if (response.status === 0) {
+            dispatch(changeNotice({ message: "successfully", open: true, type: "success" }));
+            dispatch(changeLoading(false));
+            dispatch(clearCart());
+          } else {
+            dispatch(changeLoading(false));
+            dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          dispatch(changeLoading(false));
+          dispatch(changeNotice({ message: "error server ... ", open: true, type: "error" }));
+        });
+    }
+  };
+
+  return (
+    <Card sx={{ position: "sticky", top: "1rem" }} elevation={5}>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
       <CardContent>
         <Typography>Shopping Cart</Typography>
         <Typography variant="h3" sx={{ fontWeight: "bold" }}>
@@ -26,19 +99,31 @@ export default function OrderSummary(props: IProps) {
             <Typography>SubTotal</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+<<<<<<< HEAD
             <Typography>{props.subtotal} vnd</Typography>
+=======
+            <Typography>{subTotal} vnd</Typography>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
             <Typography>Shipping</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+<<<<<<< HEAD
             <Typography> + {props.shipping} vnd</Typography>
+=======
+            <Typography> + {shippingFee} vnd</Typography>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
             <Typography>Voucher</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+<<<<<<< HEAD
             <Typography> - {props.voucher} vnd</Typography>
+=======
+            <Typography> - {voucher} vnd</Typography>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
           </Grid>
         </Grid>
         <Typography variant="subtitle2">
@@ -51,14 +136,23 @@ export default function OrderSummary(props: IProps) {
             </Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+<<<<<<< HEAD
             <Typography sx={{ fontWeight: "bold" }}>{props.total} vnd</Typography>
+=======
+            <Typography sx={{ fontWeight: "bold" }}>{total} vnd</Typography>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
           </Grid>
         </Grid>
       </CardContent>
 
       <CardActions>
+<<<<<<< HEAD
         <Button size="large" color="secondary">
           BUY NOW ({props.numItem})
+=======
+        <Button size="large" color="secondary" onClick={submit}>
+          BUY NOW ({numTotal})
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
         </Button>
       </CardActions>
     </Card>

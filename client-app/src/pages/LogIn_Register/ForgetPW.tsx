@@ -6,33 +6,73 @@ import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { forgetPasswordAPI } from "../../api/auth";
+import { useAppDispatch } from "../../app/hooks";
+import { changeNotice } from "../../component/LoadingAndNotice/noticeSlice";
+import {
+  handleChangeState,
+  IState,
+  messageOfEmail,
+  messageOfFieldIsNotEmpty,
+  validateState,
+} from "../../constant/validate/message";
+import { regexForEmail, regexForNotEmpty } from "../../constant/validate/regex";
 
-interface openForgetPW {
-  openForgetPW: boolean;
-  setOpenForgetPW: (open: boolean) => void;
+interface IOpenDialog {
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-export default function ForgetPW({ openForgetPW, setOpenForgetPW }: openForgetPW) {
-  const [email, setEmail] = React.useState("");
-  const [username, setUserName] = React.useState("");
+export default function ForgetPW({ open, setOpen }: IOpenDialog) {
+  const dispatch = useAppDispatch();
 
-  const validateEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate email
-    setEmail(event.target.value);
-  };
+  const [email, setEmail] = React.useState<IState>({ value: "", isError: false, message: messageOfEmail });
+  const [username, setUserName] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("Username"),
+  });
 
-  const validateUserName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate UserName
-    setUserName(event.target.value);
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
+
+  const resetState = () => {
+    setEmail({ ...email, value: "", isError: false });
+    setUserName({ ...username, value: "", isError: false });
+    setIsSubmitted(false);
   };
 
   const handleSubmit = async () => {
-    console.log(email);
+    if (!isSubmitted) setIsSubmitted(true);
+    const errEmail = validateState(email, setEmail, regexForEmail);
+    const errUsername = validateState(username, setUserName, regexForNotEmpty);
+    if (errEmail || errUsername) return;
+    forgetPasswordAPI(username.value, email.value)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          setOpen(false);
+          dispatch(changeNotice({ message: "New password was sent into your mail", open: true, type: "success" }));
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeNotice({ message: "Error server", open: true, type: "error" }));
+      });
   };
 
   return (
     <>
-      <Dialog open={openForgetPW} onClose={() => setOpenForgetPW(false)}>
+      <Dialog
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          resetState();
+        }}
+      >
         <DialogContent>
           <Box
             sx={{
@@ -49,25 +89,25 @@ export default function ForgetPW({ openForgetPW, setOpenForgetPW }: openForgetPW
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
+                    error={email.isError}
+                    helperText={email.isError ? email.message : ""}
                     required
                     fullWidth
-                    id="email"
                     label="Email Address"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(event) => validateEmail(event)}
+                    value={email.value}
+                    onChange={(event) => handleChangeState(email, setEmail, event.target.value, regexForEmail)}
                     autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    autoComplete="username"
+                    error={username.isError}
+                    helperText={username.isError ? username.message : ""}
                     required
                     fullWidth
-                    id="username"
                     label="User Name"
-                    value={username}
-                    onChange={(event) => validateUserName(event)}
+                    value={username.value}
+                    onChange={(event) => handleChangeState(username, setUserName, event.target.value, regexForNotEmpty)}
                     autoFocus
                   />
                 </Grid>

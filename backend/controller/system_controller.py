@@ -3,12 +3,17 @@ from controller.user_controller import *
 from utils.encode import encode, get_random_string
 
 
-def register_user(username, password, role=1):
+def register_user(user_data):
+    username = user_data.get('username')
+    password = user_data.get('password')
+
     user = find_by_username(username)
     if user:
         return {'status': 1, 'error': 'exist username'}, 400
     password = encode(password)
-    user_data = {'username': username, 'password': password, 'role': role}
+    user_data['password'] = password
+    if user_data.get('role') is None:
+        user_data['role'] = 2
     insert(user_data)
     
     return {'status': 0}
@@ -24,7 +29,7 @@ def login(username, password):
     data = {'token': token}
     update_by_id(user.id, data)
 
-    return {'status': 0, 'data': {'token': token}}
+    return {'status': 0, 'data': {'token': token, 'email': user.email, 'address': user.address, 'role': user.role}}
 
 
 def logout():

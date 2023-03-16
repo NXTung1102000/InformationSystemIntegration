@@ -12,11 +12,6 @@ def get(id=None):
         return list_product
 
 
-# def add(data):
-#     user_id = g.user.id
-#     return
-
-
 def add(data):
     try:
         insert(data)
@@ -45,3 +40,8 @@ def search_product(kwargs):
     list_product = search(kwargs)
     list_product = list(map(lambda x: x.to_full_json(), list_product))
     return list_product if list_product else []
+
+
+def static_category():
+    list_count = count_product_by_category()
+    return list_count

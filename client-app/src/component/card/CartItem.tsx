@@ -2,6 +2,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 // import { CardActionArea, CardActions } from "@mui/material";
+<<<<<<< HEAD
 import { Grid, Typography, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -23,6 +24,31 @@ export default function CartItem() {
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
             <Typography>Item Name</Typography>
+=======
+import { Grid, Typography, Button, Box, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { ICartItem } from "../../constant/cart/cart";
+import { useAppDispatch } from "../../app/hooks";
+import { decreaseCount, increaseCount, removeFromCart } from "../../pages/user/cart/CartSlice";
+
+export default function CartItem(props: ICartItem) {
+  const dispatch = useAppDispatch();
+  return (
+    <Card sx={{ display: "flex", margin: "1rem 0 0 0" }}>
+      <CardMedia sx={{ flexGrow: 1, maxWidth: "40%", height: "200px" }} component="img" image={props.image} />
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Grid container>
+          <Grid item xs={6} sm={6} md={6} lg={6}>
+            <Typography>{props.category}</Typography>
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button color="secondary" startIcon={<DeleteIcon />} onClick={() => dispatch(removeFromCart(props.id))} />
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6}>
+            <Typography>{props.name}</Typography>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
           </Grid>
         </Grid>
         <Typography variant="subtitle2">
@@ -31,22 +57,45 @@ export default function CartItem() {
 
         <Grid container>
           <Grid item xs={6} sm={6} md={6} lg={6}>
+<<<<<<< HEAD
             <Typography>Quantity</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Typography>1</Typography>
+=======
+            <Typography>Quantity In Cart</Typography>
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Box display="flex" alignItems="center">
+              <IconButton onClick={() => dispatch(decreaseCount(props.id))}>
+                <RemoveIcon />
+              </IconButton>
+              <Typography>{props.quantityInCart}</Typography>
+              <IconButton onClick={() => dispatch(increaseCount(props.id))}>
+                <AddIcon />
+              </IconButton>
+            </Box>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
             <Typography sx={{ fontWeight: "bold" }}>Price</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+<<<<<<< HEAD
             <Typography>{20000000} vnd</Typography>
+=======
+            <Typography>{props.price} vnd</Typography>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
             <Typography sx={{ fontWeight: "bold" }}>Total</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+<<<<<<< HEAD
             <Typography color="secondary">{20000000} vnd</Typography>
+=======
+            <Typography color="secondary">{props.price * props.quantity} vnd</Typography>
+>>>>>>> 857ec8e0ab0a12cc3d9c465605afc1c5413be04b
           </Grid>
         </Grid>
       </CardContent>

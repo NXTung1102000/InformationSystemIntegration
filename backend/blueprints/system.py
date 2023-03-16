@@ -9,9 +9,8 @@ mod = Blueprint('auth', __name__)
 
 @mod.route('/register', methods=['POST'])
 def register():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    return system_controller.register_user(username, password)
+    data = request.json
+    return system_controller.register_user(data)
 
 
 @mod.route('/login', methods=['POST'])

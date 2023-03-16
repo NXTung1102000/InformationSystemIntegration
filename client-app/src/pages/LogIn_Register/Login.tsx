@@ -13,43 +13,82 @@ import Avatar from "@mui/material/Avatar";
 import Register from "./Register";
 import ForgetPW from "./ForgetPW";
 import { FormControlLabel } from "@mui/material";
-interface openLogIn {
-  openLogin: boolean;
-  setOpenLogin: (open: boolean) => void;
+import { loginAPI } from "../../api/auth";
+import { useAppDispatch } from "../../app/hooks";
+import { LogInUser } from "./AuthSlice";
+import { changeNotice } from "../../component/LoadingAndNotice/noticeSlice";
+import { handleChangeState, IState, messageOfFieldIsNotEmpty, validateState } from "../../constant/validate/message";
+import { regexForNotEmpty } from "../../constant/validate/regex";
+interface IOpenDialog {
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+export default function LogIn({ open, setOpen }: IOpenDialog) {
+  const dispatch = useAppDispatch();
+  const [username, setUserName] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("Username"),
+  });
+  const [password, setPassword] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfFieldIsNotEmpty("Password"),
+  });
   const [remember, setRemember] = React.useState(false);
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
 
   const [openRegister, setOpenRegister] = React.useState(false);
   const [openForgetPW, setOpenForgetPW] = React.useState(false);
-
-  const validateEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate email
-    setEmail(event.target.value);
-  };
-
-  const validatePassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // validate password
-    setPassword(event.target.value);
-  };
 
   const handleRemember = (event: React.ChangeEvent<HTMLInputElement>) => {
     // validate password
     setRemember(event.target.checked);
   };
 
+  const resetState = () => {
+    setUserName({ ...username, value: "", isError: false });
+    setPassword({ ...password, value: "", isError: false });
+    setIsSubmitted(false);
+  };
+
   const handleSubmit = async () => {
-    console.log(email, password, remember);
+    if (!isSubmitted) setIsSubmitted(true);
+    const errUsername = validateState(username, setUserName, regexForNotEmpty);
+    const errPW = validateState(password, setPassword, regexForNotEmpty);
+    if (errUsername || errPW) return;
+    const credentials = { username: username.value, password: password.value };
+    loginAPI(credentials)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          const user = response.data;
+          dispatch(LogInUser(user));
+          setOpen(false);
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+      });
   };
 
   return (
     <>
-      <Register openRegister={openRegister} setOpenRegister={setOpenRegister} />
-      <ForgetPW openForgetPW={openForgetPW} setOpenForgetPW={setOpenForgetPW} />
-      <Dialog open={openLogin} onClose={() => setOpenLogin(false)}>
+      <Register open={openRegister} setOpen={setOpenRegister} />
+      <ForgetPW open={openForgetPW} setOpen={setOpenForgetPW} />
+      <Dialog
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          resetState();
+        }}
+      >
         <DialogContent>
           <Box
             sx={{
@@ -67,28 +106,28 @@ export default function LogIn({ openLogin, setOpenLogin }: openLogIn) {
             </Typography>
             <Box sx={{ mt: 1 }}>
               <TextField
+                error={username.isError}
+                helperText={username.isError ? username.message : ""}
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                label="Username"
+                name="username"
                 autoFocus
-                value={email}
-                onChange={(event) => validateEmail(event)}
+                value={username.value}
+                onChange={(event) => handleChangeState(username, setUserName, event.target.value, regexForNotEmpty)}
               />
               <TextField
+                error={password.isError}
+                helperText={password.isError ? password.message : ""}
                 margin="normal"
                 required
                 fullWidth
                 name="password"
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(event) => validatePassword(event)}
+                value={password.value}
+                onChange={(event) => handleChangeState(password, setPassword, event.target.value, regexForNotEmpty)}
               />
               <FormControlLabel
                 control={<Checkbox value={remember} color="primary" onChange={handleRemember} />}
