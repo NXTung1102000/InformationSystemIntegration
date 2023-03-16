@@ -25,7 +25,7 @@ const submitOrder = async (inputCart: IInputCart) => {
   return result;
 };
 
-const updateOrder = async (order_id: number, status: string) => {
+const updateOrder = async (order_id: number, status: number) => {
   const result = await api({
     method: "PUT",
     url: "/order/update-status",

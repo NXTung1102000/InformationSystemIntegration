@@ -1,14 +1,16 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getOrderOfCurrentUser } from "../../../api/order";
+import { getOrderOfCurrentUser, updateOrder } from "../../../api/order";
 import { useAppDispatch } from "../../../app/hooks";
 import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
 import TableComponent from "../../../component/table/TableComponent";
 import { dateToString } from "../../../util/convertDateTime";
-import { colorStatus, getAllNameProduct } from "../../../util/utilsForOrder";
+import { colorStatus, getAllNameProduct, getNameStatus } from "../../../util/utilsForOrder";
 import { IResponseHistory } from "./responseData";
-
-const header = ["ID - Order", "Date", "Total (vnd)", "Status", "Detail"];
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+import { USER } from "../../../constant/order/status";
+import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
+const header = ["ID - Order", "Date", "Total (vnd)", "Status", "Detail", "Action"];
 
 const initData: IResponseHistory[] = [];
 
@@ -30,25 +32,45 @@ export default function HistoryOrder() {
         console.log(error);
       });
   }, [dispatch]);
+
+  const renderAction = (status: number, order_id: number) => {
+    if ((status as USER) === USER.DELIVERING) {
+      return (
+        <Button variant="contained" color="error" size="small" onClick={() => handleReturnProduct(order_id)}>
+          <KeyboardReturnIcon />
+        </Button>
+      );
+    }
+    return <></>;
+  };
+
+  const handleReturnProduct = (order_id: number) => {
+    updateOrder(order_id, USER.CANCEL)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          dispatch(changeNotice({ message: "update successfully", open: true, type: "success" }));
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+      });
+  };
+
   const mapData = () => {
     return data?.map((item) => {
       return {
-        ID: item.cart_id,
-        Date: dateToString(new Date(item.created_at)),
+        ID: item.id,
+        Date: dateToString(new Date(item.created_date)),
         total: item.total,
-        status: <Box color={colorStatus(item.status)}>{item.status}</Box>,
-        detail: (
-          <Box
-            sx={{
-              display: "flex",
-              height: "1.5rem",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {getAllNameProduct(item.data)}
-          </Box>
-        ),
+        status: <Box color={colorStatus(item.order_state_id)}>{getNameStatus(item.order_state_id)}</Box>,
+        detail: <Box>{getAllNameProduct(item.data)}</Box>,
+        action: <Box>{renderAction(item.order_state_id, item.id)}</Box>,
       };
     });
   };

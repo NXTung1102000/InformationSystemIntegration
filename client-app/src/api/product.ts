@@ -2,8 +2,10 @@ import { ICreateProduct, IUpdateProduct } from "../constant/product/interface";
 import { axiosAPI as api } from "./configAPI";
 
 interface IParams {
-  keyword: string | null;
-  category: string | null;
+  keyword: string | null | undefined;
+  category: string | null | undefined;
+  price_min: string | null | undefined;
+  price_max: string | null | undefined;
 }
 
 const searchProduct = async (params: IParams) => {
@@ -13,7 +15,7 @@ const searchProduct = async (params: IParams) => {
   keys.forEach((key) => {
     const value = params[key as keyof IParams];
     if (value) {
-      url += `${key}=${value}`;
+      url += `&${key}=${value}`;
     }
   });
   const result = await api({

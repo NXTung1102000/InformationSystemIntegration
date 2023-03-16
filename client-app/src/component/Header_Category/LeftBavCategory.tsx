@@ -65,7 +65,7 @@ export default function LeftBavCategory(props: IProps) {
           ))}
         </List>
         <Divider />
-        {(auth.role === 1 || auth.role === 0 || true) && (
+        {(auth.role === 1 || auth.role === 2) && (
           <>
             <List>
               {listTabSeller.map((tab) => (
@@ -87,7 +87,7 @@ export default function LeftBavCategory(props: IProps) {
             <Divider />
           </>
         )}
-        {(auth.role === 0 || true) && (
+        {auth.role === 1 && (
           <>
             <List>
               <ListItem disablePadding sx={{ display: "block" }} onClick={() => setOpenPolicy(true)}>

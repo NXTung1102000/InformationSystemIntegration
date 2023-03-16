@@ -15,7 +15,7 @@ import React from "react";
 import { changePolicyAPI } from "../../api/policy";
 import { useAppDispatch } from "../../app/hooks";
 import { changeNotice } from "../../component/LoadingAndNotice/noticeSlice";
-import { TYPE_POLICY } from "../../constant/policy/policy";
+import { IInputPolicy, TYPE_POLICY } from "../../constant/policy/policy";
 
 interface IOpenDialog {
   open: boolean;
@@ -27,6 +27,7 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
 
   const [type, setType] = React.useState(TYPE_POLICY.FIXED);
   const [value, setValue] = React.useState(1);
+  const [threshold, setThreshold] = React.useState(1);
 
   const handleChangeValue = (value: number) => {
     if (value < 1) setValue(1);
@@ -35,24 +36,28 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
     } else setValue(value);
   };
 
+  const handleChangeThreshold = (threshold: number) => {
+    if (threshold < 1) setThreshold(1);
+    else setThreshold(threshold);
+  };
+
   React.useEffect(() => {
-    if (value < 1) setValue(1);
-    else if (type === TYPE_POLICY.PERCENT && value > 100) {
-      setValue(100);
+    if (type === TYPE_POLICY.FIXED && threshold < value) {
+      setThreshold(value);
     }
-  }, [type, value]);
+  }, [threshold, type, value]);
 
   const handleSubmit = async () => {
     const policy = { type, value };
     console.log(policy);
-    changePolicyAPI()
+    changePolicyAPI({ threshold, value, voucher_type_id: type } as IInputPolicy)
       .then((req) => {
         return req.data;
       })
       .then((response) => {
         if (response.status === 0) {
           setOpen(false);
-          dispatch(changeNotice({ message: "sign up successfully", open: true, type: "success" }));
+          dispatch(changeNotice({ message: "update policy successfully", open: true, type: "success" }));
         } else {
           dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
         }
@@ -89,8 +94,8 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
                 <FormControl fullWidth>
                   <InputLabel>Policy</InputLabel>
                   <Select value={type} label="Policy" onChange={(event) => setType(event.target.value as TYPE_POLICY)}>
-                    <MenuItem value={TYPE_POLICY.FIXED}>{TYPE_POLICY.FIXED}</MenuItem>
-                    <MenuItem value={TYPE_POLICY.PERCENT}>{TYPE_POLICY.PERCENT}</MenuItem>
+                    <MenuItem value={TYPE_POLICY.FIXED}>FIXED</MenuItem>
+                    <MenuItem value={TYPE_POLICY.PERCENT}>PERCENT</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -102,6 +107,17 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
                   label="Value"
                   value={value}
                   onChange={(event) => handleChangeValue(event.target.value as unknown as number)}
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type={"number"}
+                  required
+                  fullWidth
+                  label="Threshold"
+                  value={threshold}
+                  onChange={(event) => handleChangeThreshold(event.target.value as unknown as number)}
                   autoFocus
                 />
               </Grid>

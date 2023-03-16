@@ -31,10 +31,19 @@ const forgetPasswordAPI = async (username: string, email: string) => {
 const changePasswordAPI = async (oldPW: string, newPW: string) => {
   const result = await api({
     method: "POST",
-    url: "/forget-pw",
+    url: "/change-password",
     data: { oldPW, newPW },
   });
   return result;
 };
 
-export { registerAPI, loginAPI, forgetPasswordAPI, changePasswordAPI };
+const createAccountSeller = async (createInfo: ICreateUser) => {
+  const createResult = await api({
+    method: "POST",
+    url: "/create_account",
+    data: createInfo,
+  });
+  return createResult;
+};
+
+export { registerAPI, loginAPI, forgetPasswordAPI, changePasswordAPI, createAccountSeller };

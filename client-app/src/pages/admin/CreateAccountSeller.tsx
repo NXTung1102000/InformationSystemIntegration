@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { registerAPI } from "../../api/auth";
+import { createAccountSeller, registerAPI } from "../../api/auth";
 import { useAppDispatch } from "../../app/hooks";
 import { changeNotice } from "../../component/LoadingAndNotice/noticeSlice";
 import { regexForNotEmpty, regexForEmail, regexForPW, regexForPhone } from "../../constant/validate/regex";
@@ -100,22 +100,22 @@ export default function CreateAccountSeller({ open, setOpen }: IOpenDialog) {
       password: password.value,
       address: address.value,
     };
-    // callAPI(credentials)
-    //   .then((req) => {
-    //     return req.data;
-    //   })
-    //   .then((response) => {
-    //     if (response.status === 0) {
-    //       setOpen(false);
-    //       dispatch(changeNotice({ message: "create successfully", open: true, type: "success" }));
-    //     } else {
-    //       dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
-    //   });
+    createAccountSeller(credentials)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          setOpen(false);
+          dispatch(changeNotice({ message: "create successfully", open: true, type: "success" }));
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+      });
   };
 
   return (

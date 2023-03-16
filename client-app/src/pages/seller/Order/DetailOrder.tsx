@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardActions, CardContent, List, Typography } from "@mui/material";
-import { colorStatus, getAllNameProduct } from "../../../util/utilsForOrder";
+import { colorStatus, getAllNameProduct, getNameStatus } from "../../../util/utilsForOrder";
 import { dateToString } from "../../../util/convertDateTime";
 import { IResponseHistory } from "../../user/HistoryOrder/responseData";
 import React from "react";
@@ -8,100 +8,10 @@ import { updateOrder } from "../../../api/order";
 import { useAppDispatch } from "../../../app/hooks";
 import { changeNotice, INotice } from "../../../component/LoadingAndNotice/noticeSlice";
 
-const exampleData: IResponseHistory[] = [
-  {
-    cart_id: 1,
-    created_at: "Thu, 16 Feb 2023 00:17:21 GMT",
-    data: [
-      {
-        product_id: 1,
-        product_name: "ASUS TUF504",
-        quantity: 2,
-      },
-      {
-        product_id: 2,
-        product_name: "Rank",
-        quantity: 3,
-      },
-    ],
-    first_name: "Tung",
-    id: 1,
-    last_name: "Nguyen",
-    status: "delivered",
-    total: 20754330.0,
-    user_id: 1,
-  },
-  {
-    cart_id: 2,
-    created_at: "Thu, 16 Feb 2023 00:17:21 GMT",
-    data: [
-      {
-        product_id: 1,
-        product_name: "ASUS TUF504",
-        quantity: 2,
-      },
-      {
-        product_id: 2,
-        product_name: "Rank",
-        quantity: 3,
-      },
-    ],
-    first_name: "Tung",
-    id: 1,
-    last_name: "Nguyen",
-    status: "delivering",
-    total: 20754330.0,
-    user_id: 1,
-  },
-  {
-    cart_id: 3,
-    created_at: "Thu, 16 Feb 2023 00:17:21 GMT",
-    data: [
-      {
-        product_id: 1,
-        product_name: "ASUS TUF504",
-        quantity: 2,
-      },
-      {
-        product_id: 2,
-        product_name: "Rank",
-        quantity: 3,
-      },
-    ],
-    first_name: "Tung",
-    id: 1,
-    last_name: "Nguyen",
-    status: "rejected",
-    total: 20754330.0,
-    user_id: 1,
-  },
-  {
-    cart_id: 4,
-    created_at: "Thu, 16 Feb 2023 00:17:21 GMT",
-    data: [
-      {
-        product_id: 1,
-        product_name: "ASUS TUF504",
-        quantity: 2,
-      },
-      {
-        product_id: 2,
-        product_name: "Rank",
-        quantity: 3,
-      },
-    ],
-    first_name: "Tung",
-    id: 1,
-    last_name: "Nguyen",
-    status: "returned",
-    total: 20754330.0,
-    user_id: 1,
-  },
-];
 const handleChangeStatus = (order_id: number, status: USER, dispatchStatus: (payload: INotice) => void) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   console.log(order_id, status);
-  updateOrder(order_id, status as string)
+  updateOrder(order_id, status)
     .then((req) => {
       return req.data;
     })
@@ -118,7 +28,7 @@ const handleChangeStatus = (order_id: number, status: USER, dispatchStatus: (pay
     });
 };
 
-const renderButton = (order_id: number, pre_status: string, dispatchStatus: (payload: INotice) => void) => {
+const renderButton = (order_id: number, pre_status: number, dispatchStatus: (payload: INotice) => void) => {
   switch (pre_status) {
     case USER.DELIVERED:
       return (
@@ -128,7 +38,7 @@ const renderButton = (order_id: number, pre_status: string, dispatchStatus: (pay
             color={"warning"}
             onClick={() => handleChangeStatus(order_id, USER.RETURNED, dispatchStatus)}
           >
-            {USER.RETURNED}
+            {getNameStatus(USER.RETURNED)}
           </Button>
         </>
       );
@@ -140,20 +50,20 @@ const renderButton = (order_id: number, pre_status: string, dispatchStatus: (pay
             color={"success"}
             onClick={() => handleChangeStatus(order_id, USER.DELIVERED, dispatchStatus)}
           >
-            {USER.DELIVERED}
+            {getNameStatus(USER.DELIVERED)}
           </Button>
           <Button
             variant="contained"
             color={"error"}
             onClick={() => handleChangeStatus(order_id, USER.REJECTED, dispatchStatus)}
           >
-            {USER.REJECTED}
+            {getNameStatus(USER.REJECTED)}
           </Button>
         </>
       );
     case USER.REJECTED:
-      return <></>;
     case USER.RETURNED:
+    case USER.CANCEL:
       return <></>;
     default:
       break;
@@ -163,7 +73,7 @@ const renderButton = (order_id: number, pre_status: string, dispatchStatus: (pay
 const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice) => void) => {
   return data?.map((item) => {
     return (
-      <Card key={item.cart_id} sx={{ margin: "0 0 1rem 0" }}>
+      <Card key={item.id} sx={{ margin: "0 0 1rem 0" }}>
         <CardContent>
           <Typography gutterBottom variant="h4" component="div">
             {`${item.first_name} ${item.last_name}`}
@@ -171,7 +81,7 @@ const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box>
               <Typography variant="body2" color="text.secondary">
-                {`Date: ${dateToString(new Date(item.created_at))}`}
+                {`Date: ${dateToString(new Date(item.created_date))}`}
               </Typography>
               <Box
                 sx={{
@@ -185,8 +95,8 @@ const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice
               </Box>
             </Box>
             <Box>
-              <Typography sx={{ color: `${colorStatus(item.status)}`, textTransform: "uppercase" }}>
-                {item.status}
+              <Typography sx={{ color: `${colorStatus(item.order_state_id)}`, textTransform: "uppercase" }}>
+                {item.order_state_id}
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography sx={{ margin: "0 .5rem 0 0" }}>Total Order: </Typography>{" "}
@@ -198,7 +108,7 @@ const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice
           </Box>
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
-          {renderButton(item.cart_id, item.status, dispatchStatus)}
+          {renderButton(item.id, item.order_state_id, dispatchStatus)}
         </CardActions>
       </Card>
     );
@@ -207,7 +117,7 @@ const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice
 
 export default function DetailOrder() {
   const dispatch = useAppDispatch();
-  const [data, setData] = React.useState<IResponseHistory[]>(exampleData);
+  const [data, setData] = React.useState<IResponseHistory[]>([]);
   const dispatchStatus = (payload: INotice) => {
     dispatch(changeNotice(payload));
   };

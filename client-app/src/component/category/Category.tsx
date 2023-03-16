@@ -23,7 +23,7 @@ export default function Category(props: ICategory) {
               price={card.price}
               description={card.description}
               star={card.star}
-              image={card.image}
+              image={`http://localhost:5000/show?filename=${card.image}`}
               category={props.name}
               quantity={card.quantity}
               quantityInCart={card.quantityInCart}
