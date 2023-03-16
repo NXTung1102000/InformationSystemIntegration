@@ -10,7 +10,7 @@ mydb = mysql.connector.connect(
 )
 
 
-file_path = 'F:/HUST/do_an_thiet_ke_HTTT/InformationSystemIntegration\data\Dataset1/Account.json'
+file_path = 'F:/HUST/do_an_thiet_ke_HTTT/InformationSystemIntegration\data\Dataset1/Brand.json'
 file = open(file_path, 'r', encoding='utf-8')
 data = json.load(file)
 
@@ -90,35 +90,47 @@ for i, item in enumerate(data):
     #     item['created_date'],
     # ]
 
-    first_name, last_name = item['name'].rsplit(' ', 1)
-    item['first_name'] = first_name
-    item['last_name'] = last_name
+    # first_name, last_name = item['name'].rsplit(' ', 1)
+    # item['first_name'] = first_name
+    # item['last_name'] = last_name
     
-    import string
-    import random
+    # import string
+    # import random
+    # import base64
+    
+    # N = 8
+    # pw = ''.join(random.choices(string.ascii_uppercase +
+    #                             string.digits, k=N))
+    # item['password'] = base64.b64encode(pw.encode("utf-8"))
+    # item['score'] *= 10
+    # data = [
+    #     item['id'],
+    #     item['username'],
+    #     item['password'],
+    #     item['role'],
+    #     item['name'],
+    #     item['address'],
+    #     item['phone'],
+    #     item['email'],
+    #     item['created_by'],
+    #     item['created_date'],
+    #     item['score'],
+    #     item['is_activated'],
+    #     item['first_name'],
+    #     item['last_name'],
+    # ]
+
     import base64
-    
-    N = 8
-    pw = ''.join(random.choices(string.ascii_uppercase +
-                                string.digits, k=N))
-    item['password'] = base64.b64encode(pw.encode("utf-8"))
-    item['score'] *= 10
+    with open('data/Dataset1/' + item['image'], "rb") as img_file:
+        item['image'] = base64.b64encode(img_file.read())
     data = [
         item['id'],
-        item['username'],
-        item['password'],
-        item['role'],
         item['name'],
-        item['address'],
-        item['phone'],
-        item['email'],
-        item['created_by'],
-        item['created_date'],
-        item['score'],
+        item['detail'],
+        item['image'],
         item['is_activated'],
-        item['first_name'],
-        item['last_name'],
     ]
+
     val.append(data)
 
 print(val[-1])
@@ -130,7 +142,8 @@ mycursor = mydb.cursor()
 # sql = f"""INSERT INTO product (id, name, description, detail, specification, price, promotion_price, image, list_images, product_category_id, created_by, created_date, meta_keywords, meta_descriptions, meta_title, warranty, is_included_vat, brand_id, view_count, quantity, is_activated, endpoint) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 # sql = f"""INSERT INTO `order` (id, user_id, name, phone, address, email, order_state_id, note, created_date, updated_state_by, updated_state_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 # sql = f"""INSERT INTO `product_review` (id, user_id, product_id, star, list_images, content, created_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-sql = f"""INSERT INTO `user` (id, username, password, role, name, address, phone, email, created_by, created_date, score, is_activated, first_name, last_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+# sql = f"""INSERT INTO `user` (id, username, password, role, name, address, phone, email, created_by, created_date, score, is_activated, first_name, last_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+sql = f"""INSERT INTO `brand` (id, name, detail, image, is_activated) VALUES (%s, %s, %s, %s, %s)"""
 mycursor.executemany(sql, val)
 # mycursor.execute(sql, val[0])
 

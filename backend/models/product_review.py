@@ -9,11 +9,11 @@ class ProductReview(db.Model):
     id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column('user_id', db.Integer, nullable=False)
     product_id = db.Column('product_id', db.Integer, nullable=False)
-    star = db.Column('star', db.Integer, nullable=False)
+    star = db.Column('star', db.Float)
     list_images = db.Column('list_images', db.Text)
     content = db.Column('content', db.Text, nullable=False)
     created_date = db.Column('created_date', db.DateTime, default=datetime.now(), nullable=False)
-    updated_date = db.Column('updated_date', db.DateTime, nullable=True)
+    updated_date = db.Column('updated_date', db.DateTime)
 
 
     def __init__(self, **kwargs):
