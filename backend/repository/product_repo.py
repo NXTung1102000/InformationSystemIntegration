@@ -91,7 +91,7 @@ def delete_by_id(id):
 
 
 def count_product_by_category():
-    category = product_category_repo.find_all()
+    # category = product_category_repo.find_all()
     data_count = db.session.query(Product.product_category_id, func.count(Product.product_category_id)).group_by(Product.product_category_id).all()
     return data_count
 
@@ -100,6 +100,10 @@ def search(kwargs):
     base = Product.query
     if kwargs.get('product_category_id'):
         base = base.filter(Product.product_category_id == kwargs['product_category_id'])
+
+    if kwargs.get('name'):
+        clause = '%'+kwargs['name']+'%'
+        base = base.filter(Product.meta_keywords.like(clause)).distinct()
     # if kwargs.get('from_date'):
     #     base = base.filter(Product.date == kwargs['category'])
     # if kwargs.get('star'):
@@ -113,5 +117,10 @@ def search(kwargs):
             base = base.order_by(Product.price.desc())
         elif kwargs.get('sort_by_price') == 'asc':
             base = base.order_by(Product.price.asc())
+
+    if kwargs.get('special'):
+        pass
+    else:
+        base = base.order_by(Product.created_date.desc())
 
     return base.all()
