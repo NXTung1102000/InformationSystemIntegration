@@ -1,4 +1,4 @@
-from models.productCategory import ProductCategory, db
+from models.product_category import ProductCategory, db
 from sqlalchemy import func
 
 # Get all accounts

@@ -31,3 +31,10 @@ def change_password():
     username = request.json.get('username')
     new_password = request.json.get('new_password')
     return system_controller.change_password(username, new_password)
+
+
+@mod.route('/create_account', methods=['POST'])
+def create_account():
+    data = request.json
+    data['role'] = 2
+    return system_controller.register_user(data)

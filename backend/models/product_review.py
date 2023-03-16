@@ -4,16 +4,15 @@ from datetime import datetime
 
 
 class ProductReview(db.Model):
-    __tablename__ = 'productReview'
+    __tablename__ = 'product_review'
 
     id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
-    account_id = db.Column('account_id', db.Integer, nullable=False)
+    user_id = db.Column('user_id', db.Integer, nullable=False)
     product_id = db.Column('product_id', db.Integer, nullable=False)
     star = db.Column('star', db.Integer, nullable=False)
     list_images = db.Column('list_images', db.Text)
     content = db.Column('content', db.Text, nullable=False)
-    created_date = db.Column('created_date', db.DateTime,
-                             default=datetime.now(), nullable=False)
+    created_date = db.Column('created_date', db.DateTime, default=datetime.now(), nullable=False)
     updated_date = db.Column('updated_date', db.DateTime, nullable=True)
 
 
@@ -23,7 +22,7 @@ class ProductReview(db.Model):
     def to_full_json(self):
         json_token = {
             'id': self.id,
-            'account_id': self.account_id,
+            'user_id': self.user_id,
             'product_id': self.product_id,
             'star': self.star,
             'list_images': self.list_images,
@@ -35,7 +34,7 @@ class ProductReview(db.Model):
 
     @staticmethod
     def from_json(json_post):
-        account_id = json_post.get('account_id')
+        user_id = json_post.get('user_id')
         product_id = json_post.get('product_id')
         star = json_post.get('star')
         list_images = json.dumps(json_post.get('list_images'))
@@ -44,7 +43,7 @@ class ProductReview(db.Model):
         updated_date = json_post.get('updated_date')
 
         productReview_return = ProductReview(
-            account_id=account_id,
+            user_id=user_id,
             product_id=product_id,
             star=star,
             list_images=list_images,

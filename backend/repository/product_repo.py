@@ -1,4 +1,5 @@
 from models.product import Product, db
+from repository import product_category_repo
 from sqlalchemy import func
 
 
@@ -15,25 +16,9 @@ def find_by_name(name):
 
 # Get accounts by filtering
 # By category
-def find_by_category(product_category):
-    product_category = product_category.lower()
-    if (product_category == "laptop") | (product_category == "máy tính xách tay"):
-        product_category_id = 1
-    elif (product_category == "mobile") | (product_category == "điện thoại"):
-        product_category_id = 2
-    elif (product_category == "mouse") | (product_category == "chuột"):
-        product_category_id = 3
-    elif (product_category == "keyboard") | (product_category == "bàn phím"):
-        product_category_id = 4
-    elif (product_category == "gear") | (product_category == "thiết bị, phụ kiện máy tính"):
-        product_category_id = 5
-    elif (product_category == "pc gaming") | (product_category == "máy tính gaming"):
-        product_category_id = 6
-    elif (product_category == "monitor") | (product_category == "màn hình"):
-        product_category_id = 7
-    else:
-        product_category_id = 8
+def find_by_category(product_category_id):
     return Product.query.filter_by(product_category_id=product_category_id).all()
+
 # By keywords (not check)
 def find_by_keywords(keywords):
     for kw in keywords:
@@ -41,25 +26,26 @@ def find_by_keywords(keywords):
         results = Product.query.filter(
             Product.meta_keywords.like(clause)).distinct().all()
     return results
+
 # By price between (minPrice, maxPrice)
 def find_by_price(minPrice=0, maxPrice=99999999999):
     return Product.query.filter(Product.price >= minPrice, Product.price <= maxPrice).all()
 
 # Get products in order
 # By name (1: ascending, 2:descending)
-def get_order_by_name(type):
+def get_order_by_name(type=1):
     if type == 1:
         return Product.query.order_by(Product.name.asc())
     else:   
         return Product.query.order_by(Product.name.desc())
 # By price (1: ascending, 2:descending)
-def get_order_by_score(type):
+def get_order_by_price(type=1):
     if type == 1:
         return Product.query.order_by(Product.price.asc())
     else:   
         return Product.query.order_by(Product.price.desc())
 # By warranty (1: ascending, 2:descending)
-def get_order_by_warranty(type):
+def get_order_by_warranty(type=1):
     if type == 1:
         return Product.query.order_by(Product.warranty.asc())
     else:   
@@ -103,17 +89,21 @@ def delete_by_id(id):
 # def sort_by_name():
 #     return
 
-#Khong con truong category nua
-# def find_all_category():
-#     return Product.query.with_entities(Product.category).distinct().all
 
-# def count_product_by_category():
-#     return db.session.query(Product.category, func.count(Product.category)).group_by(Product.category).all()
+def count_product_by_category():
+    # category = product_category_repo.find_all()
+    data_count = db.session.query(Product.product_category_id, func.count(Product.product_category_id)).group_by(Product.product_category_id).all()
+    return data_count
+
 
 def search(kwargs):
     base = Product.query
     if kwargs.get('product_category_id'):
         base = base.filter(Product.product_category_id == kwargs['product_category_id'])
+
+    if kwargs.get('name'):
+        clause = '%'+kwargs['name']+'%'
+        base = base.filter(Product.meta_keywords.like(clause)).distinct()
     # if kwargs.get('from_date'):
     #     base = base.filter(Product.date == kwargs['category'])
     # if kwargs.get('star'):
@@ -127,5 +117,10 @@ def search(kwargs):
             base = base.order_by(Product.price.desc())
         elif kwargs.get('sort_by_price') == 'asc':
             base = base.order_by(Product.price.asc())
+
+    if kwargs.get('special'):
+        pass
+    else:
+        base = base.order_by(Product.created_date.desc())
 
     return base.all()

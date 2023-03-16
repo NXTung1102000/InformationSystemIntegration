@@ -1,10 +1,10 @@
-from repository import order_repo, cart_repo, user_repo, product_repo
+from repository import order_repo, order_product_repo, user_repo, product_repo
 from datetime import datetime
 from flask import g
 
 
 def get_detail(order):
-    cart_id = int(order['cart_id'])
+    order_id = int(order['id'])
     user_id = int(order['user_id'])
 
     user = user_repo.find_by_id(user_id)
@@ -13,7 +13,7 @@ def get_detail(order):
     order['data'] = []
 
     total = 0
-    carts = cart_repo.find_by_cart_id(cart_id)
+    carts = order_product_repo.find_by_order_id(order_id)
     for cart in carts:
         product_id = cart.product_id
         product = product_repo.find_by_id(product_id)
@@ -24,6 +24,7 @@ def get_detail(order):
         data['product_id'] = product_id
         data['product_name'] = product_name
         data['quantity'] = cart.quantity
+        data['price'] = cart.price
         order['data'].append(data)
     order['total'] = total
     return order
@@ -36,29 +37,35 @@ def get_by_user(user_id):
 
 
 def get_order(order_id):
-    order = order_repo.find_by_id(order_id).to_full_json()
+    user_id = g.user.id
+    order = order_repo.find_by_id_and_user_id(order_id, user_id).to_full_json()
     return get_detail(order)
+
+
+def get_order_by_state(order_state_id):
+    user_id = g.user.id
+    list_order = order_repo.find_by_order_state_id_and_user_id(order_state_id, user_id)
+    list_order = list(map(lambda x: get_detail(x.to_full_json()), list_order))
+    return list_order
 
 
 def add(data):
     try:
         user_id = g.user.id
+        data['user_id'] = user_id
+        data['order_state_id'] = 1
+        order_id = order_repo.insert(data)
         detail = data.get('data')
-
-        cart_id = cart_repo.insert(detail)
-        current_dateTime = datetime.now()
-        status = 'delivering'
-        order_data = {'user_id': user_id, 'cart_id': cart_id, 'status': status}
-        order = order_repo.insert(order_data)
-
+        rs = order_product_repo.insert_all(detail, order_id)
+        
         return True
     except:
         return False
 
     
-def update_status(id, status):
+def update_status(id, state):
     try:
-        data = {'status': status}
+        data = {'order_state_id': state}
         order_repo.update_by_id(id, data)
         return True
     except:
@@ -72,4 +79,11 @@ def delete(id):
     except:
         return False
 
-    
+
+
+
+# def find_by(data):
+#     if data.get('state'):
+#         list_order = order_repo.get_order_by_order_state_id(data['state'])
+#         return list_order
+

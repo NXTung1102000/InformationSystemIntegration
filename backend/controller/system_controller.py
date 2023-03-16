@@ -13,7 +13,7 @@ def register_user(user_data):
     password = encode(password)
     user_data['password'] = password
     if user_data.get('role') is None:
-        user_data['role'] = 2
+        user_data['role'] = 3
     insert(user_data)
     
     return {'status': 0}
@@ -29,7 +29,13 @@ def login(username, password):
     data = {'token': token}
     update_by_id(user.id, data)
 
-    return {'status': 0, 'data': {'token': token, 'email': user.email, 'address': user.address, 'role': user.role}}
+    return {'status': 0, 'data': {'token': token, 
+                                  'email': user.email, 
+                                  'address': user.address, 
+                                  'role': user.role, 
+                                  'first_name': user.first_name,
+                                  'last_name': user.last_name,
+                                  }}
 
 
 def logout():

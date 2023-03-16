@@ -15,7 +15,7 @@ def find_by_name(name):
 
 # Get Brands in order
 # By name (1: ascending, 2:descending)
-def get_order_by_name(type):
+def get_order_by_name(type=1):
     if type == 1:
         return Brand.query.order_by(Brand.name.asc())
     else:   

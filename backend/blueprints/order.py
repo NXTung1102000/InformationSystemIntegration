@@ -11,14 +11,16 @@ mod = Blueprint('order', __name__, url_prefix='/order')
 def order_handle():
     if request.method == 'GET':
         id = request.args.get('id')
+        order_state_id = request.args.get('order_state_id')
         if id:
             list_order = get_order(id)
+        elif order_state_id:
+            list_order = get_order_by_state(order_state_id)
         else:
             list_order = get_by_user(g.user.id)
 
-        return {'data': list_order}
+        return {'data': list_order}, 200
         
-
     elif request.method == 'POST':
         data = request.json
         result = add(data)
@@ -28,12 +30,24 @@ def order_handle():
             return {'status': 1, 'error': 'can not add'}, 400
 
 
-@mod.route('/update-status', methods=['PUT'])
+@mod.route('/update-state', methods=['PUT'])
 @login_required
-def status():
+def update_state():
     order_id = request.json.get('order_id')
-    status = request.json.get('status')
-    if update_status(order_id, status):
+    state = request.json.get('state')
+    if update_status(order_id, state):
         return {'status': 0}, 200
     else:
-        return {'status': 1, 'error': 'can not update status'}, 400
+        return {'status': 1, 'error': 'can not update state'}, 400
+    
+
+@mod.route('/filter', methods=['GET'])
+@login_required
+def filter():
+    state = request.json.get('state')
+    if state and state == 'asc':
+        data = request.json
+        sort_by(data)
+        return {'status': 0}, 200
+    else:
+        return {'status': 1, 'error': 'can not sort'}, 400
