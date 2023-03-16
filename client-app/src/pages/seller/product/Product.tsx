@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React from "react";
-import { deleteProductAPI } from "../../../api/product";
+import { deleteProductAPI, searchProduct } from "../../../api/product";
 import { useAppDispatch } from "../../../app/hooks";
 import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
 import TableComponent from "../../../component/table/TableComponent";
@@ -20,50 +20,14 @@ const createProduct: ICreateProduct = {
   image: "",
   description: "",
   name: "",
-  update_at: "",
+  created_date: "",
   price: 1,
   quantity: 1,
 };
 
-const initData: IUpdateProduct[] = [
-  {
-    id: 1,
-    name: "PC Dell TUF504",
-    category: NameCategory.LAPTOP,
-    brand: "PC Dell",
-    description: "máy tính",
-    image: "",
-    price: 1000000.0,
-    quantity: 100,
-    update_at: "Wed Mar 15 2023 02:09:21",
-  },
-  {
-    id: 2,
-    brand: "PC Dell",
-    category: NameCategory.LAPTOP,
-    description: "máy tính",
-    image: "",
-    name: "PC Dell TUF504",
-    price: 1000000.0,
-    quantity: 100,
-    update_at: "Wed Mar 15 2023 02:09:21",
-  },
-  {
-    id: 3,
-    brand: "PC Dell",
-    category: NameCategory.LAPTOP,
-    description: "máy tính",
-    image: "",
-    name: "PC Dell TUF504",
-    price: 1000000.0,
-    quantity: 100,
-    update_at: "Wed Mar 15 2023 02:09:21",
-  },
-];
-
 export default function Product() {
   const dispatch = useAppDispatch();
-  const [data, setData] = React.useState<IUpdateProduct[]>(initData);
+  const [data, setData] = React.useState<IUpdateProduct[]>([]);
 
   const [openDialogProduct, setOpenDialogProduct] = React.useState(false);
   const [typeDialogProduct, setTypeDialogProduct] = React.useState("create");
@@ -91,21 +55,21 @@ export default function Product() {
       });
   };
 
-  // React.useEffect(() => {
-  //   dispatch(changeLoading(true));
-  //   searchProduct({ category: null, keyword: null })
-  //     .then((response) => {
-  //       return response.data;
-  //     })
-  //     .then((data) => {
-  //       setData(data.data);
-  //       dispatch(changeLoading(false));
-  //     })
-  //     .catch((error) => {
-  //       dispatch(changeLoading(false));
-  //       console.log(error);
-  //     });
-  // }, [dispatch]);
+  React.useEffect(() => {
+    dispatch(changeLoading(true));
+    searchProduct({ category: null, keyword: null, price_max: null, price_min: null })
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        setData(data.data);
+        dispatch(changeLoading(false));
+      })
+      .catch((error) => {
+        dispatch(changeLoading(false));
+        console.log(error);
+      });
+  }, [dispatch]);
 
   const mapData = () => {
     return data?.map((item) => {
@@ -114,7 +78,7 @@ export default function Product() {
         Name: item.name,
         Category: item.category,
         Brand: item.brand,
-        update_at: dateToString(new Date(item.update_at)),
+        update_at: dateToString(new Date(item.created_date)),
         price: item.price,
         quantity: item.quantity,
         action: (

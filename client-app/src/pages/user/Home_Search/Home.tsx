@@ -20,6 +20,33 @@ const listKeys = (row: object) => {
   return Object.keys(row);
 };
 
+const getMinMaxPrice = (value: number) => {
+  let price_min = "";
+  let price_max = "";
+  switch (value) {
+    case 0:
+      price_min = "0";
+      price_max = "2000000";
+      break;
+    case 2:
+      price_min = "2000000";
+      price_max = "5000000";
+      break;
+    case 5:
+      price_min = "5000000";
+      price_max = "10000000";
+      break;
+    case 10:
+      price_min = "10000000";
+      price_max = "20000000";
+      break;
+    case 20:
+      price_min = "20000000";
+      break;
+  }
+  return { price_min, price_max };
+};
+
 export default function Home() {
   const [price, setPrice] = React.useState(-1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,8 +55,9 @@ export default function Home() {
   useEffect(() => {
     const category = searchParams.get("category");
     const keyword = searchParams.get("keyword");
-    dispatch(changeLoading(true));
-    searchProduct({ category, keyword })
+    const getPrice = getMinMaxPrice(price);
+    if (category && keyword && getPrice) dispatch(changeLoading(true));
+    searchProduct({ category, keyword, price_min: getPrice.price_min, price_max: getPrice.price_max })
       .then((response) => {
         return response.data;
       })
@@ -43,7 +71,7 @@ export default function Home() {
         console.log(error);
         dispatch(changeLoading(false));
       });
-  }, [searchParams, dispatch]);
+  }, [searchParams, dispatch, price]);
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "center", margin: "0 0 2rem 0" }}>
@@ -51,7 +79,8 @@ export default function Home() {
           <InputLabel id="demo-simple-select-label">Price</InputLabel>
           <Select value={price} label="Age" onChange={(event) => setPrice(event.target.value as number)}>
             <MenuItem value={-1}>{`None`}</MenuItem>
-            <MenuItem value={0}>{`Less than 5 (millions VND)`}</MenuItem>
+            <MenuItem value={0}>{`Less than 2 (millions VND)`}</MenuItem>
+            <MenuItem value={2}>{`From 2 to 5 (millions VND)`}</MenuItem>
             <MenuItem value={5}>{`From 5 to 10 (millions VND)`}</MenuItem>
             <MenuItem value={10}>{`From 10 to 20 (millions VND)`}</MenuItem>
             <MenuItem value={20}>{`Greater than 20 (millions VND)`}</MenuItem>

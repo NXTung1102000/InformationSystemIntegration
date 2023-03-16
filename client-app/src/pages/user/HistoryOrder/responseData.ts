@@ -7,11 +7,10 @@ export interface IProduct {
 export interface IResponseHistory {
   id: number;
   user_id: number;
-  cart_id: number;
-  created_at: string;
+  created_date: string;
   data: IProduct[];
   first_name: string;
   last_name: string;
-  status: string;
+  order_state_id: number;
   total: number;
 }

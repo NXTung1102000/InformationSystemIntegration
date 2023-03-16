@@ -6,7 +6,7 @@ export interface ICreateProduct {
   name: string;
   price: number;
   quantity: number;
-  update_at: string;
+  created_date: string;
 }
 
 export interface IUpdateProduct {
@@ -17,6 +17,6 @@ export interface IUpdateProduct {
   image: string;
   name: string;
   price: number;
-  update_at: string;
+  created_date: string;
   quantity: number;
 }
