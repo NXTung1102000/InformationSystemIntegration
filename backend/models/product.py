@@ -50,7 +50,7 @@ class Product(db.Model):
             'image': self.image,
             'list_images': self.list_images,
             'product_category_id': self.product_category_id,
-            'category': self.product_category_id,
+            'category': self.category,
             'created_by': self.created_by,
             'created_date': self.created_date, 
             'updated_by': self.updated_by,

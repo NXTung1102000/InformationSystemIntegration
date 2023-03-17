@@ -43,8 +43,8 @@ def get_order(order_id):
 
 
 def get_order_by_state(order_state_id):
-    user_id = g.user.id
-    list_order = order_repo.find_by_order_state_id_and_user_id(order_state_id, user_id)
+    # user_id = g.user.id
+    list_order = order_repo.find_by_order_state_id(order_state_id)
     list_order = list(map(lambda x: get_detail(x.to_full_json()), list_order))
     return list_order
 
@@ -74,7 +74,10 @@ def add(data):
                 return 3, 'error quantity'
 
         order_id = order_repo.insert(data)
+    
         rs = order_product_repo.insert_all(detail, order_id)
+        if not rs:
+            return 4, 'error insert detail'  
         
         return 0, ''
     except:
@@ -83,7 +86,7 @@ def add(data):
     
 def update_status(id, state):
     try:
-        if state == 5:
+        if state == 1:
             order_product = order_product_repo.find_by_order_id(id)
             list_product = []
             order_data = []
@@ -98,13 +101,13 @@ def update_status(id, state):
                 list_product.append(product)
 
                 if data['quantity'] > product_json['quantity']:
-                    return False
+                    return 'error quantity'
                 
             for i, product in enumerate(list_product):
                 new_data = {'quantity': product_json['quantity'] - order_data[i]['quantity']}
                 product_repo.update_data(product, new_data)
 
-        if state == 6:
+        if state == 3 or state == 4 or state == 5:
             order_product = order_product_repo.find_by_order_id(id)
             list_product = []
             order_data = []
@@ -124,9 +127,9 @@ def update_status(id, state):
 
         data = {'order_state_id': state}
         order_repo.update_by_id(id, data)
-        return True
+        return ''
     except:
-        return False
+        return 'error'
 
 
 def delete(id):

@@ -96,15 +96,17 @@ def delete_by_id(id):
 
 def count_product_by_category():
     # category = product_category_repo.find_all()
-    data_count = db.session.query(Product.product_category_id, func.count(Product.product_category_id)).group_by(Product.product_category_id).all()
+    data_count = db.session.query(Product.category, func.count(Product.category)).group_by(Product.category).all()
     return data_count
 
 
 def search(kwargs):
     base = Product.query
 
-    if kwargs.get('product_category_id'):
-        base = base.filter(Product.product_category_id == kwargs['product_category_id'])
+    if kwargs.get('category'):
+        category = kwargs['category']
+        category = category.capitalize()
+        base = base.filter(Product.category == category)
     if kwargs.get('keyword'):
         clause = '%'+kwargs['keyword']+'%'
         base = base.filter(Product.meta_keywords.like(clause)).distinct()

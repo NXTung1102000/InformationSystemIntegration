@@ -47,13 +47,15 @@ def logout():
     return {'status': 0}
 
 
-def change_password(username, password):
-    user = find_by_username(username)
-    if not user:
-        return {'status': 1, 'error': 'not exist username'}, 400
+def change_password(old_password, new_password):
+    user_id = g.user.id
 
-    password = encode(password)
-    data = {'password': password}
-    update_by_id(user.id, data)
+    old_password = encode(old_password)
+    if old_password != g.user.password:
+        return {'status': 1, 'error': 'wrong old password'}
+    
+    new_password = encode(new_password)
+    data = {'password': new_password}
+    update_by_id(user_id, data)
     return {'status': 0}
 
