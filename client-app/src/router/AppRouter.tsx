@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Counter } from "../pages/counter/Counter";
-import { Product } from "../pages/product/Product";
+import { Product } from "../pages/user/product/Product";
 import { PrivateRouter, PublicRouter } from "../constant/route/route";
 import Layout from "../pages/Layout";
 import { useAppSelector } from "../app/hooks";

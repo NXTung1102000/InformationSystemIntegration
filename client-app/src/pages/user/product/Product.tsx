@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import '../../App.css'
+import '../../../App.css'
 
-import {ProductModel} from '../../model/ProductModel'
-import ProductInfos from '../../component/Product/ProductInfos';
-import ProductSpecsAndReviews from '../../component/Product/ProductSpecsAndReviews';
-import { ProductImage } from "../../component/Product/ProductImage";
-import ProductBuying from "../../component/Product/product_infos/ProductBuying";
+import {ProductModel} from '../../../model/ProductModel'
+import ProductInfos from '../../../component/Product/ProductInfos';
+import ProductSpecsAndReviews from '../../../component/Product/ProductSpecsAndReviews';
+import { ProductImage } from "../../../component/Product/ProductImage";
+import ProductBuying from "../../../component/Product/product_infos/ProductBuying";
 
 
 export function Product() {
