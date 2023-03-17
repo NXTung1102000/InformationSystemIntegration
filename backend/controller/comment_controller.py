@@ -1,17 +1,17 @@
-from repository.voucher_repo import *
-# from repository.voucher_type_repo import *
+from flask import request, g
+from repository.product_review_repo import *
 
 
-def get_by_id(id):
+def get_by_id(id=None):
     comment = find_by_id(id).to_full_json()
     return comment
-
-
-def get_by_type_id(type_id):
-    vouchers = find_by_voucher_type_id(type_id)
-    vouchers = list(map(lambda x: x.to_full_json(), vouchers))
-    return vouchers 
     
+
+def get_comment_product(product_id):
+    comments = find_by_product_id(product_id)
+    comments = list(map(lambda x: x.to_full_json(), comments))
+    return comments
+
 
 def add(data):
     try:

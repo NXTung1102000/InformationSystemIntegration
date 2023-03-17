@@ -101,8 +101,8 @@ def search(kwargs):
     if kwargs.get('product_category_id'):
         base = base.filter(Product.product_category_id == kwargs['product_category_id'])
 
-    if kwargs.get('name'):
-        clause = '%'+kwargs['name']+'%'
+    if kwargs.get('key_word'):
+        clause = '%'+kwargs['key_word']+'%'
         base = base.filter(Product.meta_keywords.like(clause)).distinct()
     # if kwargs.get('from_date'):
     #     base = base.filter(Product.date == kwargs['category'])

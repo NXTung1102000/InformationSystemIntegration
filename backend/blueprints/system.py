@@ -2,6 +2,8 @@ from flask import Blueprint
 from controller.user_controller import *
 from controller import system_controller
 from middleware.auth import login_required
+from init_app import app
+from flask import send_from_directory
 
 
 mod = Blueprint('auth', __name__)
@@ -38,3 +40,9 @@ def create_account():
     data = request.json
     data['role'] = 2
     return system_controller.register_user(data)
+
+
+@app.route('/show')
+def uploaded_file():
+    filename = request.args.get('filename')
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)

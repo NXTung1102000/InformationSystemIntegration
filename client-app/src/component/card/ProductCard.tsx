@@ -21,13 +21,12 @@ export default function ProductCard(props: ICartItem) {
   return (
     <Card sx={{ margin: "0 1rem 1rem 0" }}>
       <CardActionArea onClick={goToDetailProduct}>
-        <CardMedia sx={{ maxWidth: "100%", height: 250 }} component="img" image={props.image} alt={props.name} />
+        <CardMedia sx={{ maxWidth: "100%", height: 250 }} component="img" src={props.image} alt={props.name} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props.name}
           </Typography>
           <Typography sx={{ display: "flex", alignItems: "center" }} component="div">
-            <Rating value={props.star} readOnly size="small" precision={0.5} />
             {`   Quantity:   ${props.quantity}`}
           </Typography>
           <Typography variant="body1" sx={{ color: "#ee4d2d", margin: "0.5rem 0" }}>
@@ -37,7 +36,7 @@ export default function ProductCard(props: ICartItem) {
             variant="body2"
             color="text.secondary"
             sx={{
-              height: "3rem",
+              height: "4rem",
               overflow: "hidden",
               textOverflow: "ellipsis",
             }}

@@ -2,6 +2,9 @@ from flask import Blueprint, request, g
 from controller import product_controller
 from middleware.auth import login_required
 
+from flask import send_file
+from init_app import app
+
 
 mod = Blueprint('product', __name__, url_prefix='/product')
 
@@ -11,7 +14,7 @@ def product_handle():
     if request.method == 'GET':
         id = request.args.get('id')
         list_product = product_controller.get(id)
-        return {'data': list_product}
+        return {'data': list_product}, 200
 
     elif request.method == 'POST':
         data = request.json
@@ -52,3 +55,11 @@ def search():
 def count_by_category():
     result = product_controller.static_category()
     return {'data': dict(result)}, 200
+
+
+# @mod.route('/image', methods=['GET'])
+# def get_image():
+#     result = product_controller.static_category()
+#     return send_file(filename, mimetype='image/gif')
+
+

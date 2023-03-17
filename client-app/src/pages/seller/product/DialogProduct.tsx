@@ -89,7 +89,7 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
 
   const submit = async () => {
     const time = new Date();
-    setData({ ...data, update_at: time.toString() });
+    setData({ ...data, created_date: time.toString() });
     switch (type) {
       case "create":
         createProductAPI(data as ICreateProduct)
