@@ -6,12 +6,17 @@ import { Button, CardActionArea, CardActions, Rating } from "@mui/material";
 import { useAppDispatch } from "../../app/hooks";
 import { addToCart } from "../../pages/user/cart/CartSlice";
 import { ICartItem } from "../../constant/cart/cart";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard(props: ICartItem) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const goToDetailProduct = async () => {
-    console.log(props);
+  const goToDetailProduct = async (id_product: number) => {
+    navigate({
+      pathname: "/product",
+      search: `?id=${id_product}`,
+    });
   };
 
   const addToYourCart = (item: ICartItem) => {
@@ -20,7 +25,7 @@ export default function ProductCard(props: ICartItem) {
   };
   return (
     <Card sx={{ margin: "0 1rem 1rem 0" }}>
-      <CardActionArea onClick={goToDetailProduct}>
+      <CardActionArea onClick={() => goToDetailProduct(props.id)}>
         <CardMedia sx={{ maxWidth: "100%", height: 250 }} component="img" src={props.image} alt={props.name} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

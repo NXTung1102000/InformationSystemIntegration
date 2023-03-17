@@ -24,6 +24,14 @@ const searchProduct = async (params: IParams) => {
   return result;
 };
 
+const getProductByID = async (id: string) => {
+  const detailProduct = await api({
+    method: "GET",
+    url: `/product/?id=${id}`,
+  });
+  return detailProduct;
+};
+
 const createProductAPI = async (product: ICreateProduct) => {
   const result = await api({
     method: "POST",
@@ -51,4 +59,4 @@ const deleteProductAPI = async (id: number) => {
   return result;
 };
 
-export { searchProduct, createProductAPI, updateProductAPI, deleteProductAPI };
+export { searchProduct, createProductAPI, updateProductAPI, deleteProductAPI, getProductByID };
