@@ -37,7 +37,6 @@ export default function OrderSummary() {
         return response.data;
       })
       .then((data) => {
-        console.log(data);
         const { value, threshold, voucher_type_id } = data.data;
         setPolicy({ value, threshold, voucher_type_id });
       })
@@ -55,38 +54,51 @@ export default function OrderSummary() {
           type: "error",
         })
       );
-    } else {
-      dispatch(changeLoading(true));
-      const inputCart: IInputCart = {
-        data: [],
-      };
-      nowCart.itemsList.forEach((item) => {
-        const product = {
-          product_id: item.id,
-          quantity: item.quantityInCart,
-        };
-        inputCart.data.push(product);
-      });
-      submitOrder(inputCart)
-        .then((response) => {
-          return response.data;
-        })
-        .then((response) => {
-          if (response.status === 0) {
-            dispatch(changeNotice({ message: "successfully", open: true, type: "success" }));
-            dispatch(changeLoading(false));
-            dispatch(clearCart());
-          } else {
-            dispatch(changeLoading(false));
-            dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          dispatch(changeLoading(false));
-          dispatch(changeNotice({ message: "error server ... ", open: true, type: "error" }));
-        });
+      return;
     }
+
+    const inputCart: IInputCart = {
+      data: [],
+    };
+    nowCart.itemsList.forEach((item) => {
+      const product = {
+        product_id: item.id,
+        quantity: item.quantityInCart,
+      };
+      inputCart.data.push(product);
+    });
+
+    if (inputCart.data.length === 0) {
+      dispatch(
+        changeNotice({
+          message: "Sorry, you need at least one product to order ! ",
+          open: true,
+          type: "error",
+        })
+      );
+      return;
+    }
+
+    dispatch(changeLoading(true));
+    submitOrder(inputCart)
+      .then((response) => {
+        return response.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          dispatch(changeNotice({ message: "successfully", open: true, type: "success" }));
+          dispatch(changeLoading(false));
+          dispatch(clearCart());
+        } else {
+          dispatch(changeLoading(false));
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(changeLoading(false));
+        dispatch(changeNotice({ message: "error server ... ", open: true, type: "error" }));
+      });
   };
 
   return (

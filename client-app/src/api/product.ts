@@ -9,7 +9,6 @@ interface IParams {
 }
 
 const searchProduct = async (params: IParams) => {
-  console.log(params);
   let url = `/product/search?`;
   const keys = Object.keys(params);
   keys.forEach((key) => {
@@ -23,6 +22,14 @@ const searchProduct = async (params: IParams) => {
     url,
   });
   return result;
+};
+
+const getProductByID = async (id: string) => {
+  const detailProduct = await api({
+    method: "GET",
+    url: `/product/?id=${id}`,
+  });
+  return detailProduct;
 };
 
 const createProductAPI = async (product: ICreateProduct) => {
@@ -52,4 +59,4 @@ const deleteProductAPI = async (id: number) => {
   return result;
 };
 
-export { searchProduct, createProductAPI, updateProductAPI, deleteProductAPI };
+export { searchProduct, createProductAPI, updateProductAPI, deleteProductAPI, getProductByID };

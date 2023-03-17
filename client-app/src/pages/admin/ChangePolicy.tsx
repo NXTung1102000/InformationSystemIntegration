@@ -48,8 +48,6 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
   }, [threshold, type, value]);
 
   const handleSubmit = async () => {
-    const policy = { type, value };
-    console.log(policy);
     changePolicyAPI({ threshold, value, voucher_type_id: type } as IInputPolicy)
       .then((req) => {
         return req.data;

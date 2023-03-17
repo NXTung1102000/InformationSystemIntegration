@@ -4,7 +4,6 @@ export enum NameCategory {
   SMARTPHONE = "Smartphone",
   MOUSE = "Mouse",
   KEYBOARD = "Keyboard",
-  HEADPHONE = "HeadPhone",
 }
 
 export enum ParamCategory {
@@ -13,7 +12,6 @@ export enum ParamCategory {
   SMARTPHONE = "smartphone",
   MOUSE = "mouse",
   KEYBOARD = "keyboard",
-  HEADPHONE = "headPhone",
 }
 
 export enum TabSeller {

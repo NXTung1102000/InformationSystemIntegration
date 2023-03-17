@@ -3,7 +3,6 @@ import LaptopIcon from "@mui/icons-material/Laptop";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import MouseIcon from "@mui/icons-material/Mouse";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
-import HeadphonesIcon from "@mui/icons-material/Headphones";
 import { NameCategory, ParamCategory, TabSeller } from "./name";
 import { SellerRoute } from "../route/name";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -24,7 +23,6 @@ export const listCategories: TabRedirect[] = [
   { name: NameCategory.SMARTPHONE, icon: <SmartphoneIcon />, param: ParamCategory.SMARTPHONE },
   { name: NameCategory.MOUSE, icon: <MouseIcon />, param: ParamCategory.MOUSE },
   { name: NameCategory.KEYBOARD, icon: <KeyboardIcon />, param: ParamCategory.KEYBOARD },
-  { name: NameCategory.HEADPHONE, icon: <HeadphonesIcon />, param: ParamCategory.HEADPHONE },
 ];
 
 export const listTabSeller: TabRedirect[] = [

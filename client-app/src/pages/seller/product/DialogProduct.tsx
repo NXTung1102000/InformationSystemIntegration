@@ -64,7 +64,6 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
   };
 
   const handleSubmit = async () => {
-    console.log(data);
     if (!isSubmitted) setIsSubmitted(true);
     const isErrName = setErrorField(errName, setErrName, data.name, regexForNotEmpty);
     const isErrBrand = setErrorField(errBrand, setErrBrand, data.brand, regexForNotEmpty);
@@ -130,7 +129,6 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
       default:
         break;
     }
-    console.log(data);
   };
 
   const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -203,7 +201,6 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
                         setErrorField(errCategory, setErrCategory, event.target.value, regexForNotEmpty);
                       }}
                     >
-                      <MenuItem value={NameCategory.HEADPHONE}>{NameCategory.HEADPHONE}</MenuItem>
                       <MenuItem value={NameCategory.KEYBOARD}>{NameCategory.KEYBOARD}</MenuItem>
                       <MenuItem value={NameCategory.LAPTOP}>{NameCategory.LAPTOP}</MenuItem>
                       <MenuItem value={NameCategory.MOUSE}>{NameCategory.MOUSE}</MenuItem>

@@ -13,6 +13,7 @@ import {
   handleChangeState,
   IState,
   messageOfConfirmPassword,
+  messageOfNewPassword,
   messageOfPassword,
   validateState,
 } from "../../../constant/validate/message";
@@ -28,7 +29,11 @@ export default function ChangePassword({ open, setOpen }: openForgetPW) {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
 
   const [oldPW, setOldPW] = React.useState<IState>({ value: "", isError: false, message: messageOfPassword });
-  const [newPW, setNewPW] = React.useState<IState>({ value: "", isError: false, message: messageOfPassword });
+  const [newPW, setNewPW] = React.useState<IState>({
+    value: "",
+    isError: false,
+    message: messageOfPassword + messageOfNewPassword,
+  });
   const [confirmNewPW, setConfirmNewPW] = React.useState<IState>({
     value: "",
     isError: false,
@@ -104,8 +109,8 @@ export default function ChangePassword({ open, setOpen }: openForgetPW) {
                 <Grid item xs={12}>
                   <TextField
                     type="password"
-                    error={newPW.isError}
-                    helperText={newPW.isError ? newPW.message : ""}
+                    error={newPW.isError || newPW.value === oldPW.value}
+                    helperText={newPW.isError || newPW.value === oldPW.value ? newPW.message : ""}
                     required
                     fullWidth
                     label="New password"

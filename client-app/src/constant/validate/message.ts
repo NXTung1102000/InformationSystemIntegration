@@ -20,6 +20,7 @@ export const validateState = (state: IState, setState: (state: IState) => void, 
 export const messageOfPhoneNumber = "phone number in Vietnamese format, example: 09xxxxxxx  or  849xxxxxxxx";
 export const messageOfEmail = "invalid Email";
 export const messageOfPassword = "Password must be at least 6 characters and contain both letters and numbers";
+export const messageOfNewPassword = "and new password is not same as old password";
 export const messageOfConfirmPassword = "Password and ConfirmPassword must be the same";
 export const messageOfPercentNumber = "Percent is between 1% and 100%";
 export const messageOfPositiveNumber = "The value is greater than 0";
