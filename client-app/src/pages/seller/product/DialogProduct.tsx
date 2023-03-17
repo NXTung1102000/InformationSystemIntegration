@@ -58,10 +58,17 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
     message: messageOfFieldIsNotEmpty("Description"),
   });
 
+  const [errDetail, setErrDetail] = React.useState<ILocalState>({
+    isErr: false,
+    message: messageOfFieldIsNotEmpty("Detail"),
+  });
+
   const setErrorField = (state: ILocalState, setState: (state: ILocalState) => void, value: string, regex: RegExp) => {
     setState({ ...state, isErr: !regex.test(value) });
     return !regex.test(value);
   };
+
+  const [filename, setFileName] = React.useState("");
 
   const handleSubmit = async () => {
     if (!isSubmitted) setIsSubmitted(true);
@@ -69,7 +76,8 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
     const isErrBrand = setErrorField(errBrand, setErrBrand, data.brand, regexForNotEmpty);
     const isErrCategory = setErrorField(errCategory, setErrCategory, data.category, regexForNotEmpty);
     const isErrDescription = setErrorField(errDescription, setErrDescription, data.description, regexForNotEmpty);
-    if (isErrName || isErrBrand || isErrCategory || isErrDescription) return;
+    const isErrDetail = setErrorField(errDetail, setErrDetail, data.detail, regexForNotEmpty);
+    if (isErrName || isErrBrand || isErrCategory || isErrDescription || isErrDetail) return;
     await submit();
   };
 
@@ -87,8 +95,6 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
   };
 
   const submit = async () => {
-    const time = new Date();
-    setData({ ...data, created_date: time.toString() });
     switch (type) {
       case "create":
         createProductAPI(data as ICreateProduct)
@@ -123,7 +129,7 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
           })
           .catch((err) => {
             console.log(err);
-            dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+            dispatch(changeNotice({ message: err.message, open: true, type: "error" }));
           });
         break;
       default:
@@ -133,8 +139,18 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
 
   const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event?.target?.files?.[0];
-    console.log(file);
-    setData({ ...data, image: file?.name as string });
+    setFileName(file?.name as string);
+    let reader = new FileReader();
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        setData({ ...data, image: reader.result as string });
+      };
+    }
+  };
+
+  const changeSpecification = (specification: object) => {
+    console.log(specification);
   };
 
   return (
@@ -214,11 +230,27 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
                     helperText={errDescription.isErr ? errDescription.message : ""}
                     required
                     fullWidth
+                    multiline
                     label="Description"
                     value={data.description}
                     onChange={(event) => {
                       setData({ ...data, description: event.target.value });
                       setErrorField(errDescription, setErrDescription, event.target.value, regexForNotEmpty);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    error={errDetail.isErr}
+                    helperText={errDetail.isErr ? errDetail.message : ""}
+                    required
+                    fullWidth
+                    multiline
+                    label="Detail"
+                    value={data.detail}
+                    onChange={(event) => {
+                      setData({ ...data, detail: event.target.value });
+                      setErrorField(errDetail, setErrDetail, event.target.value, regexForNotEmpty);
                     }}
                   />
                 </Grid>
@@ -246,10 +278,25 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
                     }
                   />
                 </Grid>
-                <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+                <Grid item xs={4} sx={{ display: "flex", justifyContent: "center" }}>
                   <Button variant="contained" endIcon={<UploadIcon />} color="success" size="small" component="label">
                     Upload Image
                     <input hidden accept="image/*" type="file" onChange={handleChangeImage} />
+                  </Button>
+                </Grid>
+                <Grid item xs={8} sx={{ display: "flex", justifyContent: "center" }}>
+                  <Box>{filename}</Box>
+                </Grid>
+                <Grid item xs={4} sx={{ display: "flex", justifyContent: "center" }}>
+                  <Button
+                    variant="contained"
+                    endIcon={<UploadIcon />}
+                    color="success"
+                    size="small"
+                    component="label"
+                    onClick={() => changeSpecification(JSON.parse(data.specification as string))}
+                  >
+                    Specification
                   </Button>
                 </Grid>
               </Grid>

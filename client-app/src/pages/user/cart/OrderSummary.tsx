@@ -41,7 +41,7 @@ export default function OrderSummary() {
         setPolicy({ value, threshold, voucher_type_id });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   }, []);
 
@@ -82,6 +82,7 @@ export default function OrderSummary() {
     dispatch(changeLoading(true));
     submitOrder(inputCart)
       .then((response) => {
+        console.log("res:", response);
         return response.data;
       })
       .then((response) => {
@@ -95,9 +96,9 @@ export default function OrderSummary() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error:", error);
+        dispatch(changeNotice({ message: error.message, open: true, type: "error" }));
         dispatch(changeLoading(false));
-        dispatch(changeNotice({ message: "error server ... ", open: true, type: "error" }));
       });
   };
 

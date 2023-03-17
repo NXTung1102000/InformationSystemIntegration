@@ -59,7 +59,7 @@ export default function HistoryOrder() {
       })
       .catch((err) => {
         console.log(err);
-        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+        dispatch(changeNotice({ message: err.message, open: true, type: "error" }));
       });
   };
 

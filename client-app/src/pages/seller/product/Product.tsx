@@ -10,7 +10,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DialogProduct from "./DialogProduct";
 import { ICreateProduct, IUpdateProduct } from "../../../constant/product/interface";
-import { NameCategory } from "../../../constant/tabRedirect/name";
 
 const header = ["ID - Product", "Name", "Category", "Brand", "Update at", "Price (vnd)", "Quantity", "Action"];
 
@@ -23,6 +22,8 @@ const createProduct: ICreateProduct = {
   created_date: "",
   price: 1,
   quantity: 1,
+  detail: "",
+  specification: "",
 };
 
 export default function Product() {
@@ -46,7 +47,6 @@ export default function Product() {
         return response.data;
       })
       .then((data) => {
-        setData(data.data);
         dispatch(changeLoading(false));
       })
       .catch((error) => {
