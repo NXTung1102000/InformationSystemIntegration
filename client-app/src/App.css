@@ -1,6 +1,7 @@
 .product {
     display: flex;
     flex-direction: column;
+    padding: 5%
 }
 
 /*item and infos*/
@@ -20,18 +21,17 @@
 }
 
 /*buying*/
-.product-buying {
-    display: flex;
-    flex-direction: row;
-}
-
-.product-buying > div {
-    display: flex;
-    flex-direction: column;
+.product-price-quantity-count {
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
+    text-align: center;
 }
 
 .button-add-to-cart {
-    width: 50%
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button-add-to-cart > Button {
