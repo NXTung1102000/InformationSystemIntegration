@@ -6,11 +6,15 @@ import base64
 # print(base64.b64encode('admin'.encode("utf-8")))
 print(base64.b64decode('NUlHUlQ3MDg='))
 
+print(base64.b64decode('Q0NBOEpUR1k='))
 
-import base64
-with open('data\Dataset1\Image\Brand\Acer.png', "rb") as img_file:
-    image = base64.b64encode(img_file.read())
-print(image)
+print(base64.b64decode('SkdJQ0pKR1M='))
+
+
+# import base64
+# with open('data\Dataset1\Image\Brand\Acer.png', "rb") as img_file:
+#     image = base64.b64encode(img_file.read())
+# print(image)
 
 # import smtplib
 # from email.mime.text import MIMEText

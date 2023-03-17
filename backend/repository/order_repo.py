@@ -1,4 +1,5 @@
 from models.order import Order, db
+from datetime import datetime
 
 
 def find_all():
@@ -45,6 +46,9 @@ def get_order_by_order_state_id(type=1):
 
 def insert(json_data):
     try:
+        # check quantity
+
+
         order = Order.from_json(json_data)
         db.session.add(order)
         db.session.commit()
@@ -54,6 +58,7 @@ def insert(json_data):
 
 def update_by_id(id, data):
     try:
+        data['updated_state_date'] = datetime.now()
         order = Order.query.filter_by(id=id).update(data)
         db.session.commit()
         return True
