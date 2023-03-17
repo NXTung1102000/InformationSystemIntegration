@@ -1,13 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Counter } from "../pages/counter/Counter";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { Product } from "../pages/user/product/Product";
-=======
->>>>>>> parent of cccb0c8 (Merge branch 'master' of https://github.com/NXTung1102000/InformationSystemIntegration into product-page)
-=======
-import { Product } from "../pages/product/Product";
->>>>>>> parent of aa7ad04 (refactor product)
 import { PrivateRouter, PublicRouter } from "../constant/route/route";
 import Layout from "../pages/Layout";
 import { useAppSelector } from "../app/hooks";
@@ -31,6 +24,10 @@ const AppRouter = () => {
             />
           ))}
         <Route path="/counter" element={<Counter />} />
+        <Route path="/product" element={
+            <Layout><Product /></Layout>
+          } />
+
       </Routes>
     </BrowserRouter>
   );

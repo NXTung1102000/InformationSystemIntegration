@@ -1,0 +1,46 @@
+.product {
+    display: flex;
+    flex-direction: column;
+}
+
+/*item and infos*/
+.product-image-and-infos {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex: auto;
+}
+
+.product-image {
+    max-width: 40%;
+}
+
+.product-infos {
+    width: 60%;
+}
+
+/*buying*/
+.product-buying {
+    display: flex;
+    flex-direction: row;
+}
+
+.product-buying > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-add-to-cart {
+    width: 50%
+}
+
+.button-add-to-cart > Button {
+    margin: auto;
+}
+
+/*review*/
+.product-single-review {
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+}
