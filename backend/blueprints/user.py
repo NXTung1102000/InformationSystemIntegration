@@ -16,7 +16,7 @@ def user_handle():
 
     elif request.method == 'PUT':
         data = request.json
-        id = int(data.get('id'))
+        id = g.user.id
         result = user_controller.update(id, data)
         if result:
             return {'status': 0}, 200
