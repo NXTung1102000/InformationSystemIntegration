@@ -15,7 +15,7 @@ export default function ProductBuying({product}: {product: ProductModel}) {
           <Grid item md={5} className='product-price-quantity-count'>
             <Price productPrice={product.price}/>
             <Quantity productCount={product.quantity}/>
-            <Count/>
+            {/*<Count/>*/}
           </Grid>
           <Grid item md={7}>
             <AddToCart/>

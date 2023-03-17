@@ -4,7 +4,7 @@ export type ProductModel = {
   rating: number;
   description: string;
   detail: string;
-  specification: object;
+  specification: string;
 
   price: number;
 
