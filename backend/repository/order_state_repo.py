@@ -13,8 +13,8 @@ def find_by_id(id):
 # Insert data
 def insert(json_data):
     try:
-        orderState = OrderState.from_json(json_data)
-        db.session.add(orderState)
+        order_state = OrderState.from_json(json_data)
+        db.session.add(order_state)
         db.session.commit()
         return True
     except:
@@ -23,7 +23,7 @@ def insert(json_data):
 # Update data
 def update_by_id(id, data):
     try:
-        orderState = OrderState.query.filter_by(id=id).update(data)
+        order_state = OrderState.query.filter_by(id=id).update(data)
         db.session.commit()
         return True
     except:
@@ -32,8 +32,8 @@ def update_by_id(id, data):
 # Delete data
 def delete_by_id(id):
     try:
-        orderState = find_by_id(id)
-        db.session.delete(orderState)
+        order_state = find_by_id(id)
+        db.session.delete(order_state)
         db.session.commit()
         return True
     except:

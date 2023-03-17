@@ -46,15 +46,13 @@ def get_order_by_order_state_id(type=1):
 
 def insert(json_data):
     try:
-        # check quantity
-
-
         order = Order.from_json(json_data)
         db.session.add(order)
         db.session.commit()
         return order.id
     except:
         return False
+
 
 def update_by_id(id, data):
     try:
