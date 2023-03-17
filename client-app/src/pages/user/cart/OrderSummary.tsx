@@ -37,7 +37,6 @@ export default function OrderSummary() {
         return response.data;
       })
       .then((data) => {
-        console.log(data);
         const { value, threshold, voucher_type_id } = data.data;
         setPolicy({ value, threshold, voucher_type_id });
       })

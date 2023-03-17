@@ -37,12 +37,10 @@ export const getNameStatus = (status: number) => {
 };
 
 export const calculateOrder = (pre_total: number, policy: IInputPolicy) => {
-  console.log("pre: ", pre_total, "policy:", policy.value, "threshold", policy.threshold);
   let res;
   if (pre_total < policy.threshold) res = pre_total;
   else if (policy.voucher_type_id === TYPE_POLICY.FIXED) res = pre_total - policy.value;
   else res = pre_total * (1 - policy.value);
-  console.log("res:", res);
 
   return res;
 };

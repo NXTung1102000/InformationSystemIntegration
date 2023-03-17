@@ -11,7 +11,6 @@ interface IDataCategory {
 }
 
 const initData: IDataCategory[] = [
-  { name: NameCategory.HEADPHONE, numProduct: 10, total: 90147000 },
   { name: NameCategory.KEYBOARD, numProduct: 10, total: 90147000 },
   { name: NameCategory.LAPTOP, numProduct: 10, total: 90147000 },
   { name: NameCategory.MOUSE, numProduct: 10, total: 90147000 },
