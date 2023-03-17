@@ -23,11 +23,11 @@ def order_handle():
         
     elif request.method == 'POST':
         data = request.json
-        result = add(data)
+        error_code, result = add(data)
         if result:
-            return {'status': 0}, 200
+            return {'status': error_code, 'error': result}, 400
         else:
-            return {'status': 1, 'error': 'can not add'}, 400
+            return {'status': 0}, 200
 
 
 @mod.route('/update-state', methods=['PUT'])
@@ -40,14 +40,3 @@ def update_state():
     else:
         return {'status': 1, 'error': 'can not update state'}, 400
     
-
-@mod.route('/filter', methods=['GET'])
-@login_required
-def filter():
-    state = request.json.get('state')
-    if state and state == 'asc':
-        data = request.json
-        sort_by(data)
-        return {'status': 0}, 200
-    else:
-        return {'status': 1, 'error': 'can not sort'}, 400

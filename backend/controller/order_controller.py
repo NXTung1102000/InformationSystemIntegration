@@ -1,5 +1,4 @@
-from repository import order_repo, order_product_repo, user_repo, product_repo
-from datetime import datetime
+from repository import order_repo, order_product_repo, user_repo, product_repo, order_state_repo
 from flask import g
 
 
@@ -11,6 +10,7 @@ def get_detail(order):
     order['first_name'] = user.first_name
     order['last_name'] = user.last_name
     order['data'] = []
+    order['state'] = order_state_repo.find_by_id(order['order_state_id']).to_full_json()['name']
 
     total = 0
     carts = order_product_repo.find_by_order_id(order_id)
@@ -56,23 +56,72 @@ def get_all_order():
 def add(data):
     try:
         user_id = g.user.id
+        if g.user.score < 75:
+            return 2, "score user too low"
+
         data['name'] = g.user.name
         data['phone'] = g.user.phone
         data['address'] = g.user.address
         data['email'] = g.user.email
         data['user_id'] = user_id
         data['order_state_id'] = 1
-        order_id = order_repo.insert(data)
         detail = data.get('data')
+
+        #check quantity
+        for row in detail:
+            quantity_product = product_repo.find_by_id(row['product_id']).to_full_json()['quantity']
+            if row['quantity'] > quantity_product:
+                return 3, 'error quantity'
+
+        order_id = order_repo.insert(data)
         rs = order_product_repo.insert_all(detail, order_id)
         
-        return True
+        return 0, ''
     except:
-        return False
+        return 1, 'error'
 
     
 def update_status(id, state):
     try:
+        if state == 5:
+            order_product = order_product_repo.find_by_order_id(id)
+            list_product = []
+            order_data = []
+
+            for row in order_product:
+                data = row.to_full_json()
+                order_data.append(row)
+
+                # check all product
+                product = product_repo.find_by_id(data['product_id'])
+                product_json = product.to_full_json()
+                list_product.append(product)
+
+                if data['quantity'] > product_json['quantity']:
+                    return False
+                
+            for i, product in enumerate(list_product):
+                new_data = {'quantity': product_json['quantity'] - order_data[i]['quantity']}
+                product_repo.update_data(product, new_data)
+
+        if state == 6:
+            order_product = order_product_repo.find_by_order_id(id)
+            list_product = []
+            order_data = []
+
+            for row in order_product:
+                data = row.to_full_json()
+                order_data.append(row)
+
+                # check all product
+                product = product_repo.find_by_id(data['product_id'])
+                product_json = product.to_full_json()
+                list_product.append(product)
+                
+            for i, product in enumerate(list_product):
+                new_data = {'quantity': product_json['quantity'] + order_data[i]['quantity']}
+                product_repo.update_data(product, new_data)
+
         data = {'order_state_id': state}
         order_repo.update_by_id(id, data)
         return True
@@ -88,10 +137,17 @@ def delete(id):
         return False
 
 
+def check_product_quantity(detail):
+    list_product = []
+    for row in detail:
+        product = product_repo.find_by_id(row['product_id'])
+        product_json = product.to_full_json()
+        list_product.append(product_json)
+
+        if row['quantity'] > product_json['quantity']:
+            return False, list_product
+    
+    return True, list_product
 
 
-# def find_by(data):
-#     if data.get('state'):
-#         list_order = order_repo.get_order_by_order_state_id(data['state'])
-#         return list_order
 

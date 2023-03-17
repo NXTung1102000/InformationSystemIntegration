@@ -12,5 +12,6 @@ SQLALCHEMY_DATABASE_URI = 'mysql://{DATABASE_USER}:{DATABASE_PASSWORD}@{HOST}:{P
 
 ## App
 APP_PORT = 5000
+DATA_PATH = 'F:\HUST\do_an_thiet_ke_HTTT\InformationSystemIntegration\data\Dataset1'
 
 SECRET_KEY = 'xyz'

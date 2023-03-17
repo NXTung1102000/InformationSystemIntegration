@@ -1,4 +1,5 @@
 from models.user import User, db
+from datetime import datetime
 
 
 def find_all():
@@ -37,6 +38,7 @@ def insert(json_data):
 
 def update_by_id(id, data):
     try:
+        data['updated_date'] = datetime.now()
         user = User.query.filter_by(id=id).update(data)
         db.session.commit()
         return True

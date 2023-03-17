@@ -7,10 +7,11 @@ mod = Blueprint('user', __name__, url_prefix='/user')
 
 
 @mod.route('/', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@login_required
 def user_handle():
     if request.method == 'GET':
-        id = request.args.get('id')
-        list_user = user_controller.get(id)
+        user_id = g.user.id
+        list_user = user_controller.get(user_id)
         return {'data': list_user}
 
     elif request.method == 'PUT':
