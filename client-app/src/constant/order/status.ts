@@ -4,6 +4,7 @@ export enum USER {
   REJECTED = 3, // bị từ chối bán hàng
   RETURNED = 4, // bị người dùng trả hảng
   CANCEL = 5, // bị người dùng hủy đơn hàng
+  SUCCESS = 6, // thành công
 }
 
 export enum SELLER {

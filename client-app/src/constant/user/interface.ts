@@ -4,6 +4,14 @@ export interface IInputUser {
   password: string;
 }
 
+export interface IUpdateUser {
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  address: string;
+}
+
 export interface ICreateUser {
   first_name: string;
   last_name: string;
