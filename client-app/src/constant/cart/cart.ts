@@ -1,7 +1,7 @@
 import { NameCategory } from "../tabRedirect/name";
 
 export interface ICartItem {
-  id: string | number;
+  id: number;
   name: string;
   category: NameCategory;
   price: number;

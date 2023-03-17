@@ -3,4 +3,5 @@ flask
 SQLAlchemy
 flask-sqlalchemy
 flask-migrate
-mysqlclient
+#mysqlclient
+mariadb

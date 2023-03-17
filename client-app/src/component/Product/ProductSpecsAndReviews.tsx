@@ -62,6 +62,7 @@ export default function ProductSpecsAndReviews({product, productReviews}:{produc
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
+        <p>{product.description}</p>
         <Specs productSpecs={product.specification}/>
       </TabPanel>
       <TabPanel value={value} index={1}>

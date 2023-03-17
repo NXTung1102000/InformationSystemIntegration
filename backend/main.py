@@ -10,6 +10,7 @@ app.register_blueprint(order.mod)
 app.register_blueprint(user.mod)
 app.register_blueprint(voucher.mod)
 app.register_blueprint(comment.mod)
+app.register_blueprint(category.mod)
 
 
 if __name__ == '__main__':

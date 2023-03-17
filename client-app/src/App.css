@@ -44,3 +44,11 @@
     flex-direction: row;
     flex: auto;
 }
+
+.review-username {
+    width: 20%;
+}
+
+.review-content {
+    width: 80%;
+}

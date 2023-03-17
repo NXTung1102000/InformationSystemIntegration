@@ -10,7 +10,6 @@ import { changeNotice, INotice } from "../../../component/LoadingAndNotice/notic
 
 const handleChangeStatus = (order_id: number, status: USER, dispatchStatus: (payload: INotice) => void) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  console.log(order_id, status);
   updateOrder(order_id, status)
     .then((req) => {
       return req.data;

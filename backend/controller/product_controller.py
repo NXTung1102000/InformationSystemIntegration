@@ -1,23 +1,18 @@
 from flask import request, g
 from repository.product_repo import *
-from repository import product_category_repo 
-from utils.encode import encode_image
+from repository import product_category_repo , brand_repo
 
 
 def get(id=None):
     if id is not None:
         product = find_by_id(id).to_full_json()
-        product['category'] = product_category_repo.find_by_id(product['product_category_id']).to_full_json()['name']
-        # product['image'] = str(encode_image(product['image']))
-        # product['list_images'] = list(map(lambda x: str(encode_image(x)), product['list_images'].split(',')))
+        product = get_detail_field(product)
         return [product]
     else:
         list_product = find_all()
         list_product = list(map(lambda x: x.to_full_json(), list_product))
         for product in list_product:
-            product['category'] = product_category_repo.find_by_id(product['product_category_id']).to_full_json()['name']
-        #     product['image'] = str(encode_image(product['image']))
-        #     product['list_images'] = list(map(lambda x: str(encode_image(x)), product['list_images'].split(',')))
+            product = get_detail_field(product)
         return list_product
 
 
@@ -48,9 +43,20 @@ def delete(id):
 def search_product(kwargs):
     list_product = search(kwargs)
     list_product = list(map(lambda x: x.to_full_json(), list_product))
+    for product in list_product:
+        product = get_detail_field(product)
     return list_product if list_product else []
 
 
 def static_category():
     list_count = count_product_by_category()
     return list_count
+
+
+def get_detail_field(product):
+    if not product.get('category'):
+        product['category'] = product_category_repo.find_by_id(product['product_category_id']).to_full_json()['name']
+    if not product.get('brand'):
+        product['brand'] = brand_repo.find_by_id(product['brand_id']).to_full_json()['name']
+        
+    return product

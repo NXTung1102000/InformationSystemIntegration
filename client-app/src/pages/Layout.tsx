@@ -1,4 +1,3 @@
-
 import React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -46,7 +45,6 @@ export default function Layout(props: Props) {
 
   const clickEnterToSearch = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      console.log(inputSearch);
       const category = searchParams.get("category");
       if (category) {
         navigate({

@@ -62,13 +62,14 @@ export default function Home() {
         return response.data;
       })
       .then((data) => {
+        console.log(data.data);
         const tmp = groupBy(data.data, (product: any) => product.category);
+        console.log(tmp);
         window.scrollTo(0, 0);
         setData(tmp);
         dispatch(changeLoading(false));
       })
       .catch((error) => {
-        console.log(error);
         dispatch(changeLoading(false));
       });
   }, [searchParams, dispatch, price]);

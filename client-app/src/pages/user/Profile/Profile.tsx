@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, TextField, Grid } from "@mui/material";
 import ChangePassword from "./ChangePW";
 import {
@@ -10,8 +10,13 @@ import {
   validateState,
 } from "../../../constant/validate/message";
 import { regexForEmail, regexForNotEmpty, regexForPhone } from "../../../constant/validate/regex";
+import { getInfoUseAPI } from "../../../api/user";
+import { useAppDispatch } from "../../../app/hooks";
+import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
 
 export default function Profile() {
+  const dispatch = useAppDispatch();
+
   const [firstName, setFirstName] = React.useState<IState>({
     value: "",
     isError: false,
@@ -47,6 +52,29 @@ export default function Profile() {
     if (errFirstName || errLastName || errEmail || errPhone || errAddress) return;
     updateInformation();
   };
+
+  useEffect(() => {
+    getInfoUseAPI()
+      .then((response) => {
+        return response.data;
+      })
+      .then((response) => {
+        if (response.status !== 0) {
+          const result = response.data[0];
+          setFirstName({ ...firstName, value: result.first_name });
+          setLastName({ ...lastName, value: result.last_name });
+          setAddress({ ...address, value: result.address });
+          setEmail({ ...email, value: result.email });
+          setPhoneNumber({ ...phoneNumber, value: result.phone });
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+        console.log(err);
+      });
+  }, [dispatch]);
 
   const updateInformation = () => {
     const credentials = {

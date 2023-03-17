@@ -15,7 +15,8 @@ class Product(db.Model):
     promotion_price = db.Column('promotion_price', db.Float)
     image = db.Column('image', db.VARCHAR(255))
     list_images = db.Column('list_images', db.Text)
-    product_category_id = db.Column('product_category_id', db.Integer, nullable=False)
+    product_category_id = db.Column('product_category_id', db.Integer)
+    category = db.Column('category', db.VARCHAR(30))
     created_date = db.Column('created_date', db.DateTime, default=datetime.now(), nullable=False)
     updated_by = db.Column('updated_by', db.VARCHAR(20))
     created_by = db.Column('created_by', db.Integer, nullable=False)
@@ -26,6 +27,7 @@ class Product(db.Model):
     warranty = db.Column('warranty', db.Integer)
     is_included_vat = db.Column('is_included_vat', db.Integer, nullable=False)
     brand_id = db.Column('brand_id', db.Integer)
+    brand = db.Column('brand', db.VARCHAR(30))
     view_count = db.Column('view_count', db.Integer)
     quantity = db.Column('quantity', db.Integer, nullable=False)
     is_activated = db.Column('is_activated', db.Integer, nullable=False)
@@ -34,6 +36,7 @@ class Product(db.Model):
 
     def __init__(self, **kwargs):
         super(Product, self).__init__(**kwargs)
+
 
     def to_full_json(self):
         json_token = {
@@ -47,6 +50,7 @@ class Product(db.Model):
             'image': self.image,
             'list_images': self.list_images,
             'product_category_id': self.product_category_id,
+            'category': self.product_category_id,
             'created_by': self.created_by,
             'created_date': self.created_date, 
             'updated_by': self.updated_by,
@@ -57,12 +61,14 @@ class Product(db.Model):
             'warranty': self.warranty,
             'is_included_vat': self.is_included_vat,
             'brand_id': self.brand_id,
+            'brand': self.brand,
             'view_count': self.view_count,
             'quantity': self.quantity,
             'is_activated': self.is_activated,
             'endpoint': self.endpoint,
         }
         return json_token
+
 
     @staticmethod
     def from_json(json_post):
@@ -75,6 +81,7 @@ class Product(db.Model):
         image = json_post.get('image')
         list_images = json.dumps(json_post.get('list_images'))
         product_category_id = json_post.get('product_category_id')
+        category = json_post.get('category')
         created_by = json_post.get('created_by')
         created_date = json_post.get('created_date')
         updated_by = json_post.get('updated_by')
@@ -85,6 +92,7 @@ class Product(db.Model):
         warranty = json_post.get('warranty')
         is_included_vat = json_post.get('is_included_vat')
         brand_id = json_post.get('brand_id')
+        brand = json_post.get('brand')
         view_count = json_post.get('view_count')
         quantity = json_post.get('quantity')
         is_activated = json_post.get('is_activated')
@@ -100,6 +108,7 @@ class Product(db.Model):
             image=image,
             list_images=list_images,
             product_category_id=product_category_id,
+            category=category,
             created_by=created_by,
             created_date=created_date,
             updated_by=updated_by,
@@ -110,6 +119,7 @@ class Product(db.Model):
             warranty=warranty,
             is_included_vat=is_included_vat,
             brand_id=brand_id,
+            brand=brand,
             view_count=view_count,
             quantity=quantity,
             is_activated=is_activated,
