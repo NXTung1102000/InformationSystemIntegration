@@ -1,4 +1,4 @@
-import { ICreateUser } from "../constant/user/interface";
+import { IUpdateUser } from "./../constant/user/interface";
 import { axiosAPI as api } from "./configAPI";
 
 const getInfoUseAPI = async () => {
@@ -9,9 +9,9 @@ const getInfoUseAPI = async () => {
   return result;
 };
 
-const updateInfoUserAPI = async (updateInfo: ICreateUser) => {
+const updateInfoUserAPI = async (updateInfo: IUpdateUser) => {
   const updateResult = await api({
-    method: "POST",
+    method: "PUT",
     url: "/user/",
     data: updateInfo,
   });

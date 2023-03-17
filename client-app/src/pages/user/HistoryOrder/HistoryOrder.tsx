@@ -7,7 +7,6 @@ import TableComponent from "../../../component/table/TableComponent";
 import { dateToString } from "../../../util/convertDateTime";
 import { colorStatus, getAllNameProduct, getNameStatus } from "../../../util/utilsForOrder";
 import { IResponseHistory } from "./responseData";
-import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { USER } from "../../../constant/order/status";
 import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
 const header = ["ID - Order", "Date", "Total (vnd)", "Status", "Detail", "Action"];
@@ -37,7 +36,7 @@ export default function HistoryOrder() {
     if ((status as USER) === USER.DELIVERING) {
       return (
         <Button variant="contained" color="error" size="small" onClick={() => handleReturnProduct(order_id)}>
-          <KeyboardReturnIcon />
+          Cancel
         </Button>
       );
     }
@@ -46,14 +45,16 @@ export default function HistoryOrder() {
 
   const handleReturnProduct = (order_id: number) => {
     updateOrder(order_id, USER.CANCEL)
-      .then((req) => {
-        return req.data;
+      .then((response) => {
+        console.log("res", response);
+        return response.data;
       })
       .then((response) => {
         if (response.status === 0) {
+          console.log("res", response);
           dispatch(changeNotice({ message: "update successfully", open: true, type: "success" }));
         } else {
-          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+          dispatch(changeNotice({ message: response.error, open: true, type: "error" }));
         }
       })
       .catch((err) => {
