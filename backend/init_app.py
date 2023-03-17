@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # app.config['UPLOAD_FOLDER'] = 'F:\HUST\do_an_thiet_ke_HTTT\InformationSystemIntegration\data\Dataset1'
-app.config['UPLOAD_FOLDER'] = 'F:\HUST\do_an_thiet_ke_HTTT\InformationSystemIntegration\data\Dataset1'
+app.config['UPLOAD_FOLDER'] = '/home/xuantung/HUST/DoAnHTTT/database/Dataset1'
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'max_overflow': 30,
     'pool_size': 100
