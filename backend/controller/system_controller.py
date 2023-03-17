@@ -9,7 +9,7 @@ def register_user(user_data):
 
     user = find_by_username(username)
     if user:
-        return {'status': 1, 'error': 'exist username'}, 400
+        return {'status': 1, 'error': 'exist username'}, 200
     password = encode(password)
     user_data['password'] = password
 
@@ -26,7 +26,7 @@ def login(username, password):
     password = encode(password)
     user = find_by_username_and_password(username, password)
     if not user:
-        return {'status': 1, 'error': 'username or password is not correct'}, 400
+        return {'status': 1, 'error': 'username or password is not correct'}, 200
 
     token = get_random_string()
     data = {'token': token}

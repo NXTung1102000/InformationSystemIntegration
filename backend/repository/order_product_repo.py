@@ -20,13 +20,15 @@ def insert_all(json_data, order_id):
     try:
         for row in json_data:
             row['order_id'] = order_id
+            product = product_repo.find_by_id(row['product_id'])
+            row['price'] = product.price * row['quantity']
+
             order_products = OrderProducts.from_json(row)
             db.session.add(order_products)
 
-            product = product_repo.find_by_id(row['product_id'])
             data = {"quantity": product.quantity - row['quantity']}
-            product_repo.update_by_id(product.id, data)
-
+            rs = product_repo.update_by_id(product.id, data)
+            
             db.session.commit()
         return order_id
     except:
