@@ -20,7 +20,6 @@ export const noticeSlice = createSlice({
   reducers: {
     clearNotice: (state) => {
       state.open = false;
-      state.message = "";
     },
     changeNotice: (state, action) => {
       state.message = action.payload.message;
