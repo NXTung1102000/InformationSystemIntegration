@@ -24,7 +24,7 @@ const handleChangeStatus = (order_id: number, status: USER, dispatchStatus: (pay
     })
     .catch((err) => {
       console.log(err);
-      dispatchStatus({ message: "error server", open: true, type: "error" });
+      dispatchStatus({ message: err.message, open: true, type: "error" });
     });
 };
 

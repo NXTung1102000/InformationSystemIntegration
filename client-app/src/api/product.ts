@@ -33,18 +33,20 @@ const getProductByID = async (id: string) => {
 };
 
 const createProductAPI = async (product: ICreateProduct) => {
+  console.log(product);
   const result = await api({
     method: "POST",
-    url: "/product",
+    url: "/product/",
     data: product,
   });
   return result;
 };
 
 const updateProductAPI = async (product: IUpdateProduct) => {
+  console.log(product);
   const result = await api({
     method: "PUT",
-    url: "/product",
+    url: "/product/",
     data: product,
   });
   return result;
@@ -52,8 +54,8 @@ const updateProductAPI = async (product: IUpdateProduct) => {
 
 const deleteProductAPI = async (id: number) => {
   const result = await api({
-    method: "PUT",
-    url: "/product",
+    method: "DELETE",
+    url: "/product/",
     data: id,
   });
   return result;

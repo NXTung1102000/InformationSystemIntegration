@@ -1,4 +1,3 @@
-
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -48,6 +47,12 @@ export default function CartItem(props: ICartItem) {
             </Box>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
+            <Typography sx={{ fontWeight: "bold" }}>Max: </Typography>
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Typography>{props.quantity}</Typography>
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6}>
             <Typography sx={{ fontWeight: "bold" }}>Price</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -57,7 +62,7 @@ export default function CartItem(props: ICartItem) {
             <Typography sx={{ fontWeight: "bold" }}>Total</Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Typography color="secondary">{props.price * props.quantity} vnd</Typography>
+            <Typography color="secondary">{props.price * props.quantityInCart} vnd</Typography>
           </Grid>
         </Grid>
       </CardContent>
