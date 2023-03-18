@@ -27,7 +27,7 @@ export default function ProductBuying(props: ICartItem) {
               category={String(props.category) as NameCategory}
               description={props.description}
               star={props.star}
-              image={`http://localhost:5000/show?filename=${props.image}`}
+              image={props.image}
               quantity={props.quantity}
               quantityInCart={props.quantityInCart}
             />
