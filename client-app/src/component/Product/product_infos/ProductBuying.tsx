@@ -7,28 +7,29 @@ import Quantity from './product_buying/Quantity'
 import Count from './product_buying/Count'
 import AddToCart from "./product_buying/AddToCart";
 import { NameCategory } from "../../../constant/tabRedirect/name";
+import { ICartItem } from "../../../constant/cart/cart";
 
 let productName: string = 'Macbook Air M1'
 
-export default function ProductBuying({product}: {product: ProductModel}) {
+export default function ProductBuying(props: ICartItem) {
     return (
         <Grid container className='product-buying'>
           <Grid item md={5} className='product-price-quantity-count'>
-            <Price productPrice={product.price}/>
-            <Quantity productCount={product.quantity}/>
+            <Price productPrice={props.price}/>
+            <Quantity productCount={props.quantity}/>
             {/*<Count/>*/}
           </Grid>
           <Grid item md={7}>
             <AddToCart
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              category={String(product.category) as NameCategory}
-              description={product.description}
-              star={product.star}
-              image={`http://localhost:5000/show?filename=${product.image}`}
-              quantity={1}
-              quantityInCart={0}
+              id={props.id}
+              name={props.name}
+              price={props.price}
+              category={String(props.category) as NameCategory}
+              description={props.description}
+              star={props.star}
+              image={`http://localhost:5000/show?filename=${props.image}`}
+              quantity={props.quantity}
+              quantityInCart={props.quantityInCart}
             />
           </Grid>
         </Grid>

@@ -11,6 +11,7 @@ import { getProductByID } from "../../../api/product";
 import { useAppDispatch } from "../../../app/hooks";
 import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
 import CardMedia from "@mui/material/CardMedia";
+import { NameCategory } from "../../../constant/tabRedirect/name";
 
 
 const productModel: ProductModel = {
@@ -90,7 +91,18 @@ export function Product() {
         <CardMedia sx={{ maxWidth: "100%", height: 450 }} component="img" src={image} alt={product.name} />
         <ProductInfos product={product} />
       </div>
-      <ProductBuying product={product} />
+      {/*<ProductBuying product={product} />*/}
+      <ProductBuying
+        id={product.id}
+        name={product.name}
+        price={product.price}
+        category={String(product.category) as NameCategory}
+        description={product.description}
+        star={product.star}
+        image={`http://localhost:5000/show?filename=${product.image}`}
+        quantity={1}
+        quantityInCart={0}
+      />
       <ProductSpecsAndReviews product={product} productReviews={productReviews} />
     </div>
   );
