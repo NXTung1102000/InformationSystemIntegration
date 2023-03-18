@@ -10,7 +10,7 @@ import {
   validateState,
 } from "../../../constant/validate/message";
 import { regexForEmail, regexForNotEmpty, regexForPhone } from "../../../constant/validate/regex";
-import { getInfoUseAPI } from "../../../api/user";
+import { getInfoUseAPI, updateInfoUserAPI } from "../../../api/user";
 import { useAppDispatch } from "../../../app/hooks";
 import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
 
@@ -71,7 +71,7 @@ export default function Profile() {
         }
       })
       .catch((err) => {
-        dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+        dispatch(changeNotice({ message: err.message, open: true, type: "error" }));
         console.log(err);
       });
   }, [dispatch]);
@@ -84,22 +84,21 @@ export default function Profile() {
       phone_number: phoneNumber.value,
       address: address.value,
     };
-    // callAPI(credentials)
-    //   .then((req) => {
-    //     return req.data;
-    //   })
-    //   .then((response) => {
-    //     if (response.status === 0) {
-    //       setOpen(false);
-    //       dispatch(changeNotice({ message: "sign up successfully", open: true, type: "success" }));
-    //     } else {
-    //       dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
-    //   });
+    updateInfoUserAPI(credentials)
+      .then((req) => {
+        return req.data;
+      })
+      .then((response) => {
+        if (response.status === 0) {
+          dispatch(changeNotice({ message: "sign up successfully", open: true, type: "success" }));
+        } else {
+          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeNotice({ message: err.message, open: true, type: "error" }));
+      });
   };
 
   return (

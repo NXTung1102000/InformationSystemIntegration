@@ -1,4 +1,5 @@
 from models.order import Order
+from repository import product_repo
 from models.order_product import OrderProducts, db
 from sqlalchemy import func
 
@@ -19,9 +20,16 @@ def insert_all(json_data, order_id):
     try:
         for row in json_data:
             row['order_id'] = order_id
-            orderProducts = OrderProducts.from_json(row)
-            db.session.add(orderProducts)
-        db.session.commit()
+            product = product_repo.find_by_id(row['product_id'])
+            row['price'] = product.price * row['quantity']
+
+            order_products = OrderProducts.from_json(row)
+            db.session.add(order_products)
+
+            data = {"quantity": product.quantity - row['quantity']}
+            rs = product_repo.update_by_id(product.id, data)
+            
+            db.session.commit()
         return order_id
     except:
         return False
@@ -29,7 +37,7 @@ def insert_all(json_data, order_id):
 
 def update_by_id(id, data):
     try:
-        orderProducts = OrderProducts.query.filter_by(id=id).update(data)
+        order_products = OrderProducts.query.filter_by(id=id).update(data)
         db.session.commit()
         return True
     except:
@@ -38,8 +46,8 @@ def update_by_id(id, data):
 
 def delete_by_id(id):
     try:
-        orderProducts = find_by_id(id)
-        db.session.delete(orderProducts)
+        order_products = find_by_id(id)
+        db.session.delete(order_products)
         db.session.commit()
         return True
     except:
@@ -48,8 +56,8 @@ def delete_by_id(id):
 
 def delete_by_order_id(order_id):
     try:
-        orderProducts = find_by_order_id(order_id)
-        db.session.delete(orderProducts)
+        order_products = find_by_order_id(order_id)
+        db.session.delete(order_products)
         db.session.commit()
         return True
     except:

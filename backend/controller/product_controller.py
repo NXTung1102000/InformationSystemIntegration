@@ -6,13 +6,10 @@ from repository import product_category_repo , brand_repo
 def get(id=None):
     if id is not None:
         product = find_by_id(id).to_full_json()
-        product = get_detail_field(product)
         return [product]
     else:
         list_product = find_all()
         list_product = list(map(lambda x: x.to_full_json(), list_product))
-        for product in list_product:
-            product = get_detail_field(product)
         return list_product
 
 
@@ -43,8 +40,6 @@ def delete(id):
 def search_product(kwargs):
     list_product = search(kwargs)
     list_product = list(map(lambda x: x.to_full_json(), list_product))
-    for product in list_product:
-        product = get_detail_field(product)
     return list_product if list_product else []
 
 

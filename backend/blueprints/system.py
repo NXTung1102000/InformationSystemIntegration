@@ -29,10 +29,11 @@ def logout():
 
 
 @mod.route('/change-password', methods=['POST'])
+@login_required
 def change_password():
-    username = request.json.get('username')
+    old_password = request.json.get('old_password')
     new_password = request.json.get('new_password')
-    return system_controller.change_password(username, new_password)
+    return system_controller.change_password(old_password, new_password)
 
 
 @mod.route('/create_account', methods=['POST'])

@@ -31,7 +31,7 @@ def product_handle():
         if result:
             return {'status': 0}, 200
         else:
-            return {'status': 1, 'error': 'can not update'}, 400
+            return {'status': 1, 'error': 'can not update'}, 200
 
     elif request.method == 'DELETE':
         id = request.args.get('id')
@@ -39,7 +39,7 @@ def product_handle():
         if result:
             return {'status': 0}, 200
         else:
-            return {'status': 1, 'error': 'can not delete'}, 400
+            return {'status': 1, 'error': 'can not delete'}, 200
 
     return 
 

@@ -7,6 +7,8 @@ export interface ICreateProduct {
   price: number;
   quantity: number;
   created_date: string;
+  detail: string;
+  specification: string | object;
 }
 
 export interface IUpdateProduct {
@@ -19,4 +21,6 @@ export interface IUpdateProduct {
   price: number;
   created_date: string;
   quantity: number;
+  detail: string;
+  specification: string | object;
 }

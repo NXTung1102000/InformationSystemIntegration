@@ -6,6 +6,7 @@ import { IProduct } from "../pages/user/HistoryOrder/responseData";
 export const colorStatus = (status: number) => {
   switch (status as USER) {
     case USER.DELIVERED:
+    case USER.SUCCESS:
       return "green";
     case USER.REJECTED:
     case USER.CANCEL:
@@ -31,6 +32,8 @@ export const getNameStatus = (status: number) => {
       return "Delivering";
     case USER.RETURNED:
       return "Returned";
+    case USER.SUCCESS:
+      return "Success";
     default:
       return "";
   }

@@ -16,12 +16,12 @@ def user_handle():
 
     elif request.method == 'PUT':
         data = request.json
-        id = int(data.get('id'))
+        id = g.user.id
         result = user_controller.update(id, data)
         if result:
             return {'status': 0}, 200
         else:
-            return {'status': 1, 'error': 'can not update'}, 400
+            return {'status': 1, 'error': 'can not update'}, 200
 
     elif request.method == 'DELETE':
         id = request.json.get('id')
@@ -29,6 +29,6 @@ def user_handle():
         if result:
             return {'status': 0}, 200
         else:
-            return {'status': 1, 'error': 'can not delete'}, 400
+            return {'status': 1, 'error': 'can not delete'}, 200
 
     return

@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { USER } from "../../../constant/order/status";
 import DetailOrder from "./DetailOrder";
+import { getNameStatus } from "../../../util/utilsForOrder";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -32,23 +33,31 @@ export default function OrderList() {
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label={USER.DELIVERING} />
-          <Tab label={USER.DELIVERED} />
-          <Tab label={USER.REJECTED} />
-          <Tab label={USER.RETURNED} />
+          <Tab label={getNameStatus(USER.DELIVERING)} />
+          <Tab label={getNameStatus(USER.DELIVERED)} />
+          <Tab label={getNameStatus(USER.REJECTED)} />
+          <Tab label={getNameStatus(USER.RETURNED)} />
+          <Tab label={getNameStatus(USER.CANCEL)} />
+          <Tab label={getNameStatus(USER.SUCCESS)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <DetailOrder />
+        <DetailOrder status={USER.DELIVERING} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {USER.DELIVERED}
+        <DetailOrder status={USER.DELIVERED} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {USER.REJECTED}
+        <DetailOrder status={USER.REJECTED} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        {USER.RETURNED}
+        <DetailOrder status={USER.RETURNED} />
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        <DetailOrder status={USER.CANCEL} />
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        <DetailOrder status={USER.SUCCESS} />
       </TabPanel>
     </Box>
   );

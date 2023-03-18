@@ -4,9 +4,10 @@ import { dateToString } from "../../../util/convertDateTime";
 import { IResponseHistory } from "../../user/HistoryOrder/responseData";
 import React from "react";
 import { USER } from "../../../constant/order/status";
-import { updateOrder } from "../../../api/order";
+import { getOrderOfCurrentUser, updateOrder } from "../../../api/order";
 import { useAppDispatch } from "../../../app/hooks";
 import { changeNotice, INotice } from "../../../component/LoadingAndNotice/noticeSlice";
+import { changeLoading } from "../../../component/LoadingAndNotice/loadingSlice";
 
 const handleChangeStatus = (order_id: number, status: USER, dispatchStatus: (payload: INotice) => void) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -23,7 +24,7 @@ const handleChangeStatus = (order_id: number, status: USER, dispatchStatus: (pay
     })
     .catch((err) => {
       console.log(err);
-      dispatchStatus({ message: "error server", open: true, type: "error" });
+      dispatchStatus({ message: err.message, open: true, type: "error" });
     });
 };
 
@@ -38,6 +39,13 @@ const renderButton = (order_id: number, pre_status: number, dispatchStatus: (pay
             onClick={() => handleChangeStatus(order_id, USER.RETURNED, dispatchStatus)}
           >
             {getNameStatus(USER.RETURNED)}
+          </Button>
+          <Button
+            variant="contained"
+            color={"success"}
+            onClick={() => handleChangeStatus(order_id, USER.RETURNED, dispatchStatus)}
+          >
+            {getNameStatus(USER.SUCCESS)}
           </Button>
         </>
       );
@@ -82,20 +90,13 @@ const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice
               <Typography variant="body2" color="text.secondary">
                 {`Date: ${dateToString(new Date(item.created_date))}`}
               </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  height: "1.5rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                <Typography sx={{ margin: "0 .5rem 0 0" }}>Variation: </Typography> {getAllNameProduct(item.data)}
+              <Box>
+                <Typography sx={{ margin: "0.5rem .5rem 0 0" }}>Detail: </Typography> {getAllNameProduct(item.data)}
               </Box>
             </Box>
             <Box>
               <Typography sx={{ color: `${colorStatus(item.order_state_id)}`, textTransform: "uppercase" }}>
-                {item.order_state_id}
+                {getNameStatus(item.order_state_id)}
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography sx={{ margin: "0 .5rem 0 0" }}>Total Order: </Typography>{" "}
@@ -114,12 +115,28 @@ const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice
   });
 };
 
-export default function DetailOrder() {
+export default function DetailOrder({ status }: { status: number }) {
   const dispatch = useAppDispatch();
   const [data, setData] = React.useState<IResponseHistory[]>([]);
   const dispatchStatus = (payload: INotice) => {
     dispatch(changeNotice(payload));
   };
+
+  React.useEffect(() => {
+    dispatch(changeLoading(true));
+    getOrderOfCurrentUser(status)
+      .then((response) => {
+        return response.data;
+      })
+      .then((response) => {
+        setData(response.data);
+        dispatch(changeLoading(false));
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(changeLoading(false));
+      });
+  }, [dispatch, status]);
 
   return <List>{renderOrder(data, dispatchStatus)}</List>;
 }

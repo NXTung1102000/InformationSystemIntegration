@@ -25,7 +25,7 @@ def order_handle():
         data = request.json
         error_code, result = add(data)
         if result:
-            return {'status': error_code, 'error': result}, 400
+            return {'status': error_code, 'error': result}, 200
         else:
             return {'status': 0}, 200
 
@@ -36,7 +36,7 @@ def update_state():
     order_id = request.json.get('order_id')
     state = request.json.get('state')
     if update_status(order_id, state):
-        return {'status': 0}, 200
+        return {'status': 1, 'error': 'can not update state'}, 200
     else:
-        return {'status': 1, 'error': 'can not update state'}, 400
-    
+        return {'status': 0}, 200
+        

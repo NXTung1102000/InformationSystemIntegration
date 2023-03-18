@@ -18,7 +18,7 @@ class OrderProducts(db.Model):
     def to_full_json(self):
         json_token = {
             'id': self.id,
-            'order_id': self.cart_id,
+            'order_id': self.order_id,
             'product_id': self.product_id,
             'quantity': self.quantity,
             'price': self.price,

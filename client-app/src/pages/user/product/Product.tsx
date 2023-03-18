@@ -65,7 +65,7 @@ export function Product() {
           setProduct(result)
         })
         .catch((err) => {
-          dispatch(changeNotice({ message: "error server", open: true, type: "error" }));
+          dispatch(changeNotice({ message: err.message, open: true, type: "error" }));
         });
     }
   }, [dispatch, searchParams]);
