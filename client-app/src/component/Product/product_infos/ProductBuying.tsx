@@ -28,7 +28,7 @@ export default function ProductBuying({product}: {product: ProductModel}) {
               description={product.description}
               star={product.star}
               image={`http://localhost:5000/show?filename=${product.image}`}
-              quantity={1}
+              quantity={product.quantity}
               quantityInCart={1}
             />
           </Grid>
