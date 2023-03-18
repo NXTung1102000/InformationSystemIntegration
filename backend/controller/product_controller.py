@@ -15,10 +15,17 @@ def get(id=None):
 
 def add(data):
     try:
-        insert(data)
+        data['is_included_vat'] = 1
+        data['is_activated'] = 1
+        data['price'] = float(data['price'])
+        data['quantity'] = int(data['quantity'])
+        data['created_date'] = None
+        data['created_by'] = g.user.id
+        rs = insert(data)
         return True
     except:
         return False
+
 
     
 def update(id, data):

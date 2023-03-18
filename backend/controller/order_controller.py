@@ -56,7 +56,7 @@ def get_all_order():
 def add(data):
     try:
         user_id = g.user.id
-        if g.user.score < 75:
+        if g.user.score and g.user.score < 75:
             return 2, "score user too low"
 
         data['name'] = g.user.name
@@ -74,10 +74,12 @@ def add(data):
                 return 3, 'error quantity'
 
         order_id = order_repo.insert(data)
+        if not order_id:
+            return 5, 'error add new order'
     
         rs = order_product_repo.insert_all(detail, order_id)
         if not rs:
-            return 4, 'error insert detail'  
+            return 4, 'error add detail order'  
         
         return 0, ''
     except:
@@ -86,44 +88,16 @@ def add(data):
     
 def update_status(id, state):
     try:
-        # if state == 1:
-        #     order_product = order_product_repo.find_by_order_id(id)
-        #     list_product = []
-        #     order_data = []
+        if state == 3 or state == 4 or state == 5:
+            order_product = order_product_repo.find_by_order_id(id)
 
-        #     for row in order_product:
-        #         data = row.to_full_json()
-        #         order_data.append(row)
+            for row in order_product:
+                data_row = row.to_full_json()
 
-        #         # check all product
-        #         product = product_repo.find_by_id(data['product_id'])
-        #         product_json = product.to_full_json()
-        #         list_product.append(product)
+                product = product_repo.find_by_id(data_row['product_id'])
 
-        #         if data['quantity'] > product_json['quantity']:
-        #             return 'error quantity'
-                
-        #     for i, product in enumerate(list_product):
-        #         new_data = {'quantity': product_json['quantity'] - order_data[i]['quantity']}
-        #         product_repo.update_data(product, new_data)
-
-        # if state == 3 or state == 4 or state == 5:
-        #     order_product = order_product_repo.find_by_order_id(id)
-        #     list_product = []
-        #     order_data = []
-
-        #     for row in order_product:
-        #         data = row.to_full_json()
-        #         order_data.append(row)
-
-        #         # check all product
-        #         product = product_repo.find_by_id(data['product_id'])
-        #         product_json = product.to_full_json()
-        #         list_product.append(product)
-                
-        #     for i, product in enumerate(list_product):
-        #         new_data = {'quantity': product_json['quantity'] + order_data[i]['quantity']}
-        #         product_repo.update_data(product, new_data)
+                new_data = {'quantity': product.quantity + data_row['quantity']}
+                rs = product_repo.update_by_id(product.id, new_data)
 
         data = {'order_state_id': state}
         rs = order_repo.update_by_id(id, data)
