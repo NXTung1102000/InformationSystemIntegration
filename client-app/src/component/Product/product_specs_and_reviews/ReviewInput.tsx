@@ -14,7 +14,7 @@ export function ReviewInput({reviewerName}: {reviewerName: string}) {
         name="rating-input"
       />
       <TextField variant="outlined" fullWidth multiline maxRows={4}/>
-      <Button>Submit</Button>
+      <Button variant='outlined'>Submit</Button>
     </div>
   )
 }

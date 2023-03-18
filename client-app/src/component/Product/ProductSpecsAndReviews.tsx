@@ -62,7 +62,8 @@ export default function ProductSpecsAndReviews({product, productReviews}:{produc
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Specs productSpecs={product.specification}/>
+        <p>{product.description}</p>
+        {/*<Specs productSpecs={JSON.parse(product.specification)}/>*/}
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ReviewInput reviewerName={reviewerName}/>

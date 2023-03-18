@@ -21,5 +21,5 @@ db = SQLAlchemy(app=app, session_options={'autocommit': False, 'autoflush': Fals
 
 migrate = Migrate(app, db)
 with app.app_context():
-    db.init_app(app)
+#     db.init_app(app)
     migrate.init_app(app, db)
