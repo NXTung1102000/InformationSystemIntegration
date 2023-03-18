@@ -39,7 +39,6 @@ def insert(json_data):
 def update_by_id(id, data):
     try:
         # data['updated_date'] = datetime.now()
-        print(find_by_id(id))
         if data.get('phone_number'):
             del data['phone_number']
         user = User.query.filter_by(id=id).update(data)
