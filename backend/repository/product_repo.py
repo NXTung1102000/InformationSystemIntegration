@@ -67,7 +67,6 @@ def insert(json_data):
     except:
         return False
     
-    
 
 def update_data(product, data):
     data['updated_date'] = datetime.now()
@@ -78,16 +77,19 @@ def update_data(product, data):
 def update_by_id(id, data):
     try:
         # data['updated_date'] = datetime.now()
-        process_data = {
-            'quantity': data.get('quantity'),
-            'name': data.get('name'),
-            'brand': data.get('brand'),
-            'category': data.get('category'),
-            'description': data.get('description'),
-            'detail': data.get('detail'),
-            'price': data.get('price'),
-            'quantity': data.get('quantity'),
-            }
+        if data.get('quantity') and 'name' not in data:
+            process_data = data
+        else:
+            process_data = {
+                'quantity': data.get('quantity'),
+                'name': data.get('name'),
+                'brand': data.get('brand'),
+                'category': data.get('category'),
+                'description': data.get('description'),
+                'detail': data.get('detail'),
+                'price': data.get('price'),
+                'quantity': data.get('quantity'),
+                }
         product = Product.query.filter_by(id=id).update(process_data)
         db.session.commit()
         return True
