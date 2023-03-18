@@ -15,6 +15,8 @@ def register_user(user_data):
 
     user_data['is_activated'] = 1
     user_data['created_by'] = 1
+    user_data['phone'] = user_data['phone_number']
+    user_data['name'] = user_data['first_name'] + user_data['last_name']
     if user_data.get('role') is None:
         user_data['role'] = 3
     insert(user_data)
@@ -27,10 +29,9 @@ def login(username, password):
     user = find_by_username_and_password(username, password)
     if not user:
         return {'status': 1, 'error': 'username or password is not correct'}, 200
-
     token = get_random_string()
     data = {'token': token}
-    update_by_id(user.id, data)
+    rs = update_by_id(user.id, data)
 
     return {'status': 0, 'data': {'token': token, 
                                   'email': user.email, 
@@ -49,13 +50,13 @@ def logout():
 
 def change_password(old_password, new_password):
     user_id = g.user.id
-
-    old_password = encode(old_password)
+    
+    old_password = encode(old_password).decode("utf-8") 
     if old_password != g.user.password:
         return {'status': 1, 'error': 'wrong old password'}
     
     new_password = encode(new_password)
     data = {'password': new_password}
-    update_by_id(user_id, data)
+    rs = update_by_id(user_id, data)
     return {'status': 0}
 

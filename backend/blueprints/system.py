@@ -31,8 +31,8 @@ def logout():
 @mod.route('/change-password', methods=['POST'])
 @login_required
 def change_password():
-    old_password = request.json.get('old_password')
-    new_password = request.json.get('new_password')
+    old_password = request.json.get('oldPW')
+    new_password = request.json.get('newPW')
     return system_controller.change_password(old_password, new_password)
 
 

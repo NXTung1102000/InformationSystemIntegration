@@ -25,8 +25,9 @@ def product_handle():
             return {'status': 1, 'error': 'can not add'}, 400
 
     elif request.method == 'PUT':
-        data = request.form
-        id = int(data.get('id'))
+        data = request.json
+        id = data.get('id')
+        data['quantity'] = int(data['quantity'])
         result = product_controller.update(id, data)
         if result:
             return {'status': 0}, 200
@@ -34,7 +35,7 @@ def product_handle():
             return {'status': 1, 'error': 'can not update'}, 200
 
     elif request.method == 'DELETE':
-        id = request.args.get('id')
+        id = request.json
         result = product_controller.delete(id)
         if result:
             return {'status': 0}, 200
@@ -55,7 +56,5 @@ def search():
 def count_by_category():
     result = product_controller.static_category()
     return {'data': dict(result)}, 200
-
-
 
 
