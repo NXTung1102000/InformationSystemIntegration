@@ -58,7 +58,7 @@ def get_all_order():
 def add(data):
     try:
         user_id = g.user.id
-        if g.user.score and g.user.score < 80:
+        if g.user.score and g.user.score < 70:
             return 2, "score user too low"
 
         data['name'] = g.user.name
@@ -105,7 +105,7 @@ def update_status(id, state):
         if state == 5:
             order = order_repo.find_by_id(id)
             user = user_repo.find_by_id(order.user_id)
-            rs = user_repo.update_by_id(order.user_id, {'score': user.score - 5})
+            rs = user_repo.update_by_id(order.user_id, {'score': max(0, user.score - 5)})
         rs = order_repo.update_by_id(id, data)
         return ''
     except:
