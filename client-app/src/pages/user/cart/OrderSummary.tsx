@@ -92,7 +92,7 @@ export default function OrderSummary() {
           dispatch(clearCart());
         } else {
           dispatch(changeLoading(false));
-          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+          dispatch(changeNotice({ message: response.error, open: true, type: "error" }));
         }
       })
       .catch((error) => {

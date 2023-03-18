@@ -57,7 +57,7 @@ export default function ChangePolicy({ open, setOpen }: IOpenDialog) {
           setOpen(false);
           dispatch(changeNotice({ message: "update policy successfully", open: true, type: "success" }));
         } else {
-          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+          dispatch(changeNotice({ message: response.error, open: true, type: "error" }));
         }
       })
       .catch((err) => {

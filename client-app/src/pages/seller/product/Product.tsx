@@ -53,9 +53,10 @@ export default function Product() {
         dispatch(changeLoading(false));
         console.log(error);
       });
+    refreshData();
   };
 
-  React.useEffect(() => {
+  const refreshData = () => {
     dispatch(changeLoading(true));
     searchProduct({ category: null, keyword: null, price_max: null, price_min: null })
       .then((response) => {
@@ -69,6 +70,10 @@ export default function Product() {
         dispatch(changeLoading(false));
         console.log(error);
       });
+  };
+
+  React.useEffect(() => {
+    refreshData();
   }, [dispatch]);
 
   const mapData = () => {
@@ -108,6 +113,7 @@ export default function Product() {
         setOpen={setOpenDialogProduct}
         type={typeDialogProduct}
         product={checkedProduct}
+        refreshData={refreshData}
       />
       <Box>
         <Button

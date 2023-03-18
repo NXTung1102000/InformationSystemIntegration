@@ -13,4 +13,5 @@ export interface IResponseHistory {
   last_name: string;
   order_state_id: number;
   total: number;
+  warning_user?: number;
 }
