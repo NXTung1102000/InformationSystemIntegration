@@ -26,6 +26,7 @@ interface IOpenDialog {
   open: boolean;
   setOpen: (open: boolean) => void;
   type: string;
+  refreshData: () => void;
 }
 
 interface ILocalState {
@@ -33,7 +34,7 @@ interface ILocalState {
   message: string;
 }
 
-export default function DialogProduct({ open, setOpen, type, product }: IOpenDialog) {
+export default function DialogProduct({ open, setOpen, type, product, refreshData }: IOpenDialog) {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const dispatch = useAppDispatch();
   const [data, setData] = React.useState<IUpdateProduct | ICreateProduct>(product);
@@ -106,7 +107,7 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
               setOpen(false);
               dispatch(changeNotice({ message: "create product successfully", open: true, type: "success" }));
             } else {
-              dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+              dispatch(changeNotice({ message: response.error, open: true, type: "error" }));
             }
           })
           .catch((err) => {
@@ -124,7 +125,7 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
               setOpen(false);
               dispatch(changeNotice({ message: "update successfully", open: true, type: "success" }));
             } else {
-              dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+              dispatch(changeNotice({ message: response.error, open: true, type: "error" }));
             }
           })
           .catch((err) => {
@@ -135,6 +136,7 @@ export default function DialogProduct({ open, setOpen, type, product }: IOpenDia
       default:
         break;
     }
+    refreshData();
   };
 
   const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {

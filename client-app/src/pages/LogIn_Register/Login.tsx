@@ -69,7 +69,7 @@ export default function LogIn({ open, setOpen }: IOpenDialog) {
           dispatch(LogInUser(user));
           setOpen(false);
         } else {
-          dispatch(changeNotice({ message: response.message, open: true, type: "error" }));
+          dispatch(changeNotice({ message: response.error, open: true, type: "error" }));
         }
       })
       .catch((err) => {

@@ -93,6 +93,12 @@ const renderOrder = (data: IResponseHistory[], dispatchStatus: (payload: INotice
               <Box>
                 <Typography sx={{ margin: "0.5rem .5rem 0 0" }}>Detail: </Typography> {getAllNameProduct(item.data)}
               </Box>
+              {item.warning_user && (
+                <>
+                  <Typography color={"red"}>Warning: </Typography>
+                  <Typography color={"red"}>{"This user has a low score for canceling a lot of orders"}</Typography>
+                </>
+              )}
             </Box>
             <Box>
               <Typography sx={{ color: `${colorStatus(item.order_state_id)}`, textTransform: "uppercase" }}>

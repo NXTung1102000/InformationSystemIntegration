@@ -9,14 +9,18 @@ import { colorStatus, getAllNameProduct, getNameStatus } from "../../../util/uti
 import { IResponseHistory } from "./responseData";
 import { USER } from "../../../constant/order/status";
 import { changeNotice } from "../../../component/LoadingAndNotice/noticeSlice";
+import CancelOrderDialog from "./CancelOrderDialog";
 const header = ["ID - Order", "Date", "Total (vnd)", "Status", "Detail", "Action"];
 
 const initData: IResponseHistory[] = [];
 
 export default function HistoryOrder() {
+  const [openCancel, setOpenCancel] = useState(false);
   const dispatch = useAppDispatch();
   const [data, setData] = useState(initData);
-  useEffect(() => {
+  const [orderIsClick, setOrderIdClick] = useState(0);
+
+  const refreshData = () => {
     dispatch(changeLoading(true));
     getOrderOfCurrentUser()
       .then((response) => {
@@ -30,20 +34,35 @@ export default function HistoryOrder() {
         dispatch(changeLoading(false));
         console.log(error);
       });
+  };
+  useEffect(() => {
+    refreshData();
   }, [dispatch]);
 
   const renderAction = (status: number, order_id: number) => {
     if ((status as USER) === USER.DELIVERING) {
       return (
-        <Button variant="contained" color="error" size="small" onClick={() => handleReturnProduct(order_id)}>
-          Cancel
-        </Button>
+        <>
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+            onClick={() => {
+              setOpenCancel(true);
+              setOrderIdClick(order_id);
+            }}
+          >
+            Cancel
+          </Button>
+        </>
       );
     }
     return <></>;
   };
 
   const handleReturnProduct = (order_id: number) => {
+    console.log("in delete", order_id);
+
     updateOrder(order_id, USER.CANCEL)
       .then((response) => {
         console.log("res", response);
@@ -61,6 +80,9 @@ export default function HistoryOrder() {
         console.log(err);
         dispatch(changeNotice({ message: err.message, open: true, type: "error" }));
       });
+
+    refreshData();
+    setOpenCancel(false);
   };
 
   const mapData = () => {
@@ -75,5 +97,16 @@ export default function HistoryOrder() {
       };
     });
   };
-  return <TableComponent header={header} data={mapData()} />;
+  return (
+    <>
+      <TableComponent header={header} data={mapData()} />
+
+      <CancelOrderDialog
+        open={openCancel}
+        setOpen={setOpenCancel}
+        id_order={orderIsClick}
+        handleCancelOrder={handleReturnProduct}
+      />
+    </>
+  );
 }
