@@ -11,25 +11,25 @@ import { ICartItem } from "../../../constant/cart/cart";
 
 let productName: string = 'Macbook Air M1'
 
-export default function ProductBuying(props: ICartItem) {
+export default function ProductBuying({product}: {product: ProductModel}) {
     return (
         <Grid container className='product-buying'>
           <Grid item md={5} className='product-price-quantity-count'>
-            <Price productPrice={props.price}/>
-            <Quantity productCount={props.quantity}/>
+            <Price productPrice={product.price}/>
+            <Quantity productCount={product.quantity}/>
             {/*<Count/>*/}
           </Grid>
           <Grid item md={7}>
             <AddToCart
-              id={props.id}
-              name={props.name}
-              price={props.price}
-              category={String(props.category) as NameCategory}
-              description={props.description}
-              star={props.star}
-              image={props.image}
-              quantity={props.quantity}
-              quantityInCart={props.quantityInCart}
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              category={String(product.category) as NameCategory}
+              description={product.description}
+              star={product.star}
+              image={`http://localhost:5000/show?filename=${product.image}`}
+              quantity={1}
+              quantityInCart={1}
             />
           </Grid>
         </Grid>

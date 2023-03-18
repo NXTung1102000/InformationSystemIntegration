@@ -92,16 +92,7 @@ export function Product() {
         <ProductInfos product={product} />
       </div>
       {/*<ProductBuying product={product} />*/}
-      <ProductBuying
-        id={product.id}
-        name={product.name}
-        price={product.price}
-        category={String(product.category) as NameCategory}
-        description={product.description}
-        star={product.star}
-        image={`http://localhost:5000/show?filename=${product.image}`}
-        quantity={1}
-        quantityInCart={0}
+      <ProductBuying product={product}
       />
       <ProductSpecsAndReviews product={product} productReviews={productReviews} />
     </div>
