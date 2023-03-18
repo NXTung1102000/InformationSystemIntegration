@@ -67,6 +67,7 @@ def insert(json_data):
     except:
         return False
     
+    
 
 def update_data(product, data):
     data['updated_date'] = datetime.now()
@@ -76,8 +77,18 @@ def update_data(product, data):
 
 def update_by_id(id, data):
     try:
-        data['updated_date'] = datetime.now()
-        product = Product.query.filter_by(id=id).update(data)
+        # data['updated_date'] = datetime.now()
+        process_data = {
+            'quantity': data.get('quantity'),
+            'name': data.get('name'),
+            'brand': data.get('brand'),
+            'category': data.get('category'),
+            'description': data.get('description'),
+            'detail': data.get('detail'),
+            'price': data.get('price'),
+            'quantity': data.get('quantity'),
+            }
+        product = Product.query.filter_by(id=id).update(process_data)
         db.session.commit()
         return True
     except:
@@ -86,9 +97,12 @@ def update_by_id(id, data):
 
 def delete_by_id(id):
     try:
-        product = find_by_id(id)
-        db.session.delete(product)
+        data = {'is_activated': 0}
+        product = Product.query.filter_by(id=id).update(data)
         db.session.commit()
+        # product = find_by_id(id)
+        # db.session.delete(product)
+        # db.session.commit()
         return True
     except:
         return False
@@ -109,7 +123,7 @@ def search(kwargs):
         base = base.filter(Product.category == category)
     if kwargs.get('keyword'):
         clause = '%'+kwargs['keyword']+'%'
-        base = base.filter(Product.meta_keywords.like(clause)).distinct()
+        base = base.filter(Product.name.like(clause)).distinct()
     # if kwargs.get('from_date'):
     #     base = base.filter(Product.date == kwargs['category'])
     if kwargs.get('price_min'):
@@ -130,6 +144,6 @@ def search(kwargs):
     if kwargs.get('all'):
         pass
     else:
-        base = base.filter(Product.quantity > 0)
+        base = base.filter(Product.quantity > 0).filter(Product.is_activated == 1)
 
     return base.all()
