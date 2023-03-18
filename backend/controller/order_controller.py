@@ -11,6 +11,8 @@ def get_detail(order):
     order['last_name'] = user.last_name
     order['data'] = []
     order['state'] = order_state_repo.find_by_id(order['order_state_id']).to_full_json()['name']
+    if user.score and user.score < 80:
+        order['warning_user'] = 1
 
     total = 0
     carts = order_product_repo.find_by_order_id(order_id)
@@ -56,7 +58,7 @@ def get_all_order():
 def add(data):
     try:
         user_id = g.user.id
-        if g.user.score and g.user.score < 75:
+        if g.user.score and g.user.score < 80:
             return 2, "score user too low"
 
         data['name'] = g.user.name
@@ -100,6 +102,10 @@ def update_status(id, state):
                 rs = product_repo.update_by_id(product.id, new_data)
 
         data = {'order_state_id': state}
+        if state == 5:
+            order = order_repo.find_by_id(id)
+            user = user_repo.find_by_id(order.user_id)
+            rs = user_repo.update_by_id(order.user_id, {'score': user.score - 5})
         rs = order_repo.update_by_id(id, data)
         return ''
     except:

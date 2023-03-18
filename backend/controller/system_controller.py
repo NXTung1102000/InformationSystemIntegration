@@ -17,6 +17,7 @@ def register_user(user_data):
     user_data['created_by'] = 1
     user_data['phone'] = user_data['phone_number']
     user_data['name'] = user_data['first_name'] + user_data['last_name']
+    user_data['score'] = 100
     if user_data.get('role') is None:
         user_data['role'] = 3
     insert(user_data)
@@ -50,7 +51,7 @@ def logout():
 
 def change_password(old_password, new_password):
     user_id = g.user.id
-    
+
     old_password = encode(old_password).decode("utf-8") 
     if old_password != g.user.password:
         return {'status': 1, 'error': 'wrong old password'}
