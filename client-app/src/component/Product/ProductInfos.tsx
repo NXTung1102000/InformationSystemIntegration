@@ -10,7 +10,7 @@ export default function ProductInfos({product}: {product: ProductModel}) {
     return (
         <div className='product-infos'>
             <ProductName productName={product.name}/>
-            <ProductRating productRating={product.rating}/>
+            <ProductRating productRating={product.star}/>
             <ProductDescription productDescription={product.description}/>
         </div>
     )

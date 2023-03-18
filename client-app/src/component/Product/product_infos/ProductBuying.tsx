@@ -6,6 +6,7 @@ import Price from './product_buying/Price'
 import Quantity from './product_buying/Quantity'
 import Count from './product_buying/Count'
 import AddToCart from "./product_buying/AddToCart";
+import { NameCategory } from "../../../constant/tabRedirect/name";
 
 let productName: string = 'Macbook Air M1'
 
@@ -18,7 +19,17 @@ export default function ProductBuying({product}: {product: ProductModel}) {
             {/*<Count/>*/}
           </Grid>
           <Grid item md={7}>
-            <AddToCart/>
+            <AddToCart
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              category={String(product.category) as NameCategory}
+              description={product.description}
+              star={product.star}
+              image={`http://localhost:5000/show?filename=${product.image}`}
+              quantity={1}
+              quantityInCart={0}
+            />
           </Grid>
         </Grid>
     )

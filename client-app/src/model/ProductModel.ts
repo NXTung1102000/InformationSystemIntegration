@@ -1,7 +1,9 @@
 export type ProductModel = {
+  id: number,
+  category: number,
   image: string,
   name: string,
-  rating: number;
+  star: number;
   description: string;
   detail: string;
   specification: string;

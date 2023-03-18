@@ -14,9 +14,11 @@ import CardMedia from "@mui/material/CardMedia";
 
 
 const productModel: ProductModel = {
+    id: 0,
     image: "https://cdn.tgdd.vn/Products/Images/44/231244/macbook-air-m1-2020-gold-600x600.jpg",
     name: "MacBook Air M1 2020",
-    rating: 4,
+    category: 1,
+    star: 4,
     detail: `
       MacBook Air 13.3" with Retina Display
       16-core Neural Engine
@@ -79,6 +81,8 @@ export function Product() {
 
   let image = `http://localhost:5000/show?filename=${product.image}`
   // product.specification = JSON.parse(product.specification)
+  // let spec = JSON.parse(product.specification)
+  // console.log(spec)
 
   return (
     <div className="product">
