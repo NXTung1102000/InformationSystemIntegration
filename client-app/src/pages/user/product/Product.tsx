@@ -88,20 +88,11 @@ export function Product() {
   return (
     <div className="product">
       <div className="product-image-and-infos">
-        <CardMedia sx={{ maxWidth: "100%", height: 450 }} component="img" src={image} alt={product.name} />
+        <CardMedia sx={{ maxWidth: 550, height: '100%' }} component="img" src={image} alt={product.name} />
         <ProductInfos product={product} />
       </div>
       {/*<ProductBuying product={product} />*/}
-      <ProductBuying
-        id={product.id}
-        name={product.name}
-        price={product.price}
-        category={String(product.category) as NameCategory}
-        description={product.description}
-        star={product.star}
-        image={`http://localhost:5000/show?filename=${product.image}`}
-        quantity={1}
-        quantityInCart={0}
+      <ProductBuying product={product}
       />
       <ProductSpecsAndReviews product={product} productReviews={productReviews} />
     </div>
